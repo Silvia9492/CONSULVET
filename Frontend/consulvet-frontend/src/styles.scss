@@ -1,0 +1,19 @@
+/* You can add global styles to this file, and also import other style files */
+
+@use '@angular/material' as mat;
+@import 'styles/custom-theme';
+
+h1 {
+    color: mat.get-color-from-palette($my-primary, 500);
+  }
+  
+button {
+    background-color: mat.get-color-from-palette($my-primary, 500);
+    color: mat.get-color-from-palette($my-primary, 50);
+  }
+  
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
