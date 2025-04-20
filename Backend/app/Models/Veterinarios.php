@@ -25,4 +25,10 @@ class Veterinarios extends Model
         return $query->where('codigo_veterinario', $this->getAttribute('codigo_veterinario'))
                     ->where('centro_id', $this->getAttribute('centro_id'));
     }
+
+    public function animales(){
+        return $this->belongsToMany(Animales::class, 'atienden', 'id_paciente', 'id_veterinario')
+                    ->withPivot('id_centro', 'fecha', 'motivo', 'diagnóstico', 'tratamiento', 'pruebas', 'observaciones')
+                    ->withTimestamps();
+    }
 }

@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Atienden extends Model
 {
     protected $table = 'atienden';
+    protected $primaryKey = ['id_paciente', 'id_centro', 'id_veterinario', 'fecha', 'motivo'];
+    public $incrementing = false;
 
     protected $fillable = [
         'fecha',
@@ -20,4 +22,13 @@ class Atienden extends Model
         'id_veterinario',
         'id_centro'
     ];
+
+    public function setKeysForSaveQuery($query)
+    {
+        return $query->where('id_paciente', $this->getAttribute('id_paciente'))
+                     ->where('id_centro', $this->getAttribute('id_centro'))
+                     ->where('id_veterinario', $this->getAttribute('id_veterinario'))
+                     ->where('fecha', $this->getAttribute('fecha'))
+                     ->where('motivo', $this->getAttribute('motivo'));
+    }
 }

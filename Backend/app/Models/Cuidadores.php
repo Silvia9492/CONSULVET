@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Cuidadores extends Model
 {
     protected $table = 'cuidadores';
+    protected $primaryKey = 'dni';
 
     protected $fillable = [
         'dni',
