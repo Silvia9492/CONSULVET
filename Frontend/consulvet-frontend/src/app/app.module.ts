@@ -5,7 +5,19 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
-import { PruebaPaletaModule } from './pruebaPaleta/pruebaPaleta.module';
+import { FlexLayoutModule} from '@angular/flex-layout';
+import { LoginModule } from './Login/Login.module';
+import { RegisterModule } from './Register/Register.module';
+import { MatToolbarModule} from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -15,7 +27,18 @@ import { PruebaPaletaModule } from './pruebaPaleta/pruebaPaleta.module';
     AppRoutingModule,
     BrowserAnimationsModule,
     MatButtonModule,
-    PruebaPaletaModule
+    FlexLayoutModule,
+    LoginModule,
+    RegisterModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatSidenavModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    MatExpansionModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

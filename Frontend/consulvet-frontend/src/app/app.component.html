@@ -1,1 +1,33 @@
-<app-pruebaPaleta></app-pruebaPaleta>
+<div class="sidenav-container">
+  <!-- Toolbar con iconos y nombre de la aplicación -->
+  <mat-toolbar color="primary">
+    <button mat-icon-button (click)="drawer.toggle()" aria-label="Abrir drawer">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>Consulvet</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button aria-label="Favoritos">
+      <mat-icon>favorite</mat-icon>
+    </button>
+    <button mat-icon-button aria-label="Compartir">
+      <mat-icon>share</mat-icon>
+    </button>
+  </mat-toolbar>
+  
+  <!-- Contenedor principal con el drawer -->
+  <mat-drawer-container class="example-container">
+    <!-- Drawer con botones de navegación -->
+    <mat-drawer #drawer mode="side" class="custom-drawer">
+      <div class="buttonsDrawer" fxLayout="column" fxLayoutAlign="space-between center">
+        <button mat-raised-button routerLink="/login" color="primary">Iniciar sesión</button>
+        <button mat-raised-button routerLink="/register" color="primary">Registrarse</button>
+      </div>
+    </mat-drawer>
+
+    <!-- Contenido principal (se actualizará con el router-outlet) -->
+    <mat-drawer-content>
+      <router-outlet></router-outlet>
+      <div style="padding: 1rem;"></div>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</div>
