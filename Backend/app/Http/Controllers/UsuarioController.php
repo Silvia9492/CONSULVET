@@ -62,6 +62,29 @@ class UsuarioController extends Controller
             'message' => 'Sesión cerrada correctamente'
         ]);
     }
+
+    public function getAnimalesByUsername($username){
+        $usuario = Usuarios::where('nombre_usuario', $username)->first();
+
+        // Verificar si el usuario existe
+        if (!$usuario) {
+            return response()->json(['error' => 'Usuario no encontrado'], 404);
+        }
+    
+        // Acceder al modelo relacionado 'cuidador' usando la relación definida en el modelo 'Usuario'
+        $cuidador = $usuario->cuidadorRelacion;
+    
+        // Verificar si el cuidador existe
+        if (!$cuidador) {
+            return response()->json(['error' => 'Cuidador no encontrado'], 404);
+        }
+    
+        // Obtener los animales del cuidador
+        $animales = $cuidador->animales;
+    
+        // Devolver los animales en formato JSON
+        return response()->json($animales);
+    }
 }
 
 

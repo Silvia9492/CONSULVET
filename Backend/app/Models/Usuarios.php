@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Cuidadores;
 
 class Usuarios extends Model
 {
@@ -20,4 +21,10 @@ class Usuarios extends Model
         'fecha_cambio_contraseña',
         'cuidador'
     ];
+
+    public function cuidadorRelacion(){
+        return $this->hasOne(Cuidadores::class, 'dni', 'cuidador');
+    }
 }
+
+

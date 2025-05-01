@@ -12,11 +12,13 @@ use App\Http\Controllers\VeterinarioController;
 use App\Http\Controllers\OfrecenController;
 use App\Http\Controllers\AtiendenController;
 
-Route::get('/animales/{dni}', [AnimalController::class, 'index']);
+Route::get('/animales/dni/{dni}', [AnimalController::class, 'index']);
+Route::get('/animales/usuario/{username}', [UsuarioController::class, 'getAnimalesByUsername']);
 Route::post('/animales', [AnimalController::class, 'store']);
 Route::get('/animal/{codigo_paciente}', [AnimalController::class, 'show']);
 Route::put('/animal/{codigo_paciente}', [AnimalController::class, 'update']);
 Route::delete('/animal/{codigo_paciente}', [AnimalController::class, 'destroy']);
+
 
 Route::get('/cuidadores', [CuidadorController::class, 'index']);
 Route::post('/cuidadores', [CuidadorController::class, 'store']);

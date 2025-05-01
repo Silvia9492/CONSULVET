@@ -1,0 +1,77 @@
+<h2 mat-dialog-title>Solicitar Consulta</h2>
+
+<mat-dialog-content>
+  <mat-horizontal-stepper linear>
+    <mat-step [stepControl]="reasonFormGroup">
+      <form [formGroup]="reasonFormGroup" fxLayout="column" fxLayoutGap="1rem">
+        <ng-template matStepLabel>Indique motivo de consulta y paciente</ng-template>
+        <mat-form-field appearance="fill" style="max-width: 400px; margin: auto;">
+          <mat-label>Motivo de consulta</mat-label>
+          <mat-select formControlName="reason" [(value)]="selectedService" required>
+            <mat-option *ngFor="let service of services" [value]="service.codigo_servicio">
+              {{ service.tipo }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="max-width: 400px; margin: auto;">
+          <mat-label>Paciente</mat-label>
+          <mat-select formControlName="patient" required>
+            <mat-option *ngFor="let animal of animales" [value]="animal.codigo_paciente">
+              {{ animal.nombre }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div>
+          <button mat-raised-button color="primary" matStepperNext>Siguiente</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="dateFormGroup">
+      <form [formGroup]="dateFormGroup">
+        <ng-template matStepLabel>Indique fecha y hora a la que desea acudir</ng-template>
+        <mat-form-field appearance="fill">
+          <mat-label>Fecha</mat-label>
+          <textarea matInput formControlName="date" required></textarea>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Hora</mat-label>
+          <textarea matInput formControlName="hour" required></textarea>
+        </mat-form-field>
+        <div>
+          <button mat-raised-button matStepperPrevious color="accent">Anterior</button>
+          <button mat-raised-button color="primary" matStepperNext>Siguiente</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="centerFormGroup">
+      <form [formGroup]="centerFormGroup">
+        <ng-template matStepLabel>Indique el centro al que desea acudir y con qué veterinario</ng-template>
+        <mat-form-field appearance="fill">
+          <mat-label>Centro</mat-label>
+          <textarea matInput formControlName="center" required></textarea>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Veterinario</mat-label>
+          <textarea matInput formControlName="veterinary" required></textarea>
+        </mat-form-field>
+        <div>
+          <button mat-raised-button matStepperPrevious color="accent">Anterior</button>
+          <button mat-raised-button color="primary" matStepperNext>Confirmar</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="confirmFormGroup">
+      <form [formGroup]="confirmFormGroup">
+        <ng-template matStepLabel>Confirmación de cita</ng-template>
+        <div>
+          <button mat-raised-button matStepperPrevious color="accent">Anterior</button>
+          <button mat-raised-button color="primary" (click)="confirm()">Confirmar</button>
+        </div>
+      </form>
+    </mat-step>
+  </mat-horizontal-stepper>
+</mat-dialog-content>
+

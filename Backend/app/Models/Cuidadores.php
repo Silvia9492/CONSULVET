@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Animales;
 
 class Cuidadores extends Model
 {
@@ -18,4 +19,10 @@ class Cuidadores extends Model
         'telefono',
         'email'
     ];
+
+    public function animales(){
+        return $this->hasMany(Animales::class, 'cuidador_dni', 'dni');
+    }
 }
+
+

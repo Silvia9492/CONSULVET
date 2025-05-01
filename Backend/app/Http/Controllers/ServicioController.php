@@ -9,7 +9,7 @@ class ServicioController extends Controller
 {
     public function index()
     {
-        $servicios = Servicio::all();
+        $servicios = Servicios::all();
         return response()->json($servicios);
     }
 }

@@ -45,10 +45,11 @@ export class LoginComponent {
           (response) => {
             if (response) {
               console.log('Login exitoso', response);
+              localStorage.setItem('username', response.nombre_usuario);
               // Mostrar mensaje de éxito en el snackbar
               this.loginSnackBar('Login exitoso');
               // Redirigir después del login exitoso
-              this.router.navigate(['/dashboard']);
+              this.router.navigate(['/Profile']);
             }
           }
         );
