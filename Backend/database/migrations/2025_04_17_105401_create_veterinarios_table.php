@@ -15,7 +15,7 @@ return new class extends Migration
             $table->unsignedBigInteger('codigo_veterinario')->autoincrement();
             $table->string('nombre_completo', 100);
             $table->string('nº_colegiado', 10);
-            $table->enum('especialidad', ['Medicina Preventiva', 'Medicina Interna', 'Oncología', 'Etología', 'Dermatología', 'Traumatología', 'Neurología', 'Fisioterapia y Rehabilitación']);
+            $table->enum('especialidad', ['Medicina Preventiva', 'Etología', 'Oncología', 'Fisioterapia y Rehabilitación', 'Medicina Interna', 'Neurología', 'Etología', 'Traumatología', 'Dermatología']);
             $table->string('email')->unique();
             $table->unsignedBigInteger('centro_id');
             $table->timestamps();

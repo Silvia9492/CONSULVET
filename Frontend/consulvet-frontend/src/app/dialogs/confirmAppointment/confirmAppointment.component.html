@@ -1,0 +1,14 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title class="dialog-title">Confirmar cita</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content class="dialog-content">
+    <p>¿Estás seguro de que deseas confirmar esta cita?</p>
+  </mat-card-content>
+
+  <mat-card-actions class="dialog-actions">
+    <button mat-raised-button color="accent" mat-dialog-close>Cancelar</button>
+    <button mat-raised-button color="primary" (click)="confirmar()">Confirmar</button>
+  </mat-card-actions>
+</mat-card>

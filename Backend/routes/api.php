@@ -31,7 +31,9 @@ Route::get('/usuario/{dni}', [UsuarioController::class, 'show']);
 Route::post('/login', [UsuarioController::class, 'login']);
 
 Route::get('/centros', [CentroController::class, 'index']);
-Route::get('/centros/filtrar/{servicio}', [CentroController::class, 'filtrarCentrosPorServicio']);
+//Route::get('/centros/filtrar/{servicio}', [CentroController::class, 'filtrarCentrosPorServicio']);
+Route::get('/centros/por-servicio/{tipo}', [CentroController::class, 'getCentrosPorTipoServicio']);
+
 
 Route::get('/servicios', [ServicioController::class, 'index']);
 

@@ -28,16 +28,20 @@
     </mat-step>
 
     <mat-step [stepControl]="dateFormGroup">
-      <form [formGroup]="dateFormGroup">
-        <ng-template matStepLabel>Indique fecha y hora a la que desea acudir</ng-template>
-        <mat-form-field appearance="fill">
+      <form [formGroup]="dateFormGroup" fxLayout="column" fxLayoutGap="1rem">
+        <ng-template matStepLabel>Indique fecha y horario en el que desea acudir</ng-template>
+        <mat-form-field appearance="fill" style="max-width: 400px; margin: auto;">
           <mat-label>Fecha</mat-label>
-          <textarea matInput formControlName="date" required></textarea>
+          <input matInput formControlName="date" [matDatepickerFilter]="myFilter" [matDatepicker]="picker" required>
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Hora</mat-label>
-          <textarea matInput formControlName="hour" required></textarea>
-        </mat-form-field>
+        <mat-label>Horario</mat-label>
+        <mat-radio-group formControlName="hourSelected">
+          <mat-radio-button class="horario" value="mañana">Mañana</mat-radio-button>
+          <mat-radio-button class="horario" value="tarde">Tarde</mat-radio-button>
+        </mat-radio-group>
         <div>
           <button mat-raised-button matStepperPrevious color="accent">Anterior</button>
           <button mat-raised-button color="primary" matStepperNext>Siguiente</button>
@@ -46,15 +50,23 @@
     </mat-step>
 
     <mat-step [stepControl]="centerFormGroup">
-      <form [formGroup]="centerFormGroup">
+      <form [formGroup]="centerFormGroup" fxLayout="column" fxLayoutGap="1rem">
         <ng-template matStepLabel>Indique el centro al que desea acudir y con qué veterinario</ng-template>
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" style="max-width: 400px; margin: auto;">
           <mat-label>Centro</mat-label>
-          <textarea matInput formControlName="center" required></textarea>
+          <mat-select formControlName="center">
+            <mat-option *ngFor="let centro of centrosFiltrados" [value]="centro.codigo_centro">
+              {{ centro.nombre }} - {{ centro.direccion }}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" style="max-width: 400px; margin: auto;">
           <mat-label>Veterinario</mat-label>
-          <textarea matInput formControlName="veterinary" required></textarea>
+          <mat-select formControlName="veterinary">
+            <mat-option *ngFor="let veterinario of veterinariosFiltrados" [value]="veterinario.codigo_veterinario">
+              {{ veterinario.nombre_completo }}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
         <div>
           <button mat-raised-button matStepperPrevious color="accent">Anterior</button>
@@ -66,9 +78,33 @@
     <mat-step [stepControl]="confirmFormGroup">
       <form [formGroup]="confirmFormGroup">
         <ng-template matStepLabel>Confirmación de cita</ng-template>
-        <div>
-          <button mat-raised-button matStepperPrevious color="accent">Anterior</button>
-          <button mat-raised-button color="primary" (click)="confirm()">Confirmar</button>
+    
+        <div fxLayout="column" fxLayoutAlign="center center">
+          <mat-card style="width: 100%; max-width: 600px;">
+            <mat-card-header>
+              <mat-card-title>
+                {{ appointmentConfirmed ? 'Su cita ha sido registrada con éxito' : 'Resumen de la Cita' }}
+              </mat-card-title>
+            </mat-card-header>
+    
+            <mat-card-content>
+              <p><strong>Paciente:</strong> {{ resumenCita?.paciente }}</p>
+              <p><strong>Motivo de consulta:</strong> {{ resumenCita?.motivo }}</p>
+              <p><strong>Fecha:</strong> {{ resumenCita?.fecha }}</p>
+              <p><strong>Horario:</strong> {{ resumenCita?.horario }}</p>
+              <p><strong>Centro:</strong> {{ resumenCita?.centro }}</p>
+              <p><strong>Veterinario:</strong> {{ resumenCita?.veterinario }}</p>
+            </mat-card-content>
+    
+            <mat-card-actions *ngIf="!appointmentConfirmed" fxLayout="row" fxLayoutAlign="end center">
+              <button mat-raised-button matStepperPrevious color="accent">Anterior</button>
+              <button mat-raised-button color="primary" (click)="openConfirmDialog()">Continuar</button>
+            </mat-card-actions>
+
+          <mat-card-actions *ngIf="appointmentConfirmed" fxLayout="row" fxLayoutAlign="center center">
+            <button mat-raised-button color="accent" (click)="generatePDF()">Descargar comprobante de cita</button>
+          </mat-card-actions>
+        </mat-card>
         </div>
       </form>
     </mat-step>

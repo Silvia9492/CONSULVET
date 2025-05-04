@@ -8,26 +8,19 @@ use Illuminate\Http\Request;
 
 class VeterinarioController extends Controller
 {
-    public function filtrarVeterinarios(Request $request)
-    {
-        $request->validate([
-            'centro_id' => 'required|exists:centros,codigo_centro',
-            'horario' => 'required|in:mañana,tarde',
-            'servicio' => 'required|exists:servicios,codigo_servicio'
-        ]);
+    public function filtrarVeterinarios(Request $request){
+    $request->validate([
+        'centroId' => 'required|exists:centros,codigo_centro',
+        'horario' => 'required|in:mañana,tarde',
+        'servicio' => 'required|string'
+    ]);
 
-        $veterinarios = Veterinarios::where('centro_id', $request->centro_id)
-            ->where('horario', $request->horario)
-            ->get();
+    // Obtener veterinarios que trabajan en ese centro y tienen ese horario
+    $veterinarios = Veterinarios::where('centro_id', $request->centroId)
+        ->where('horario', $request->horario)
+        ->where('servicio', $request->servicio) // este campo debe coincidir con el tipo
+        ->get();
 
-        $veterinariosFiltrados = $veterinarios->filter(function ($veterinario) use ($request) {
-            $servicio = Servicios::where('codigo_servicio', $request->servicio)
-                ->where('centro_id', $veterinario->centro_id)
-                ->exists();
-
-            return $servicio;
-        });
-
-        return response()->json($veterinariosFiltrados);
+    return response()->json($veterinarios);
     }
 }

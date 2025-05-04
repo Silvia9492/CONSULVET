@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Servicios;
 
 class Centros extends Model
 {
@@ -19,7 +20,7 @@ class Centros extends Model
     ];
 
     public function servicios(){
-        return $this->belongsToMany(Servicios::class, 'ofrecen', 'codigo_centro', 'codigo_servicio');
+        return $this->belongsToMany(Servicios::class, 'ofrecen', 'id_centro', 'id_servicio');
     }
 
 }

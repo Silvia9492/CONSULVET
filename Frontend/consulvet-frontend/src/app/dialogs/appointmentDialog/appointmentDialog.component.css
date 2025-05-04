@@ -1,0 +1,21 @@
+.radio-group {
+    display: flex;
+    flex-direction: row;
+    gap: 16px; /* separación entre botones */
+    margin-top: 8px;
+    margin-bottom: 16px;
+}
+
+.horario {
+    padding: 4px 8px;
+}
+
+.mat-card {
+    max-width: 500px;
+    margin: auto;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.botonesConfirmar {
+    margin-top: 20px;
+}

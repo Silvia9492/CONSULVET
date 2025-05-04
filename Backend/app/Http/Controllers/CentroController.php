@@ -14,8 +14,7 @@ class CentroController extends Controller
         return response()->json($centros);
     }
 
-    public function filtrarCentrosPorServicio($motivo)
-    {
+    /*public function filtrarCentrosPorServicio($motivo){
         $centros = DB::table('centros')
             ->join('ofrecen', 'centros.codigo_centro', '=', 'ofrecen.id_centro')
             ->join('servicios', 'ofrecen.id_servicio', '=', 'servicios.codigo_servicio')
@@ -25,5 +24,13 @@ class CentroController extends Controller
             ->get();
 
         return response()->json($centros);
+    }*/
+
+    public function getCentrosPorTipoServicio($tipo){
+    $centros = Centros::whereHas('servicios', function ($query) use ($tipo) {
+        $query->where('tipo', $tipo);
+    })->get();
+
+    return response()->json($centros);
     }
 }

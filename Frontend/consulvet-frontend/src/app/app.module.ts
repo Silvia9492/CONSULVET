@@ -20,6 +20,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ProfilePhotoDialogModule } from './dialogs/profilePhotoDialog/profilePhotoDialog.module';
 import { AppointmentDialogModule } from './dialogs/appointmentDialog/appointmentDialog.module';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ConfirmAppointmentModule } from './dialogs/confirmAppointment/confirmAppointment.module';
+
 
 @NgModule({
   declarations: [
@@ -44,7 +47,9 @@ import { AppointmentDialogModule } from './dialogs/appointmentDialog/appointment
     HttpClientModule,
     MatSnackBarModule,
     ProfilePhotoDialogModule,
-    AppointmentDialogModule
+    AppointmentDialogModule,
+    MatDialogModule,
+    ConfirmAppointmentModule
   ],
   providers: [],
   bootstrap: [AppComponent]

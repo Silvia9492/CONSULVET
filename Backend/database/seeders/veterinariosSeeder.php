@@ -25,6 +25,7 @@ class veterinariosSeeder extends Seeder
                 'nombre_completo' => 'Ana López García',
                 'nº_colegiado' => 'VET123456',
                 'especialidad' => 'Medicina Preventiva',
+                'servicio' => 'Vacunación',
                 'email' => 'ana.lopez@clinicaveterinaria.com',
                 'horario' => 'mañana'
             ]);
@@ -34,6 +35,7 @@ class veterinariosSeeder extends Seeder
                 'nombre_completo' => 'Raquel Santos Díaz',
                 'nº_colegiado' => 'VET556789',
                 'especialidad' => 'Oncología',
+                'servicio' => 'Hospitalización',
                 'email' => 'raquel.santos@hospitalveterinario.com',
                 'horario' => 'mañana'
             ]);
@@ -43,6 +45,7 @@ class veterinariosSeeder extends Seeder
                 'nombre_completo' => 'Darío Carbajal Herrero',
                 'nº_colegiado' => 'VET236751',
                 'especialidad' => 'Fisioterapia y Rehabilitación',
+                'servicio' => 'Fisioterapia',
                 'email' => 'dario.carbajal@hospitalveterinario.com',
                 'horario' => 'tarde'   
             ]);
@@ -52,6 +55,7 @@ class veterinariosSeeder extends Seeder
                 'nombre_completo' => 'Elena Díaz Rey',
                 'nº_colegiado' => 'VET332167',
                 'especialidad' => 'Neurología',
+                'servicio' => 'Resonancia Magnética',
                 'email' => 'elena.diaz@hospitalveterinario.com',
                 'horario' => 'tarde'
             ]);
@@ -61,6 +65,7 @@ class veterinariosSeeder extends Seeder
                 'nombre_completo' => 'Adrián Berdejo Bueno',
                 'nº_colegiado' => 'VET096544',
                 'especialidad' => 'Traumatología',
+                'servicio' => 'Diagnóstico por Imagen',
                 'email' => 'adrian.berdejo@hospitalveterinario.com',
                 'horario' => 'mañana'
             ]);
@@ -70,6 +75,7 @@ class veterinariosSeeder extends Seeder
                 'nombre_completo' => 'Eva Vázquez Castaño',
                 'nº_colegiado' => 'VET717445',
                 'especialidad' => 'Dermatología',
+                'servicio' => 'Desparasitación',
                 'email' => 'eva.vazquez@clinicaveterinaria.com',
                 'horario' => 'tarde'
             ]);
@@ -79,6 +85,7 @@ class veterinariosSeeder extends Seeder
                 'nombre_completo' => 'Beatriz Alonso Pérez',
                 'nº_colegiado' => 'VET433566',
                 'especialidad' => 'Medicina Interna',
+                'servicio' => 'Hospitalización',
                 'email' => 'beatriz.alonso@hospitalveterinario.com',
                 'horario' => 'mañana'
             ]);
@@ -88,6 +95,7 @@ class veterinariosSeeder extends Seeder
                 'nombre_completo' => 'Covadonga Rosales Olmo',
                 'nº_colegiado' => 'VET654876',
                 'especialidad' => 'Etología',
+                'servicio' => 'Hospitalización',
                 'email' => 'covadonga.rosales@hospitalveterinario.com',
                 'horario' => 'tarde'
             ]);
@@ -97,6 +105,7 @@ class veterinariosSeeder extends Seeder
                 'nombre_completo' => 'Sergio Villa Castiello',
                 'nº_colegiado' => 'VET265114',
                 'especialidad' => 'Etología',
+                'servicio' => 'Asesoramiento Nutricional',
                 'email' => 'sergio.villa@clinicaveterinaria.com',
                 'horario' => 'mañana'
             ]);

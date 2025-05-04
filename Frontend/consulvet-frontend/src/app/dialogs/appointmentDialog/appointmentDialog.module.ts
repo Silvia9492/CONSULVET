@@ -9,6 +9,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatRadioModule} from '@angular/material/radio';
+import { FormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   imports: [
@@ -20,7 +25,12 @@ import { MatOptionModule } from '@angular/material/core';
     ReactiveFormsModule,
     FlexLayoutModule,
     MatSelectModule,
-    MatOptionModule
+    MatOptionModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatRadioModule,
+    FormsModule,
+    MatCardModule
   ],
   declarations: [AppointmentDialogComponent]
 })
