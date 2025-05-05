@@ -11,6 +11,7 @@ use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\VeterinarioController;
 use App\Http\Controllers\OfrecenController;
 use App\Http\Controllers\AtiendenController;
+use App\Http\Controllers\RegisterController;
 
 Route::get('/animales/dni/{dni}', [AnimalController::class, 'index']);
 Route::get('/animales/usuario/{username}', [UsuarioController::class, 'getAnimalesByUsername']);
@@ -42,3 +43,5 @@ Route::get('/veterinarios/filtrar', [VeterinarioController::class, 'filtrarVeter
 Route::get('/ofrecen/{codigo_centro}', [OfrecenController::class, 'show']);
 
 Route::get('/historial/{codigo_paciente}', [AtiendenController::class, 'consultarHistorial']);
+
+Route::post('/register', [RegisterController::class, 'register']);

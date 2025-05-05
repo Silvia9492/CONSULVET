@@ -25,6 +25,8 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
+    z-index: 1; /* Esto asegura que el contenido esté por encima de la marca de agua */
+    position: relative;
   }
 
 .mat-drawer {

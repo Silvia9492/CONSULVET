@@ -12,6 +12,8 @@ import { of } from 'rxjs';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
+
+  isLoading=false;
   // Usamos FormGroup y FormControl para crear el formulario
   loginData = new FormGroup({
     nombre_usuario: new FormControl('', [Validators.required]),
@@ -29,35 +31,36 @@ export class LoginComponent {
   // Método para manejar el envío del formulario
   onSubmit(): void {
     if (this.loginData.valid) {
-      const nombre_usuario = this.loginData.value.nombre_usuario ?? '';  // Asignar un string vacío si es null o undefined
-      const contraseña = this.loginData.value.contraseña ?? '';  // Lo mismo para contraseña
-
-      // Llamamos al servicio de login
+      this.isLoading = true;
+  
+      const nombre_usuario = this.loginData.value.nombre_usuario ?? '';
+      const contraseña = this.loginData.value.contraseña ?? '';
+  
       this.loginService.login(nombre_usuario, contraseña)
         .pipe(
           catchError(error => {
-            // Manejo de errores usando messageError (sin snackbar)
-            this.messageError(error);  // Llamamos a la función de manejo de errores
-            return of(null); // Devolver un observable vacío o de valor por defecto
+            this.messageError(error);
+            this.isLoading = false; // En caso de error también desactiva el spinner
+            return of(null);
           })
         )
-        .subscribe(
-          (response) => {
+        .subscribe({
+          next: (response) => {
             if (response) {
               console.log('Login exitoso', response);
               localStorage.setItem('username', response.nombre_usuario);
-              // Mostrar mensaje de éxito en el snackbar
-              this.loginSnackBar('Login exitoso');
-              // Redirigir después del login exitoso
               this.router.navigate(['/Profile']);
             }
+          },
+          complete: () => {
+            this.isLoading = false; // Spinner se detiene después de todo
           }
-        );
+        });
     } else {
-      // Mostrar mensaje de error cuando el formulario no es válido
       this.loginSnackBar('Por favor, completa todos los campos.');
     }
   }
+  
 
   // Función para manejar los errores (usando messageError)
   messageError(error: any): void {
@@ -75,5 +78,9 @@ export class LoginComponent {
       horizontalPosition: 'center',  // Posición horizontal
       verticalPosition: 'top',  // Posición vertical
     });
+  }
+
+  goToRegister() {
+    this.router.navigate(['/Register']);
   }
 }

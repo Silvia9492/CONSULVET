@@ -23,5 +23,15 @@
 </div>
 
 <div fxLayout="row" fxLayoutAlign="center center">
-  <button mat-raised-button color="primary" class="loginButton" type="submit" (click)="onSubmit()" style="width: 330px; margin-top: 24px;">Iniciar sesión</button>
+  <button mat-raised-button color="primary" class="loginButton" type="submit" (click)="onSubmit()" [disabled]="isLoading" style="width: 330px; margin-top: 24px;">Iniciar sesión</button>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="center center" style="margin-top: 10px;">
+  <span style="color: gray; cursor: pointer;" (click)="goToRegister()">
+    ¿Aún no tienes cuenta? ¡Regístrate ahora!
+  </span>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="center center" *ngIf="isLoading" style="margin-top: 16px;">
+  <mat-spinner diameter="40" color="primary"></mat-spinner>
 </div>

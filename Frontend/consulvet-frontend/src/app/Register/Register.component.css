@@ -1,0 +1,27 @@
+.registerCard {
+    width: 100%;
+    max-width: 500px;
+    min-width: 350px;
+    padding: 24px;
+    margin: 24px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+  }
+
+.main-container {
+    margin-top: 20px;
+}
+
+.mat-raised-button{
+    width: 400px;
+}
+
+.mat-raised-button:hover{
+    color:rgb(0, 162, 255);
+    background-color: rgb(250, 244, 235);
+}
+
+.registerButton {
+    align-items: center;
+    margin-top: 5px;
+}

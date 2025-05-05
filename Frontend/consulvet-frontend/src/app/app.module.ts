@@ -22,6 +22,7 @@ import { ProfilePhotoDialogModule } from './dialogs/profilePhotoDialog/profilePh
 import { AppointmentDialogModule } from './dialogs/appointmentDialog/appointmentDialog.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ConfirmAppointmentModule } from './dialogs/confirmAppointment/confirmAppointment.module';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 @NgModule({
@@ -49,7 +50,8 @@ import { ConfirmAppointmentModule } from './dialogs/confirmAppointment/confirmAp
     ProfilePhotoDialogModule,
     AppointmentDialogModule,
     MatDialogModule,
-    ConfirmAppointmentModule
+    ConfirmAppointmentModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
