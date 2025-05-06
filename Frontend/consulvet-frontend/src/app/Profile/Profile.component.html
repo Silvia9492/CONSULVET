@@ -3,7 +3,7 @@
     <button mat-icon-button aria-label="Solicitar consulta" (click)="openAppointment()" matTooltip="Solicitar consulta">
       <span class="material-symbols-outlined">heart_plus</span>
     </button>
-    <button mat-icon-button aria-label="Consultar historial" routerLink="/historial" matTooltip="Consultar historial">
+    <button mat-icon-button aria-label="Consultar historial" (click)="openHistoryDialog()" matTooltip="Consultar historial">
       <span class="material-symbols-outlined">quick_reference_all</span>
     </button>
     <span class="title">Consulvet</span>
@@ -24,6 +24,7 @@
         <button mat-raised-button color="primary">Editar animal</button>
         <button mat-raised-button color="primary">Eliminar animal</button>
         <button mat-raised-button color="primary">Eliminar mi cuenta</button>
+        <button mat-raised-button color="primary" (click)="goToLogin()">Cerrar Sesión</button>
       </div>
     </mat-drawer>
     <mat-drawer-content>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Usuarios;
+use App\Models\Cuidadores;
 use Illuminate\Support\Facades\Cookie;
 
 class UsuarioController extends Controller
@@ -14,25 +15,28 @@ class UsuarioController extends Controller
             'nombre_usuario' => 'required|string',
             'contraseña' => 'required|string',
         ]);
-
-
+    
         $usuario = Usuarios::where('nombre_usuario', $credentials['nombre_usuario'])->first();
-
+    
         if ($usuario && $usuario->contraseña === $credentials['contraseña']) {
-            
+    
             $minutes = 60;
             Cookie::queue('user_session', $usuario->nombre_usuario, $minutes);
 
+            $cuidador = $usuario->cuidadorRelacion;
+    
             return response()->json([
                 'message' => 'Inicio de sesión correcto',
-                'nombre_usuario' => $usuario->nombre_usuario
+                'nombre_usuario' => $usuario->nombre_usuario,
+                'dni' => $usuario->cuidador,
+                'foto' => $cuidador?->foto_perfil
             ]);
         } else {
             return response()->json([
                 'message' => 'Nombre de usuario o contraseña incorrectos',
             ], 401);
         }
-    }
+    }    
 
     public function checkSession(Request $request)
     {

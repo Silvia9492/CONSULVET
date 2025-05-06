@@ -49,6 +49,12 @@ export class LoginComponent {
             if (response) {
               console.log('Login exitoso', response);
               localStorage.setItem('username', response.nombre_usuario);
+              localStorage.setItem('dni', response.dni);
+              if (response.foto) {
+                localStorage.setItem('foto_perfil', response.foto);
+              } else {
+                localStorage.removeItem('foto_perfil');
+              }
               this.router.navigate(['/Profile']);
             }
           },

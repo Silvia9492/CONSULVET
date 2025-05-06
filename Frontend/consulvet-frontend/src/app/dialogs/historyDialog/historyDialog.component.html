@@ -1,0 +1,27 @@
+<h2 mat-dialog-title>Consultar Historial</h2>
+
+<div mat-dialog-content>
+  <mat-form-field appearance="fill">
+    <mat-label>Nombre del Animal</mat-label>
+    <input matInput formControlName="nombreAnimal" placeholder="Introduce el nombre del animal">
+  </mat-form-field>
+
+  <button mat-button (click)="obtenerHistorial()">Filtrar</button>
+
+  <mat-table *ngIf="historial.data.length > 0" [dataSource]="historial">
+    <ng-container matColumnDef="fecha">
+      <th mat-header-cell *matHeaderCellDef> Fecha </th>
+      <td mat-cell *matCellDef="let row">{{ row.fecha }}</td>
+    </ng-container>
+
+    <!-- Más columnas si quieres -->
+
+    <tr mat-header-row *matHeaderRowDef="['fecha']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['fecha'];"></tr>
+  </mat-table>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="cerrarDialogo()">Cerrar</button>
+</div>
+

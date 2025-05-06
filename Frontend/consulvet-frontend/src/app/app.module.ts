@@ -23,6 +23,8 @@ import { AppointmentDialogModule } from './dialogs/appointmentDialog/appointment
 import { MatDialogModule } from '@angular/material/dialog';
 import { ConfirmAppointmentModule } from './dialogs/confirmAppointment/confirmAppointment.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTableModule } from '@angular/material/table';
+import { HistoryDialogModule } from './dialogs/historyDialog/historyDialog.module';
 
 
 @NgModule({
@@ -51,7 +53,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     AppointmentDialogModule,
     MatDialogModule,
     ConfirmAppointmentModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatTableModule,
+    HistoryDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]

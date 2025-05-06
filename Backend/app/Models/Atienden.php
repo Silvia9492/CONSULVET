@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Animales;
 
 class Atienden extends Model
 {
@@ -31,4 +32,9 @@ class Atienden extends Model
                      ->where('fecha', $this->getAttribute('fecha'))
                      ->where('motivo', $this->getAttribute('motivo'));
     }
+
+    public function animal()
+{
+    return $this->belongsTo(Animales::class, 'id_paciente');
+}
 }

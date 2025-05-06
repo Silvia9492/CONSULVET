@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Veterinarios;
+use App\Models\Atienden;
 
 class Animales extends Model
 {
@@ -27,4 +28,8 @@ class Animales extends Model
                     ->withTimestamps();
     }
 
+    public function historiales()
+    {
+    return $this->hasMany(Atienden::class, 'id_paciente');
+    }
 }

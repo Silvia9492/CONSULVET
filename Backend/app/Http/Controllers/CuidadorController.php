@@ -9,7 +9,7 @@ class CuidadorController extends Controller
 {
 
     public function show($dni){
-        $cuidador = Cuidador::find($dni);
+        $cuidador = Cuidadores::find($dni);
 
         if (!$cuidador) {
             return response()->json(['message' => 'Cuidador no encontrado'], 404);
@@ -19,7 +19,7 @@ class CuidadorController extends Controller
     }
 
     public function update(Request $request, $dni){
-        $cuidador = Cuidador::find($dni);
+        $cuidador = Cuidadores::find($dni);
 
         if (!$cuidador) {
             return response()->json(['message' => 'Cuidador no encontrado'], 404);
@@ -31,7 +31,7 @@ class CuidadorController extends Controller
     }
 
     public function destroy($dni){
-        $cuidador = Cuidador::find($dni);
+        $cuidador = Cuidadores::find($dni);
 
         if (!$cuidador) {
             return response()->json(['message' => 'Cuidador no encontrado'], 404);
@@ -41,5 +41,28 @@ class CuidadorController extends Controller
 
         return response()->json(['message' => 'Cuenta eliminada correctamente']);
     }
+
+    public function actualizarFoto(Request $request, $dni)
+{
+    $request->validate([
+        'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
+    ]);
+
+    $cuidador = Cuidadores::findOrFail($dni);
+
+    if ($request->hasFile('foto')) {
+        $file = $request->file('foto');
+        $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+        $file->move(public_path('uploads/perfiles'), $filename);
+
+        $cuidador->foto_perfil = $filename;
+        $cuidador->save();
+
+        return response()->json(['success' => true, 'foto' => $filename]);
+    }
+
+    return response()->json(['success' => false], 400);
+}
+
 }
 

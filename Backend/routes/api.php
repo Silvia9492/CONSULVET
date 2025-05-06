@@ -20,12 +20,12 @@ Route::get('/animal/{codigo_paciente}', [AnimalController::class, 'show']);
 Route::put('/animal/{codigo_paciente}', [AnimalController::class, 'update']);
 Route::delete('/animal/{codigo_paciente}', [AnimalController::class, 'destroy']);
 
-
 Route::get('/cuidadores', [CuidadorController::class, 'index']);
 Route::post('/cuidadores', [CuidadorController::class, 'store']);
-Route::get('/cuidador/{dni}', [CuidadorController::class, 'show']);
-Route::put('/cuidador/{dni}', [CuidadorController::class, 'update']);
-Route::delete('/cuidador/{dni}', [CuidadorController::class, 'destroy']);
+Route::get('/cuidadores/{dni}', [CuidadorController::class, 'show']);
+Route::put('/cuidadores/{dni}', [CuidadorController::class, 'update']);
+Route::delete('/cuidadores/{dni}', [CuidadorController::class, 'destroy']);
+Route::post('/cuidadores/{dni}/foto', [CuidadorController::class, 'actualizarFoto']);
 
 Route::post('/usuarios', [UsuarioController::class, 'store']);
 Route::get('/usuario/{dni}', [UsuarioController::class, 'show']);
@@ -35,7 +35,6 @@ Route::get('/centros', [CentroController::class, 'index']);
 //Route::get('/centros/filtrar/{servicio}', [CentroController::class, 'filtrarCentrosPorServicio']);
 Route::get('/centros/por-servicio/{tipo}', [CentroController::class, 'getCentrosPorTipoServicio']);
 
-
 Route::get('/servicios', [ServicioController::class, 'index']);
 
 Route::get('/veterinarios/filtrar', [VeterinarioController::class, 'filtrarVeterinarios']);
@@ -43,5 +42,6 @@ Route::get('/veterinarios/filtrar', [VeterinarioController::class, 'filtrarVeter
 Route::get('/ofrecen/{codigo_centro}', [OfrecenController::class, 'show']);
 
 Route::get('/historial/{codigo_paciente}', [AtiendenController::class, 'consultarHistorial']);
+Route::get('/historial', [AtiendenController::class, 'buscarPorNombre']);
 
 Route::post('/register', [RegisterController::class, 'register']);
