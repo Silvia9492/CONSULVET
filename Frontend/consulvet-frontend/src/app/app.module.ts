@@ -25,6 +25,10 @@ import { ConfirmAppointmentModule } from './dialogs/confirmAppointment/confirmAp
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 import { HistoryDialogModule } from './dialogs/historyDialog/historyDialog.module';
+import { AddNewAnimalModule } from './dialogs/addNewAnimalDialog/addNewAnimal.module';
+import { AnimalPhotoDialogModule } from './dialogs/animalPhotoDialog/animalPhotoDialog.module';
+import { UpdateProfileInfoModule } from './dialogs/updateProfileInfoDialog/updateProfileInfo.module';
+import { UpdateAnimalModule } from './dialogs/updateAnimalDialog/updateAnimal.module';
 
 
 @NgModule({
@@ -55,7 +59,11 @@ import { HistoryDialogModule } from './dialogs/historyDialog/historyDialog.modul
     ConfirmAppointmentModule,
     MatProgressSpinnerModule,
     MatTableModule,
-    HistoryDialogModule
+    HistoryDialogModule,
+    AddNewAnimalModule,
+    AnimalPhotoDialogModule,
+    UpdateProfileInfoModule,
+    UpdateAnimalModule
   ],
   providers: [],
   bootstrap: [AppComponent]

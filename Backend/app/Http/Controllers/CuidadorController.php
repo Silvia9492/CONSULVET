@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cuidadores;
+use App\Models\Usuarios;
 use Illuminate\Http\Request;
 
 class CuidadorController extends Controller
@@ -18,18 +19,37 @@ class CuidadorController extends Controller
         return response()->json($cuidador);
     }
 
-    public function update(Request $request, $dni){
-        $cuidador = Cuidadores::find($dni);
+    public function update(Request $request, $dni)
+{
+    $cuidador = Cuidadores::find($dni);
 
-        if (!$cuidador) {
-            return response()->json(['message' => 'Cuidador no encontrado'], 404);
-        }
-
-        $cuidador->update($request->all());
-
-        return response()->json(['message' => 'Perfil actualizado correctamente', 'cuidador' => $cuidador]);
+    if (!$cuidador) {
+        return response()->json(['message' => 'Cuidador no encontrado'], 404);
     }
 
+    // Validar los campos permitidos para actualizar
+    $request->validate([
+        'nombre_completo' => 'nullable|string|max:255',
+        'fecha_nacimiento' => 'nullable|date',
+        'direccion' => 'nullable|string|max:255',
+        'telefono' => 'nullable|string|max:20',
+        'email' => 'nullable|email|max:255'
+    ]);
+
+    // Actualizar los campos del cuidador
+    $cuidador->update($request->only([
+        'nombre_completo',
+        'fecha_nacimiento',
+        'direccion',
+        'telefono',
+        'email'
+    ]));
+
+    return response()->json([
+        'message' => 'Perfil actualizado correctamente',
+        'cuidador' => $cuidador
+    ]);
+}
     public function destroy($dni){
         $cuidador = Cuidadores::find($dni);
 

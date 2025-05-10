@@ -1,0 +1,12 @@
+.mat-card-title-style {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.87);
+  margin-bottom: 16px;
+  line-height: 24px;
+  letter-spacing: 0.0125em;
+  display: block;
+  margin-top: 0;
+  padding: 0;
+}

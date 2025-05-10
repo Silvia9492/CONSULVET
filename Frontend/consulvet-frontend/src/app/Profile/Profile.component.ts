@@ -4,6 +4,9 @@ import { ProfilePhotoDialogComponent } from '../dialogs/profilePhotoDialog/profi
 import { AppointmentDialogComponent } from '../dialogs/appointmentDialog/appointmentDialog.component';
 import { HistoryDialogComponent } from '../dialogs/historyDialog/historyDialog.component';
 import { Router } from '@angular/router';
+import { AddNewAnimalComponent } from '../dialogs/addNewAnimalDialog/addNewAnimal.component';
+import { UpdateProfileInfoComponent } from '../dialogs/updateProfileInfoDialog/updateProfileInfo.component';
+import { UpdateAnimalComponent } from '../dialogs/updateAnimalDialog/updateAnimal.component';
 
 @Component({
   selector: 'app-Profile',
@@ -65,6 +68,27 @@ export class ProfileComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('El diálogo se cerró');
+    });
+  }
+
+  openUpdateProfileInfoDialog(): void {
+    this.dialog.open(UpdateProfileInfoComponent, {
+      width: '40%',
+      height: '782px'
+    });
+  }
+
+  openAddAnimalDialog(): void {
+    this.dialog.open(AddNewAnimalComponent, {
+      width: '20%',
+      height: '782px'
+    });
+  }
+
+  openUpdateAnimalDialog(): void {
+    this.dialog.open(UpdateAnimalComponent, {
+      width: '20%',
+      height: '782px'
     });
   }
 }

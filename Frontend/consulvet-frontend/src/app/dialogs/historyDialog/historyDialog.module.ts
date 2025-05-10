@@ -9,6 +9,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   imports: [
@@ -20,7 +22,9 @@ import { FormsModule } from '@angular/forms';
     MatPaginatorModule,
     FlexLayoutModule,
     MatSlideToggleModule,
-    FormsModule
+    FormsModule,
+    MatInputModule,
+    MatButtonModule
   ],
   declarations: [HistoryDialogComponent]
 })

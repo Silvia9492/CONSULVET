@@ -16,6 +16,7 @@ export class HistorialService {
     const params = new HttpParams()
       .set('nombre', nombre)
       .set('cuidador_dni', cuidadorDni);
+      console.log('URL y parámetros:', this.apiUrl, params.toString());
 
     return this.http.get<Atienden[]>(this.apiUrl, { params });
   }

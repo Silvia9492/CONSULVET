@@ -1,0 +1,12 @@
+<h2 mat-dialog-title>Añadir una foto del animal</h2>
+<mat-dialog-content>
+    <input type="file" accept="image/*" (change)="photoSelected($event)">
+  <div *ngIf="selectedImage" style="margin-top: 1rem;">
+    <img [src]="selectedImage" alt="Preview" style="width: 100px; border-radius: 50%;">
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions style="display: flex; justify-content: flex-end;">
+  <button mat-raised-button (click)="cancelPhoto()" color="accent">Cancelar</button>
+  <button mat-raised-button color="primary" [disabled]="!selectedImage" (click)="confirmPhoto()">Aceptar</button>
+</mat-dialog-actions>

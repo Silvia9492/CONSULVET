@@ -19,9 +19,9 @@
     <mat-drawer #drawer mode="side" class="custom-drawer" position="end">
       <div class="buttonsDrawer" fxLayout="column" fxLayoutAlign="space-between center">
         <button mat-raised-button color="primary" (click)="openPhotoDialog()">Editar foto de perfil</button>
-        <button mat-raised-button color="primary">Editar información de perfil</button>
-        <button mat-raised-button color="primary">Añadir nuevo animal</button>
-        <button mat-raised-button color="primary">Editar animal</button>
+        <button mat-raised-button color="primary" (click)="openUpdateProfileInfoDialog()">Editar información de perfil</button>
+        <button mat-raised-button color="primary" (click)="openAddAnimalDialog()">Añadir nuevo animal</button>
+        <button mat-raised-button color="primary" (click)="openUpdateAnimalDialog()">Editar animal</button>
         <button mat-raised-button color="primary">Eliminar animal</button>
         <button mat-raised-button color="primary">Eliminar mi cuenta</button>
         <button mat-raised-button color="primary" (click)="goToLogin()">Cerrar Sesión</button>

@@ -1,3 +1,58 @@
-<p>
-  addNewAnimal works!
-</p>
+<div fxLayout="column" fxLayoutAlign="start center" class="main-container">
+      <h1 class="mat-card-title-style" style="text-align: center;">Añade un nuevo animal:</h1>
+      <form [formGroup]="newAnimalData" (ngSubmit)="registerNewAnimal()" fxLayout="column" fxLayoutGap="16px" class="form-container" style="width: 100%;">
+        <mat-form-field appearance="fill" color="primary">
+            <mat-label>Nombre:</mat-label>
+            <input matInput formControlName="nombre">
+            <mat-error *ngIf="newAnimalData.get('nombre')?.hasError('required')">
+              El campo nombre es obligatorio
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" color="primary">
+            <mat-label>Fecha de nacimiento:</mat-label>
+            <input matInput formControlName="fecha_nacimiento" [matDatepicker]="picker">
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="newAnimalData.get('fecha_nacimiento')?.hasError('required')">
+              La fecha de nacimiento es obligatoria
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" color="primary">
+            <mat-label>Especie:</mat-label>
+            <input matInput formControlName="especie">
+            <mat-error *ngIf="newAnimalData.get('especie')?.hasError('required')">
+              El campo especie es obligatorio
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" color="primary">
+            <mat-label>Raza:</mat-label>
+            <input matInput formControlName="raza">
+            <mat-error *ngIf="newAnimalData.get('raza')?.hasError('required')">
+              El campo raza es obligatorio
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" color="primary">
+            <mat-label>Color de la capa:</mat-label>
+            <input matInput formControlName="color_capa">
+            <mat-error *ngIf="newAnimalData.get('color_capa')?.hasError('required')">
+              El color de la capa es obligatorio
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" color="primary">
+            <mat-label>Sexo:</mat-label>
+            <input matInput formControlName="sexo">
+            <mat-error *ngIf="newAnimalData.get('sexo')?.hasError('required')">
+              El campo nombre es obligatorio
+            </mat-error>
+          </mat-form-field>
+        </form>
+          <button mat-raised-button color="accent" (click)="addAnimalPhoto()" style="margin-top: 8px;">Subir una foto</button>
+          <button mat-raised-button color="primary" fxLayoutAlign="center center" style="margin-top: 16px;">Registrar animal</button>
+</div>
+

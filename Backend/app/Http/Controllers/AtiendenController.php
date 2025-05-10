@@ -14,6 +14,8 @@ class AtiendenController extends Controller
         $nombre = $request->query('nombre');
         $cuidadorDni = $request->query('cuidador_dni');  // Filtro por dni del cuidador
 
+        dd($nombre, $cuidadorDni);
+
         // Validación: si no se pasa el nombre del animal
         if (!$nombre) {
             return response()->json(['error' => 'Debe proporcionar el nombre del animal'], 400);
@@ -23,6 +25,8 @@ class AtiendenController extends Controller
         $animales = Animales::where('nombre', 'like', '%' . $nombre . '%')
                           ->where('cuidador_dni', $cuidadorDni) // Filtra por dni del cuidador
                           ->get();
+        
+        dd($animales);
 
         // Si no se encuentra el animal, se retorna un mensaje de error
         if ($animales->isEmpty()) {
@@ -33,7 +37,8 @@ class AtiendenController extends Controller
         $historiales = Atienden::whereIn('id_paciente', $animales->pluck('id'))
                                ->orderBy('fecha', 'desc')
                                ->get();
-
+                               
+        dd($historiales);
         // Retorna los historiales encontrados
         return response()->json($historiales);
     }

@@ -15,8 +15,11 @@ import { FormControl } from '@angular/forms';
 export class HistoryDialogComponent implements OnInit {
 
   historial: MatTableDataSource<Atienden> = new MatTableDataSource<Atienden>();
-  nombreAnimal: FormControl = new FormControl
+  nombreAnimal: FormControl = new FormControl('');
   cuidadorDni: string = '';
+
+  displayedColumns: string[] = ['fecha', 'motivo', 'diagnóstico', 'tratamiento', 'pruebas', 'observaciones'];
+
 
   constructor(private historialService: HistorialService, public dialogRef: MatDialogRef<HistoryDialogComponent> ) { }
 
@@ -30,9 +33,14 @@ export class HistoryDialogComponent implements OnInit {
   }
 
   obtenerHistorial(): void {
-    if (this.nombreAnimal && this.cuidadorDni) {
+    const nombre = this.nombreAnimal.value?.trim();
+
+    if (nombre && this.nombreAnimal.value && this.cuidadorDni) {
+      console.log('Nombre del animal:', this.nombreAnimal.value);
+      console.log('DNI del cuidador:', this.cuidadorDni);
       this.historialService.obtenerHistorial(this.nombreAnimal.value, this.cuidadorDni).subscribe(
         (data) => {
+          console.log('Datos recibidos:', data);
           this.historial.data = data;
         },
         (error) => {
