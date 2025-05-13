@@ -6,41 +6,31 @@ use App\Models\Atienden;
 use Illuminate\Http\Request;
 use App\Models\Animales;
 
-
 class AtiendenController extends Controller
 {
-    public function buscarPorNombre(Request $request)
+    public function mostrarHistorial($dni, $nombreAnimal)
     {
-        $nombre = $request->query('nombre');
-        $cuidadorDni = $request->query('cuidador_dni');  // Filtro por dni del cuidador
+        {
+    try {
+        // Buscar el animal del cuidador por nombre y DNI
+        $animal = Animales::where('nombre', $nombreAnimal)
+                        ->where('cuidador_dni', $dni)
+                        ->first();
 
-        dd($nombre, $cuidadorDni);
-
-        // Validación: si no se pasa el nombre del animal
-        if (!$nombre) {
-            return response()->json(['error' => 'Debe proporcionar el nombre del animal'], 400);
+        if (!$animal) {
+            return response()->json(['error' => 'Animal no encontrado.'], 404);
         }
 
-        // Busca los animales que coincidan con el nombre proporcionado y el dni del cuidador
-        $animales = Animales::where('nombre', 'like', '%' . $nombre . '%')
-                          ->where('cuidador_dni', $cuidadorDni) // Filtra por dni del cuidador
-                          ->get();
-        
-        dd($animales);
+        // Obtener historial usando la relación
+        $historial = $animal->historiales()->orderByDesc('fecha')->get();
 
-        // Si no se encuentra el animal, se retorna un mensaje de error
-        if ($animales->isEmpty()) {
-            return response()->json(['error' => 'No se encontró ningún animal con ese nombre o cuidador'], 404);
+        return response()->json($historial, 200);
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => 'Error al obtener el historial.',
+            'message' => $e->getMessage()
+        ], 500);
         }
-
-        // Obtén los historiales de los animales filtrados
-        $historiales = Atienden::whereIn('id_paciente', $animales->pluck('id'))
-                               ->orderBy('fecha', 'desc')
-                               ->get();
-                               
-        dd($historiales);
-        // Retorna los historiales encontrados
-        return response()->json($historiales);
+    }   
     }
 }
-

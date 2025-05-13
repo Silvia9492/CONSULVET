@@ -19,7 +19,8 @@ class Animales extends Model
         'raza',
         'color_capa',
         'sexo',
-        'cuidador_dni'
+        'cuidador_dni',
+        'foto'
     ];
 
     public function veterinarios(){
@@ -30,6 +31,6 @@ class Animales extends Model
 
     public function historiales()
     {
-    return $this->hasMany(Atienden::class, 'id_paciente');
+    return $this->hasMany(Atienden::class, 'id_paciente', 'codigo_paciente');
     }
 }

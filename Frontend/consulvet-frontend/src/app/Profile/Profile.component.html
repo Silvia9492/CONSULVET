@@ -22,7 +22,7 @@
         <button mat-raised-button color="primary" (click)="openUpdateProfileInfoDialog()">Editar información de perfil</button>
         <button mat-raised-button color="primary" (click)="openAddAnimalDialog()">Añadir nuevo animal</button>
         <button mat-raised-button color="primary" (click)="openUpdateAnimalDialog()">Editar animal</button>
-        <button mat-raised-button color="primary">Eliminar animal</button>
+        <button mat-raised-button color="primary" (click)="openDeleteAnimalDialog()">Eliminar animal</button>
         <button mat-raised-button color="primary">Eliminar mi cuenta</button>
         <button mat-raised-button color="primary" (click)="goToLogin()">Cerrar Sesión</button>
       </div>
@@ -30,7 +30,36 @@
     <mat-drawer-content>
       <router-outlet></router-outlet>
       <div style="padding: 1rem;"></div>
+      <div class="animales-container" fxLayout="row wrap" fxLayoutGap="24px" fxLayoutAlign="center start">
+        <mat-card *ngFor="let animal of animales" class="animal-card">
+          <mat-card-header class="custom-header">
+            <mat-card-title>{{ animal.nombre }}</mat-card-title>
+            <mat-card-subtitle>{{ animal.especie }} - {{ animal.raza }}</mat-card-subtitle>
+          </mat-card-header>
+
+          <img
+            *ngIf="animal.foto; else defaultAnimalImage"
+            mat-card-image
+            class="card-image"
+            [src]="'http://localhost:8000/uploads/animales/' + animal.foto"
+            alt="Foto del animal"
+          />
+          <ng-template #defaultAnimalImage>
+            <div class="animal-image-placeholder">
+              <mat-icon class="animal-placeholder-icon">image</mat-icon>
+            </div>
+          </ng-template>
+          <mat-card-content>
+            <p><strong>Fecha de nacimiento:</strong> {{ animal.fecha_nacimiento | date }}</p>
+            <p><strong>Color de capa:</strong> {{ animal.color_capa }}</p>
+            <p><strong>Sexo:</strong> {{ animal.sexo }}</p>
+          </mat-card-content>
+        </mat-card>
+      </div>>
     </mat-drawer-content>
   </mat-drawer-container>
 </div>
+
+
+
 

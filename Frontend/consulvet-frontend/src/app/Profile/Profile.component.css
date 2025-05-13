@@ -92,3 +92,99 @@ button.mat-icon-button {
     border-radius: 50%;
     object-fit: cover;
 }
+
+.animales-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.animal-card {
+  width: 400px;
+  height: 500px;
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.animal-card:hover {
+  transform: translateY(-5px);
+}
+
+.custom-header {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.custom-header mat-card-title {
+  width: 100%;
+  font-size: 24px;
+  font-weight: bold;
+  color: #3f51b5;
+}
+
+.custom-header mat-card-subtitle {
+  width: 100%;
+  font-size: 18px;
+}
+
+
+.animal-icon {
+  font-size: 180px;
+  color: rgba(0, 0, 0, 0.3);
+  display: block;
+  margin: 0 auto;
+  padding: 16px 0;
+}
+
+.animal-image-placeholder {
+  width: 100%;
+  height: 200px; /* Altura similar a la imagen real */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0;
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.animal-placeholder-icon {
+  font-size: 64px;
+  color: #9e9e9e; /* gris neutro */
+}
+
+.mat-card img[mat-card-image] {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 12px;
+    margin: 0.3px;
+
+}
+
+.mat-card {
+    flex: 1 1 calc(33% - 24px); /* 3 columnas con espacio */
+    min-width: 300px;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 24px;
+}
+
+.animal-card mat-card-content {
+  font-size: 18px;
+  color: #333333;
+  text-align: center;
+}
+
+/* Estilo de los párrafos dentro de mat-card-content */
+.animal-card mat-card-content p {
+  margin: 15px 0;  /* Agrega separación entre los párrafos */
+  font-size: 18px;  /* Aumenta el tamaño de la fuente */
+}
+
+/* Estilo del fuerte (strong) dentro de los párrafos */
+.animal-card mat-card-content p strong {
+  font-weight: bolder;  /* Aumenta el peso de la fuente para los textos en negrita */
+  color: #5c6bc0;  /* El color indigo para los textos en negrita */
+}

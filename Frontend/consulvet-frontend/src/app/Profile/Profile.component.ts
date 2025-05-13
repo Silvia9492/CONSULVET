@@ -7,6 +7,9 @@ import { Router } from '@angular/router';
 import { AddNewAnimalComponent } from '../dialogs/addNewAnimalDialog/addNewAnimal.component';
 import { UpdateProfileInfoComponent } from '../dialogs/updateProfileInfoDialog/updateProfileInfo.component';
 import { UpdateAnimalComponent } from '../dialogs/updateAnimalDialog/updateAnimal.component';
+import { DeleteAnimalComponent } from '../dialogs/deleteAnimalDialog/deleteAnimal.component';
+import { MostrarAnimalesService } from '../services/mostrar-animales.service';
+import { Animal } from '../models/animal.model';
 
 @Component({
   selector: 'app-Profile',
@@ -16,10 +19,12 @@ import { UpdateAnimalComponent } from '../dialogs/updateAnimalDialog/updateAnima
 export class ProfileComponent implements OnInit {
 
   userPhotoUrl: string | null = null;
+  animales: Animal[] = [];
 
-  constructor(private dialog: MatDialog, private router: Router) { }
+  constructor(private dialog: MatDialog, private router: Router, private mostrarAnimalesService: MostrarAnimalesService) { }
 
   ngOnInit() {
+    // Cargar la foto del perfil desde localStorage
     const storedFoto = localStorage.getItem('foto_perfil');
     if (storedFoto) {
       if (storedFoto.startsWith('http')) {
@@ -27,9 +32,29 @@ export class ProfileComponent implements OnInit {
       } else {
         this.userPhotoUrl = `http://localhost:8000/uploads/perfiles/${storedFoto}`;
       }
-    }else {
-    this.userPhotoUrl = '';
+    } else {
+      this.userPhotoUrl = '';
     }
+
+    // Obtener el DNI del cuidador desde localStorage
+    const dniCuidador = localStorage.getItem('dni');
+
+    if (!dniCuidador) {
+      console.error('No se encontró el DNI del cuidador en el localStorage');
+      return; // Si no encontramos el DNI, no continuamos
+    }
+    this.loadAnimalData(dniCuidador);
+    }
+
+    loadAnimalData(dniCuidador: string) {
+    this.mostrarAnimalesService.getAnimalesPorCuidador(dniCuidador).subscribe({
+      next: (animales) => {
+        this.animales = animales;
+      },
+      error: (error) => {
+        console.error('Error al obtener los animales:', error);
+      }
+    });
   }
 
   openPhotoDialog(): void {
@@ -79,16 +104,34 @@ export class ProfileComponent implements OnInit {
   }
 
   openAddAnimalDialog(): void {
-    this.dialog.open(AddNewAnimalComponent, {
-      width: '20%',
-      height: '782px'
-    });
-  }
+  const dialogRef =this.dialog.open(AddNewAnimalComponent, {
+    width: '20%',
+    height: '782px'
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    if (result === 'animalAñadido') {
+      const dni = localStorage.getItem('dni');
+      if (dni) {
+        this.loadAnimalData(dni);
+      } else {
+        console.error('No se encontró el DNI en localStorage');
+      }
+    }
+  });
+}
+
 
   openUpdateAnimalDialog(): void {
     this.dialog.open(UpdateAnimalComponent, {
       width: '20%',
-      height: '782px'
+      height: '850px'
+    });
+  }
+
+  openDeleteAnimalDialog(): void {
+    const dialogRef = this.dialog.open(DeleteAnimalComponent, {
+      width: '500px'
     });
   }
 }

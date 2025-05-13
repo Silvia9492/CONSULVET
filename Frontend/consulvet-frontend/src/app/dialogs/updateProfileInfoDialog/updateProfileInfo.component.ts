@@ -54,6 +54,7 @@ export class UpdateProfileInfoComponent implements OnInit {
       email: form.email
     };
 
+    //TIENE QUE CERRARSE EL COMPONENTE UNA VEZ SE HA ACTUALIZADO Y SALE EL SNACKBAR DE CONFIRMACIÓN
     // Realizamos la llamada al servicio para actualizar los datos
     const dni = form.dni ?? '';  // Usamos el DNI obtenido desde localStorage (ya está en el formulario)
     this.cuidadoresService.updateCuidador(dni, requestBody).subscribe({

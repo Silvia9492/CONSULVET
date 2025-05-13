@@ -7,5 +7,6 @@ export interface Animal {
     color_capa: string;
     sexo: 'M' | 'F';
     cuidador_dni: string;
+    foto: string;
   }
   

@@ -46,13 +46,19 @@
 
           <mat-form-field appearance="fill" color="primary">
             <mat-label>Sexo:</mat-label>
-            <input matInput formControlName="sexo">
+            <mat-select formControlName="sexo" required>
+              <mat-option value="M">M</mat-option>
+              <mat-option value="F">F</mat-option>
+            </mat-select>
             <mat-error *ngIf="newAnimalData.get('sexo')?.hasError('required')">
-              El campo nombre es obligatorio
+              El campo sexo es obligatorio
             </mat-error>
           </mat-form-field>
+
+          <div fxLayout="row" fxLayoutGap="16px" style="margin-top: 16px;">
+            <button mat-raised-button color="accent" type="button" (click)="addAnimalPhoto()">Subir una foto</button>
+            <button mat-raised-button color="primary" fxLayoutAlign="center center" style="margin-top: 16px;">Registrar animal</button>
+          </div>
         </form>
-          <button mat-raised-button color="accent" (click)="addAnimalPhoto()" style="margin-top: 8px;">Subir una foto</button>
-          <button mat-raised-button color="primary" fxLayoutAlign="center center" style="margin-top: 16px;">Registrar animal</button>
 </div>
 

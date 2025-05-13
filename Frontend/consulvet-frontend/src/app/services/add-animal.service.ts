@@ -6,13 +6,13 @@ import { Animal } from '../models/animal.model';
 @Injectable({
   providedIn: 'root'
 })
-export class AnimalesService {
+export class AddAnimalService {
 
-  private apiUrl = 'http://localhost:8000/api/animales/usuario/';
+  private apiUrl = 'http://localhost:8000/api/animales';
 
   constructor(private http: HttpClient) { }
 
-  getAnimalesByUsername(username: string): Observable<Animal[]> {
-    return this.http.get<Animal[]>(`http://localhost:8000/api/animales/usuario/${username}`);
+  registerAnimal(animalFormData: FormData): Observable<Animal> {
+    return this.http.post<Animal>(this.apiUrl, animalFormData);
   }
 }

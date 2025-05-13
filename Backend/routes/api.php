@@ -13,11 +13,13 @@ use App\Http\Controllers\OfrecenController;
 use App\Http\Controllers\AtiendenController;
 use App\Http\Controllers\RegisterController;
 
-Route::get('/animales/dni/{dni}', [AnimalController::class, 'index']);
+//Route::get('/animales/cuidador/{dni}', [AnimalController::class, 'index']);
 Route::get('/animales/usuario/{username}', [UsuarioController::class, 'getAnimalesByUsername']);
 Route::post('/animales', [AnimalController::class, 'store']);
-Route::get('/animal/{codigo_paciente}', [AnimalController::class, 'show']);
+//Route::get('/animal/{codigo_paciente}', [AnimalController::class, 'show']);
+Route::get('/animales/cuidador', [AnimalController::class, 'listarAnimales']);
 Route::put('/animal/{codigo_paciente}', [AnimalController::class, 'update']);
+Route::post('/animal/{codigo_paciente}/foto', [AnimalController::class, 'actualizarFotoAnimal']);
 Route::delete('/animal/{codigo_paciente}', [AnimalController::class, 'destroy']);
 
 Route::get('/cuidadores', [CuidadorController::class, 'index']);
@@ -41,7 +43,8 @@ Route::get('/veterinarios/filtrar', [VeterinarioController::class, 'filtrarVeter
 
 Route::get('/ofrecen/{codigo_centro}', [OfrecenController::class, 'show']);
 
-Route::get('/historial/{codigo_paciente}', [AtiendenController::class, 'consultarHistorial']);
-Route::get('/historial', [AtiendenController::class, 'buscarPorNombre']);
+Route::get('/historial/{dni}/{nombreAnimal}', [AtiendenController::class, 'mostrarHistorial']);
+//Route::get('/historial/{codigo_paciente}', [AtiendenController::class, 'consultarHistorial']);
+//Route::get('/historial', [AtiendenController::class, 'buscarPorNombre']);
 
 Route::post('/register', [RegisterController::class, 'register']);

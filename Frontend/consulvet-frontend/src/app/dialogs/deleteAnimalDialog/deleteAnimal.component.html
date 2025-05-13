@@ -1,3 +1,40 @@
-<p>
-  deleteAnimal works!
-</p>
+<div fxLayout="column" fxLayoutAlign="start center" class="main-container" style="padding: 24px;">
+  <h1 class="mat-card-title-style" style="text-align: center;">Eliminar uno de tus animales</h1>
+
+  <!-- mat-select para elegir el animal -->
+  <mat-form-field appearance="fill" style="width: 100%; max-width: 600px;">
+    <mat-label>Selecciona un animal</mat-label>
+    <mat-select [(ngModel)]="animalSeleccionado">
+      <mat-option *ngFor="let animal of animales" [value]="animal.codigo_paciente">
+        {{ animal.nombre }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Motivo de eliminación -->
+  <mat-form-field appearance="fill" style="width: 100%; max-width: 600px;" *ngIf="animalSeleccionado">
+    <mat-label>Motivo de eliminación</mat-label>
+    <mat-select [(ngModel)]="motivo">
+      <mat-option value="fallecimiento">Fallecimiento</mat-option>
+      <mat-option value="dado_en_adopcion">Dado en adopción</mat-option>
+      <mat-option value="cambio_propietario">Cambio de propietario</mat-option>
+      <mat-option value="otro">Otro</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Campo para otro motivo -->
+  <mat-form-field appearance="fill" style="width: 100%; max-width: 600px;" *ngIf="motivo === 'otro'" color="primary">
+    <mat-label>Otro motivo</mat-label>
+    <textarea matInput [(ngModel)]="otroMotivo" rows="3" placeholder="Escribe aquí el motivo..."></textarea>
+  </mat-form-field>
+
+  <!-- Botones -->
+  <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px" style="margin-top: 24px;">
+    <button mat-raised-button color="warn" (click)="confirmar()" [disabled]="!animalSeleccionado || !motivo">
+      Eliminar
+    </button>
+    <button mat-raised-button color="primary" (click)="cancelar()">
+      Cancelar
+    </button>
+  </div>
+</div>

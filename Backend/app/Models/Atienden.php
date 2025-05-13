@@ -33,8 +33,8 @@ class Atienden extends Model
                      ->where('motivo', $this->getAttribute('motivo'));
     }
 
-    public function animal()
+    public function animales()
 {
-    return $this->belongsTo(Animales::class, 'id_paciente');
+    return $this->belongsTo(Animales::class, 'id_paciente', 'codigo_paciente');
 }
 }

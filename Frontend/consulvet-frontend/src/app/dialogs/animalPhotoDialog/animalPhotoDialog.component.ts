@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
-import { HttpClient } from '@angular/common/http';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-animalPhotoDialog',
@@ -12,48 +11,38 @@ export class AnimalPhotoDialogComponent implements OnInit {
   selectedImage: string | null = null;
   file: File | null = null;
 
-  constructor(public dialogRef: MatDialogRef<AnimalPhotoDialogComponent>, private http: HttpClient) { }
+  constructor(
+    public dialogRef: MatDialogRef<AnimalPhotoDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {}
+
+  ngOnInit(): void {}
 
   photoSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
-    const selectedFile = input.files?.[0] || null;
+    const selectedFile = input.files?.[0];
+
     if (selectedFile) {
+      this.file = selectedFile;
+
       const reader = new FileReader();
       reader.onload = () => {
         this.selectedImage = reader.result as string;
-        this.file = selectedFile;
       };
       reader.readAsDataURL(selectedFile);
     }
   }
 
   confirmPhoto(): void {
-    if (!this.file) return;
-
-    const formData = new FormData();
-    formData.append('foto', this.file);
-    //Esta ruta no va a ser exactamente así, tiene que recuperar el dato de la tabla Animales
-    const idAnimal = localStorage.getItem('codigo_paciente');
-
-    //Aquí va a ir la ruta para asociar la foto al animal
-    this.http.post<{ foto: string }>(`http://localhost:8000/api/animales/${idAnimal}/foto`, formData)
-      .subscribe({
-        next: response => {
-          localStorage.setItem('foto', response.foto); // persistimos
-          this.dialogRef.close(response.foto); // devolvemos el nombre del archivo
-        },
-        error: err => console.error(err)
+    if (this.file && this.selectedImage) {
+      this.dialogRef.close({
+        file: this.file,
+        preview: this.selectedImage
       });
+    }
   }
 
-   cancelPhoto(): void {
+  cancelPhoto(): void {
     this.dialogRef.close();
   }
-
-  ngOnInit() {
-    /*Esto igual no hace falta
-    this.selectedImage = localStorage.getItem('foto_perfil');
-    */
-  }
-
 }

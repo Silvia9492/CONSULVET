@@ -29,6 +29,7 @@ import { AddNewAnimalModule } from './dialogs/addNewAnimalDialog/addNewAnimal.mo
 import { AnimalPhotoDialogModule } from './dialogs/animalPhotoDialog/animalPhotoDialog.module';
 import { UpdateProfileInfoModule } from './dialogs/updateProfileInfoDialog/updateProfileInfo.module';
 import { UpdateAnimalModule } from './dialogs/updateAnimalDialog/updateAnimal.module';
+import { DeleteAnimalModule } from './dialogs/deleteAnimalDialog/deleteAnimal.module';
 
 
 @NgModule({
@@ -63,7 +64,8 @@ import { UpdateAnimalModule } from './dialogs/updateAnimalDialog/updateAnimal.mo
     AddNewAnimalModule,
     AnimalPhotoDialogModule,
     UpdateProfileInfoModule,
-    UpdateAnimalModule
+    UpdateAnimalModule,
+    DeleteAnimalModule
   ],
   providers: [],
   bootstrap: [AppComponent]
