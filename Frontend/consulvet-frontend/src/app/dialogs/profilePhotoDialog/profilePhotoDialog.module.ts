@@ -6,6 +6,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { HttpClientModule } from '@angular/common/http';
+import { ImageCropperModule } from 'ngx-image-cropper';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   imports: [
@@ -14,7 +16,9 @@ import { HttpClientModule } from '@angular/common/http';
     MatButtonModule,
     MatInputModule,
     MatFormFieldModule,
-    HttpClientModule
+    HttpClientModule,
+    ImageCropperModule,
+    MatIconModule
   ],
   declarations: [ProfilePhotoDialogComponent]
 })

@@ -1,3 +1,24 @@
+.content-title {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    text-align: center;
+    color: #3f51b5;
+    margin-bottom: 16px;
+    line-height: 24px;
+    letter-spacing: 0.0125em;
+    display: block;
+    margin-top: 0;
+    padding: 0;
+}
+
+.title {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+  text-align: left !important;
+  color: #3f51b5;
+}
+
 .radio-group {
     display: flex;
     flex-direction: row;

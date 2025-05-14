@@ -88,7 +88,8 @@ export class ProfileComponent implements OnInit {
 
   openHistoryDialog(): void {
     const dialogRef = this.dialog.open(HistoryDialogComponent, {
-      width: '600px',  // El tamaño del diálogo
+      width: '80%',
+      height: 'auto'  // El tamaño del diálogo
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -123,11 +124,22 @@ export class ProfileComponent implements OnInit {
 
 
   openUpdateAnimalDialog(): void {
-    this.dialog.open(UpdateAnimalComponent, {
+    const dialogRef = this.dialog.open(UpdateAnimalComponent, {
       width: '20%',
       height: '850px'
     });
-  }
+
+    dialogRef.afterClosed().subscribe(result => {
+    if (result === 'animalActualizado') {
+      const dni = localStorage.getItem('dni');
+      if (dni) {
+        this.loadAnimalData(dni);
+      } else {
+        console.error('No se encontró el DNI en localStorage');
+      }
+    }
+  });
+}
 
   openDeleteAnimalDialog(): void {
     const dialogRef = this.dialog.open(DeleteAnimalComponent, {

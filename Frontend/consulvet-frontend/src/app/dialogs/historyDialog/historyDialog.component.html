@@ -1,7 +1,7 @@
-<h2 mat-dialog-title>Consultar Historial</h2>
-
+<div class="contenedor-select">
+<h2 mat-dialog-title class="mat-card-title-style">Consultar Historial</h2>
 <div mat-dialog-content>
-  <mat-form-field appearance="fill" style="width: 100%;">
+  <mat-form-field appearance="fill" style="width: 300px;">
     <mat-label>Selecciona un animal</mat-label>
     <mat-select [formControl]="nombreAnimal" (selectionChange)="obtenerHistorial()">
       <mat-option *ngFor="let animal of animales" [value]="animal.nombre">
@@ -9,6 +9,7 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
+</div>
 
   <mat-table *ngIf="historial.data.length > 0" [dataSource]="historial">
     <ng-container matColumnDef="fecha">

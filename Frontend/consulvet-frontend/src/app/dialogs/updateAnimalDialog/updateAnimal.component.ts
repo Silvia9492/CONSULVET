@@ -127,6 +127,7 @@ export class UpdateAnimalComponent implements OnInit {
     this.updateAnimalsService.updateAnimal(this.selectedAnimal.codigo_paciente, formData).subscribe({
       next: () => {
         this.snackBar.open('Animal actualizado exitosamente', 'Cerrar', { duration: 3000 });
+        this.dialogRef.close('animalActualizado');
         this.selectedPhoto = null;
 
         // Refrescar lista de animales

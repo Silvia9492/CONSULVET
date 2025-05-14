@@ -30,6 +30,7 @@ import { AnimalPhotoDialogModule } from './dialogs/animalPhotoDialog/animalPhoto
 import { UpdateProfileInfoModule } from './dialogs/updateProfileInfoDialog/updateProfileInfo.module';
 import { UpdateAnimalModule } from './dialogs/updateAnimalDialog/updateAnimal.module';
 import { DeleteAnimalModule } from './dialogs/deleteAnimalDialog/deleteAnimal.module';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 
 @NgModule({
@@ -65,7 +66,8 @@ import { DeleteAnimalModule } from './dialogs/deleteAnimalDialog/deleteAnimal.mo
     AnimalPhotoDialogModule,
     UpdateProfileInfoModule,
     UpdateAnimalModule,
-    DeleteAnimalModule
+    DeleteAnimalModule,
+    ImageCropperModule
   ],
   providers: [],
   bootstrap: [AppComponent]

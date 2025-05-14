@@ -26,7 +26,7 @@ class AnimalController extends Controller
         'color_capa' => 'required',
         'sexo' => 'required',
         'cuidador_dni' => 'required|exists:cuidadores,dni',
-        'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+        'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:40960'
     ]);
 
     $dniCuidador = $request->input('cuidador_dni');

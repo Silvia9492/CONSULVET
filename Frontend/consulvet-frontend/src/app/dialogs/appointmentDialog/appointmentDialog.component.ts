@@ -11,6 +11,7 @@ import { CentrosService } from 'src/app/services/centros.service';
 import { ConfirmAppointmentComponent } from '../confirmAppointment/confirmAppointment.component';
 import { MatDialog } from '@angular/material/dialog';
 import { jsPDF } from 'jspdf';
+import { autoTable } from 'jspdf-autotable';
 
 @Component({
   selector: 'app-appointmentDialog',
@@ -178,21 +179,65 @@ export class AppointmentDialogComponent implements OnInit {
   }
 
   generatePDF() {
-    const doc = new jsPDF();
-  
-    // Aquí puedes personalizar el contenido del PDF
-    doc.setFontSize(16);
-    doc.text('Comprobante de cita', 20, 20);
-    doc.setFontSize(12);
-    doc.text(`Paciente: ${this.resumenCita?.paciente}`, 20, 40);
-    doc.text(`Motivo de consulta: ${this.resumenCita?.motivo}`, 20, 50);
-    doc.text(`Fecha: ${this.resumenCita?.fecha}`, 20, 60);
-    doc.text(`Horario: ${this.resumenCita?.horario}`, 20, 70);
-    doc.text(`Centro: ${this.resumenCita?.centro}`, 20, 80);
-    doc.text(`Veterinario: ${this.resumenCita?.veterinario}`, 20, 90);
-  
-    // Descargar el PDF
+  const doc = new jsPDF();
+
+  const logo = new Image();
+  logo.src = 'assets/LogoConsulvet200x200.png';
+  logo.onload = () => {
+    // Logo
+    doc.addImage(logo, 'PNG', 10, 10, 30, 30);
+
+    // Título
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(18);
+    doc.setTextColor(63, 81, 181);
+    doc.text('Comprobante de Cita', 105, 25, { align: 'center' });
+
+    // Línea separadora
+    doc.setDrawColor(200, 200, 200);
+    doc.line(10, 40, 200, 40);
+
+    // Contenido: etiquetas en negrita (negro), valores normales (negro)
+    const datos = [
+      { label: 'Paciente:', value: this.resumenCita?.paciente },
+      { label: 'Motivo de consulta:', value: this.resumenCita?.motivo },
+      { label: 'Fecha:', value: this.resumenCita?.fecha },
+      { label: 'Horario:', value: this.resumenCita?.horario },
+      { label: 'Centro:', value: this.resumenCita?.centro },
+      { label: 'Veterinario:', value: this.resumenCita?.veterinario },
+    ];
+
+    let y = 55;
+    for (const item of datos) {
+      doc.setFontSize(12);
+      doc.setTextColor(0, 0, 0); // negro
+
+      doc.setFont('helvetica', 'bold');
+      const labelWidth = doc.getTextWidth(item.label);
+      doc.text(item.label, 20, y);
+
+      doc.setFont('helvetica', 'normal');
+      doc.text(item.value || '', 20 + labelWidth + 1, y); // +1 para separación
+
+      y += 10;
+    }
+
+    // Marco decorativo
+    doc.setDrawColor(63, 81, 181);
+    doc.rect(5, 5, 200, 287);
+
+    // Pie de página
+    doc.setFontSize(10);
+    doc.setTextColor(100);
+    doc.text(
+      'Gracias por confiar en Consulvet - www.consulvet.com - Tel: 123-456-789',
+      105,
+      285,
+      { align: 'center' }
+    );
+
     doc.save('comprobante-cita.pdf');
-  }
+  };
+}
   
 }

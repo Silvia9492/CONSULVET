@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
+import { base64ToFile, ImageCroppedEvent } from 'ngx-image-cropper';
 
 @Component({
   selector: 'app-profilePhotoDialog',
@@ -9,23 +10,44 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ProfilePhotoDialogComponent implements OnInit {
 
-  selectedImage: string | null = null;
+  imageChangedEvent: any = '';
+  croppedImage: string | null = null;
   file: File | null = null;
 
-  constructor(public dialogRef: MatDialogRef<ProfilePhotoDialogComponent>, private http: HttpClient) { }
+  constructor(
+    public dialogRef: MatDialogRef<ProfilePhotoDialogComponent>,
+    private http: HttpClient
+  ) {}
 
   photoSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    const selectedFile = input.files?.[0] || null;
-    if (selectedFile) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.selectedImage = reader.result as string;
-        this.file = selectedFile;
-      };
-      reader.readAsDataURL(selectedFile);
-    }
+    this.imageChangedEvent = event;
   }
+
+  private dataURItoBlob(dataURI: string): Blob {
+  const byteString = atob(dataURI.split(',')[1]);
+  const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+  const ab = new ArrayBuffer(byteString.length);
+  const ia = new Uint8Array(ab);
+
+  for (let i = 0; i < byteString.length; i++) {
+    ia[i] = byteString.charCodeAt(i);
+  }
+
+  return new Blob([ab], { type: mimeString });
+}
+
+
+  imageCropped(event: ImageCroppedEvent) {
+  this.croppedImage = event.base64 || null;
+
+  // Convertir el Base64 en Blob y luego en File
+  if (this.croppedImage) {
+    const blob = this.dataURItoBlob(this.croppedImage);
+    this.file = new File([blob], 'perfil.jpg', { type: blob.type, lastModified: Date.now() });
+  }
+}
+
 
   confirmPhoto(): void {
     if (!this.file) return;
@@ -38,8 +60,8 @@ export class ProfilePhotoDialogComponent implements OnInit {
     this.http.post<{ foto: string }>(`http://localhost:8000/api/cuidadores/${userDni}/foto`, formData)
       .subscribe({
         next: response => {
-          localStorage.setItem('foto_perfil', response.foto); // persistimos
-          this.dialogRef.close(response.foto); // devolvemos el nombre del archivo
+          localStorage.setItem('foto_perfil', response.foto);
+          this.dialogRef.close(response.foto);
         },
         error: err => console.error(err)
       });
@@ -49,8 +71,5 @@ export class ProfilePhotoDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  ngOnInit() {
-    this.selectedImage = localStorage.getItem('foto_perfil');
-  }
-
+  ngOnInit(): void {}
 }
