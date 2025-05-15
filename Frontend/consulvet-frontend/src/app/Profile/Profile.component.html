@@ -1,20 +1,33 @@
 <div class="sidenav-container">
-  <mat-toolbar color="primary">
+  <mat-toolbar color="primary" style="display: flex; justify-content: space-between; align-items: center;">
+  <!-- Logo un poco más grande -->
+  <img src="assets/LogoConsulvet200x200_indigo.png" alt="Logo Consulvet" style="height: 48px; width: auto;">
+
+  <!-- Texto centrado -->
+  <span class="title" style="position: absolute; left: 50%; transform: translateX(-50%); font-weight: 500;">
+    Consulvet
+  </span>
+
+  <!-- Botones y avatar un poco más juntos -->
+  <div style="display: flex; align-items: center; gap: 10px;">
     <button mat-icon-button aria-label="Solicitar consulta" (click)="openAppointment()" matTooltip="Solicitar consulta">
       <span class="material-symbols-outlined">heart_plus</span>
     </button>
+
     <button mat-icon-button aria-label="Consultar historial" (click)="openHistoryDialog()" matTooltip="Consultar historial">
       <span class="material-symbols-outlined">quick_reference_all</span>
     </button>
-    <span class="title">Consulvet</span>
-    <span class="spacer"></span>
-    <button mat-icon-button (click)="drawer.toggle()" aria-label="Abrir drawer">
-      <img *ngIf="userPhotoUrl; else defaultIcon" [src]="userPhotoUrl" class="avatar-img">
+
+    <button mat-icon-button (click)="drawer.toggle()" aria-label="Abrir drawer" matTooltip="Ajustes">
+      <img *ngIf="userPhotoUrl; else defaultIcon" [src]="userPhotoUrl" class="avatar-img" style="height: 32px; width: 32px; border-radius: 50%;">
       <ng-template #defaultIcon>
-       <mat-icon class="defaultAvatar">account_circle</mat-icon>
+        <mat-icon class="defaultAvatar">account_circle</mat-icon>
       </ng-template>
     </button>
-  </mat-toolbar>
+  </div>
+</mat-toolbar>
+
+
   <mat-drawer-container class="example-container">
     <mat-drawer #drawer mode="side" class="custom-drawer" position="end">
       <div class="buttonsDrawer" fxLayout="column" fxLayoutAlign="space-between center">
@@ -56,6 +69,32 @@
           </mat-card-content>
         </mat-card>
       </div>
+      <mat-toolbar color="primary" class="footer" fxLayout="column" fxLayoutAlign="center center">
+  <div fxLayout="row" fxLayoutAlign="center center" class="footer-links" fxLayoutGap="32px">
+    <a href="#" class="footer-link">Sobre nosotros</a>
+    <a href="#" class="footer-link">Contacto</a>
+    <a href="#" class="footer-link">Política de privacidad</a>
+  </div>
+
+  <div fxLayout="row" fxLayoutAlign="center center" class="social-icons">
+    <a href="#" aria-label="Facebook">
+      <mat-icon fontSet="fa-brands" fontIcon="fa-facebook-f" class="footer-icon"></mat-icon>
+    </a>
+    <a href="#" aria-label="Twitter">
+      <mat-icon fontSet="fa-brands" fontIcon="fa-twitter" class="footer-icon"></mat-icon>
+    </a>
+    <a href="#" aria-label="Instagram">
+      <mat-icon fontSet="fa-brands" fontIcon="fa-instagram" class="footer-icon"></mat-icon>
+    </a>
+    <a href="#" aria-label="LinkedIn">
+      <mat-icon fontSet="fa-brands" fontIcon="fa-linkedin-in" class="footer-icon"></mat-icon>
+    </a>
+  </div>
+
+  <span class="footer-text">
+    © 2025 Consulvet. Todos los derechos reservados.
+  </span>
+</mat-toolbar>
     </mat-drawer-content>
   </mat-drawer-container>
 </div>

@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { CuidadoresService } from 'src/app/services/cuidadores.service';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-updateProfileInfo',
@@ -93,19 +94,20 @@ export class UpdateProfileInfoComponent implements OnInit {
     private http: HttpClient,
     private router: Router,
     private snackBar: MatSnackBar,
-    private cuidadoresService: CuidadoresService
+    private cuidadoresService: CuidadoresService,
+    private dialogRef: MatDialogRef<UpdateProfileInfoComponent>
   ) {}
 
   // Al iniciar el componente, cargamos el DNI desde localStorage y los datos del cuidador
   ngOnInit() {
     const dni = localStorage.getItem('dni');
-    if (dni) {
-      // Si encontramos el DNI en localStorage, lo seteamos en el formulario
-      this.updateUserData.patchValue({ dni });
+  if (dni) {
+    // Reseteamos todo el formulario con los valores iniciales
+    this.updateUserData.reset();
 
-      // (Opcional) Cargar los datos del cuidador desde la API, si quieres precargar la info
-      this.loadCuidadorData(dni);
-    }
+    this.updateUserData.patchValue({ dni });
+    this.loadCuidadorData(dni);
+  }
   }
 
   // Función para cargar los datos del cuidador desde el backend (si lo necesitas)
@@ -129,5 +131,9 @@ export class UpdateProfileInfoComponent implements OnInit {
         console.error(error);
       }
     });
+  }
+
+  cancelar(): void {
+    this.dialogRef.close();
   }
 }

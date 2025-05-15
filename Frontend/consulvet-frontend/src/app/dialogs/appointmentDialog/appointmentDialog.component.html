@@ -21,7 +21,7 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <div>
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px" style="margin-top: 16px;">
           <button mat-raised-button color="primary" matStepperNext>Siguiente</button>
         </div>
       </form>
@@ -42,7 +42,7 @@
           <mat-radio-button class="horario" value="mañana">Mañana</mat-radio-button>
           <mat-radio-button class="horario" value="tarde">Tarde</mat-radio-button>
         </mat-radio-group>
-        <div>
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px" style="margin-top: 16px;">
           <button mat-raised-button matStepperPrevious color="accent">Anterior</button>
           <button mat-raised-button color="primary" matStepperNext>Siguiente</button>
         </div>
@@ -68,7 +68,7 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <div>
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px" style="margin-top: 16px;">
           <button mat-raised-button matStepperPrevious color="accent">Anterior</button>
           <button mat-raised-button color="primary" matStepperNext>Confirmar</button>
         </div>
@@ -96,7 +96,7 @@
               <p><strong>Veterinario:</strong> {{ resumenCita?.veterinario }}</p>
             </mat-card-content>
     
-            <mat-card-actions *ngIf="!appointmentConfirmed" fxLayout="row" fxLayoutAlign="end center">
+            <mat-card-actions *ngIf="!appointmentConfirmed" fxLayout="row" fxLayoutAlign="center center">
               <button mat-raised-button matStepperPrevious color="accent">Anterior</button>
               <button mat-raised-button color="primary" (click)="openConfirmDialog()">Continuar</button>
             </mat-card-actions>

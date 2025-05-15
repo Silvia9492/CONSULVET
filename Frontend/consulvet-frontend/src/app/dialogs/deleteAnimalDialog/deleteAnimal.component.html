@@ -30,10 +30,10 @@
 
   <!-- Botones -->
   <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px" style="margin-top: 24px;">
-    <button mat-raised-button color="warn" (click)="confirmar()" [disabled]="!animalSeleccionado || !motivo">
+    <button mat-raised-button color="primary" (click)="confirmar()" [disabled]="!animalSeleccionado || !motivo">
       Eliminar
     </button>
-    <button mat-raised-button color="primary" (click)="cancelar()">
+    <button mat-raised-button color="accent" (click)="cancelar()">
       Cancelar
     </button>
   </div>

@@ -94,4 +94,8 @@ export class AddNewAnimalComponent implements OnInit {
     this.snackBar.open('Por favor, completa todos los campos requeridos', 'Cerrar', { duration: 3000 });
   }
 }
+
+cancelar(): void {
+    this.dialogRef.close();
+  }
 }

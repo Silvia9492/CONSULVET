@@ -181,4 +181,8 @@ export class UpdateAnimalComponent implements OnInit {
       sexo: animal.sexo
     });
   }
+
+  cancelar(): void {
+    this.dialogRef.close();
+  }
 }

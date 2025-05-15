@@ -9,6 +9,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @NgModule({
@@ -22,7 +24,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     MatFormFieldModule,
     MatCardModule,
     MatProgressSpinnerModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatToolbarModule,
+    MatIconModule
   ],
   declarations: [RegisterComponent]
 })

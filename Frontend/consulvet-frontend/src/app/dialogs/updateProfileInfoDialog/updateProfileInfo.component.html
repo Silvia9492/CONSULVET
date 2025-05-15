@@ -49,8 +49,9 @@
             </mat-error>
           </mat-form-field>
 
-        <div fxLayout="row" fxLayoutAlign="center center">
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px">
             <button mat-raised-button color="primary" class="updateButton" type="submit" (click)="updateUser()" [disabled]="isLoading">Actualizar datos</button>
+            <button mat-raised-button color="accent" type="button" (click)="cancelar()">Cancelar</button>
         </div>
       </form>
   </div>

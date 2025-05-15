@@ -99,8 +99,8 @@ export class ProfileComponent implements OnInit {
 
   openUpdateProfileInfoDialog(): void {
     this.dialog.open(UpdateProfileInfoComponent, {
-      width: '40%',
-      height: '782px'
+      width: '20%',
+      height: '750px'
     });
   }
 

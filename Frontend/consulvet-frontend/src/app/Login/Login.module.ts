@@ -9,6 +9,7 @@ import { MatCardModule } from '@angular/material/card';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   imports: [
@@ -21,7 +22,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatCardModule,
     FlexLayoutModule,
     MatProgressSpinnerModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatIconModule
   ],
   declarations: [LoginComponent]
 })

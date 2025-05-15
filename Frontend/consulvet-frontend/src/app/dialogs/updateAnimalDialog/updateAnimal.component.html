@@ -63,8 +63,12 @@
         El campo sexo es obligatorio
       </mat-error>
     </mat-form-field>
-
-    <button mat-raised-button color="accent" type="button" (click)="updateAnimalPhoto()" style="margin-top: 8px;">Subir una foto</button>
-    <button mat-raised-button color="primary" type="submit" fxLayoutAlign="center center" style="margin-top: 16px;">Actualizar animal</button>
+    <div fxLayout="column" fxLayoutAlign="center center" class="full-button-section">
+      <button mat-raised-button color="accent" type="button" (click)="updateAnimalPhoto()" class="updatePhoto">Subir una foto</button>
+      <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px" class="button-container"  style="margin-top: 16px;">
+        <button mat-raised-button color="primary" type="submit">Actualizar animal</button>
+        <button mat-raised-button color="accent" type="button" (click)="cancelar()">Cancelar</button>
+      </div>
+    </div>
   </form>
 </div>

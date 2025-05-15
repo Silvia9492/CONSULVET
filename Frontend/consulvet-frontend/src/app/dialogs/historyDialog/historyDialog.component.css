@@ -18,3 +18,11 @@
     justify-content: center; /* opcional, centra verticalmente si hace falta */
     text-align: center;
 }
+
+.noHistory {
+    font-size: 14px;
+    font-family: Roboto, 'Helvetica Neue', sans-serif;
+    color: #666;
+    text-align: center;
+    margin-top: 10px;
+}

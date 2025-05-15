@@ -3,6 +3,9 @@ import { FormControl, FormGroup, Validators, AbstractControl, ValidationErrors }
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { LoginService } from '../services/login.service';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-Register',
@@ -107,13 +110,31 @@ export class RegisterComponent implements OnInit {
   
     this.http.post('http://localhost:8000/api/register', requestBody).subscribe({
       next: () => {
-        this.snackBar.open('Bienvenida/o!', 'Cerrar', {
-          duration: 3000,
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-        });
+        this.loginService.login(requestBody.username ?? '', requestBody.password ?? '')
+          .pipe(
+            catchError(error => {
+              this.snackBar.open('Registro ok, pero fallo al iniciar sesión automáticamente', 'Cerrar', {
+                duration: 3000,
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+              });
+              return of(null);
+            })
+          )
+          .subscribe(response => {
+            if (response) {
+              localStorage.setItem('username', response.nombre_usuario);
+              localStorage.setItem('dni', response.dni);
+
+              this.snackBar.open('¡Bienvenida/o! Tu cuenta ha sido creada.', 'Cerrar', {
+                duration: 3000,
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+              });
   
         this.router.navigate(['/Profile']);
+      }
+       });
       },
       error: (error) => {
         this.snackBar.open('Error al registrar usuario. Intenta nuevamente.', 'Cerrar', {
@@ -141,7 +162,7 @@ export class RegisterComponent implements OnInit {
     this.router.navigate(['/Login']);
   }
 
-  constructor(private snackBar: MatSnackBar, private router: Router, private http: HttpClient) { }
+  constructor(private snackBar: MatSnackBar, private router: Router, private http: HttpClient, private loginService: LoginService) { }
 
   ngOnInit() {
   }
