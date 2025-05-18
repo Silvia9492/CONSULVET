@@ -6,13 +6,11 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Animales;
 
-class animalesSeeder extends Seeder
-{
+class animalesSeeder extends Seeder{
     /**
      * Run the database seeds.
      */
-    public function run(): void
-    {
+    public function run(): void{
         $smokey = Animales::firstOrCreate([
             'nombre' => 'Smokey',
             'fecha_nacimiento' => '2021-03-12',

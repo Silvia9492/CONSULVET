@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
 import { CuidadoresService } from 'src/app/services/cuidadores.service';
 import { MatDialogRef } from '@angular/material/dialog';
 
@@ -13,11 +11,27 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class UpdateProfileInfoComponent implements OnInit {
 
+  constructor(
+    private snackBar: MatSnackBar,
+    private cuidadoresService: CuidadoresService,
+    private dialogRef: MatDialogRef<UpdateProfileInfoComponent>
+  ) {}
+
+  //El dni se carga desde localStorage al iniciar el componente, para que esté disponible y la consulta a la base de datos funcione
+  ngOnInit() {
+    const dni = localStorage.getItem('dni');
+    if (dni) {
+      this.updateUserData.reset();
+      this.updateUserData.patchValue({ dni });
+      this.loadCarerData(dni);
+    }
+  }
+
   isLoading = false;
 
-  // Definimos el formulario
+  //El dni se va a presentar deshabilitado; es un identificador único de persona que no puede modificarse
   updateUserData = new FormGroup({
-    dni: new FormControl({ value: '', disabled: true }, Validators.required),  // El dni es deshabilitado
+    dni: new FormControl({ value: '', disabled: true }, Validators.required),
     completeName: new FormControl('', Validators.required),
     birthday: new FormControl('', Validators.required),
     address: new FormControl('', Validators.required),
@@ -25,16 +39,14 @@ export class UpdateProfileInfoComponent implements OnInit {
     email: new FormControl('', [Validators.required, Validators.email])
   });
 
-  // Método para actualizar el perfil
   updateUser() {
     if (!this.updateUserData.valid) {
-      this.snackBar.open('Por favor, corrija los errores en el formulario', 'Cerrar', {
-        duration: 3000,
+      this.snackBar.open('El formulario contiene errores. Por favor, completa tus datos correctamente antes de continuar', '', {
+        duration: 2000,
         horizontalPosition: 'center',
         verticalPosition: 'top',
       });
 
-      // Marcar todos los campos como tocados
       Object.keys(this.updateUserData.controls).forEach(key => {
         const control = this.updateUserData.get(key);
         control?.markAsTouched();
@@ -43,10 +55,9 @@ export class UpdateProfileInfoComponent implements OnInit {
     }
 
     this.isLoading = true;
+    //"Raw" permite obtener todos los valores, incluso los deshabilitados. Como el dni lo está, usamos getRawValue() en lugar de getValue() para que lo muestre
+    const form = this.updateUserData.getRawValue();
 
-    const form = this.updateUserData.getRawValue();  // Obtiene todos los valores, incluyendo los deshabilitados
-
-    // El cuerpo de la petición para el update
     const requestBody = {
       nombre_completo: form.completeName,
       fecha_nacimiento: this.formatDate(form.birthday),
@@ -55,19 +66,20 @@ export class UpdateProfileInfoComponent implements OnInit {
       email: form.email
     };
 
-    //TIENE QUE CERRARSE EL COMPONENTE UNA VEZ SE HA ACTUALIZADO Y SALE EL SNACKBAR DE CONFIRMACIÓN
-    // Realizamos la llamada al servicio para actualizar los datos
-    const dni = form.dni ?? '';  // Usamos el DNI obtenido desde localStorage (ya está en el formulario)
-    this.cuidadoresService.updateCuidador(dni, requestBody).subscribe({
-      next: (res) => {
-        this.snackBar.open('Perfil actualizado correctamente', 'Cerrar', {
-          duration: 3000,
+    const dni = form.dni ?? '';
+    this.cuidadoresService.updateCarer(dni, requestBody).subscribe({
+      next: (response) => {
+        this.snackBar.open('¡Tus datos han sido actualizados con éxito!', '', {
+          duration: 2000,
           horizontalPosition: 'center',
           verticalPosition: 'top',
         });
+        setTimeout(() => {
+          this.dialogRef.close('datosActualizados');
+        }, 2000);
       },
       error: (error) => {
-        this.snackBar.open('Error al actualizar el perfil. Intenta nuevamente.', 'Cerrar', {
+        this.snackBar.open('Se ha producido un error al tratar de actualizar tus datos. Por favor, inténtalo de nuevo', '', {
           duration: 3000,
           horizontalPosition: 'center',
           verticalPosition: 'top',
@@ -80,7 +92,6 @@ export class UpdateProfileInfoComponent implements OnInit {
     });
   }
 
-  // Función para formatear la fecha correctamente en el formato YYYY-MM-DD
   formatDate(date: any): string {
     const d = new Date(date);
     const month = ('' + (d.getMonth() + 1)).padStart(2, '0');
@@ -89,30 +100,8 @@ export class UpdateProfileInfoComponent implements OnInit {
     return `${year}-${month}-${day}`;
   }
 
-  // En el constructor, inyectamos los servicios necesarios
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-    private snackBar: MatSnackBar,
-    private cuidadoresService: CuidadoresService,
-    private dialogRef: MatDialogRef<UpdateProfileInfoComponent>
-  ) {}
-
-  // Al iniciar el componente, cargamos el DNI desde localStorage y los datos del cuidador
-  ngOnInit() {
-    const dni = localStorage.getItem('dni');
-  if (dni) {
-    // Reseteamos todo el formulario con los valores iniciales
-    this.updateUserData.reset();
-
-    this.updateUserData.patchValue({ dni });
-    this.loadCuidadorData(dni);
-  }
-  }
-
-  // Función para cargar los datos del cuidador desde el backend (si lo necesitas)
-  loadCuidadorData(dni: string) {
-    this.cuidadoresService.getCuidador(dni).subscribe({
+  loadCarerData(dni: string) {
+    this.cuidadoresService.getCarer(dni).subscribe({
       next: (data) => {
         this.updateUserData.patchValue({
           completeName: data.nombre_completo,
@@ -123,8 +112,8 @@ export class UpdateProfileInfoComponent implements OnInit {
         });
       },
       error: (error) => {
-        this.snackBar.open('Error al cargar los datos del cuidador.', 'Cerrar', {
-          duration: 3000,
+        this.snackBar.open('Se ha producido un error al tratar de cargar tus datos personales', '', {
+          duration: 2000,
           horizontalPosition: 'center',
           verticalPosition: 'top',
         });
@@ -133,7 +122,7 @@ export class UpdateProfileInfoComponent implements OnInit {
     });
   }
 
-  cancelar(): void {
+  cancel(): void {
     this.dialogRef.close();
   }
 }

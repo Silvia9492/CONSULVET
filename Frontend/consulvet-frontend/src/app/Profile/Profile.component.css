@@ -1,43 +1,43 @@
 .sidenav-container {
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: 100vh;
 }
   
 .mat-toolbar {
-    z-index: 10;
-    height: 64px;
-    display: flex;
-    align-items: center;
-    overflow: visible;
+  z-index: 10;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  overflow: visible;
 }
 
 .example-spacer{
-    flex: 1 1 auto;
+  flex: 1 1 auto;
 }
 
 .mat-drawer-container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    z-index: 1; /* Esto asegura que el contenido esté por encima de la marca de agua */
-    position: relative;
-  }
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  z-index: 1;
+  position: relative;
+}
 
 .mat-drawer {
-    width: 10%;
-    z-index: 1000;
+  width: 10%;
+  z-index: 1000;
 }
 
 .mat-drawer button{
-    width: 100%;
-    box-shadow: none !important;
-    border: none !important;
+  width: 100%;
+  box-shadow: none !important;
+  border: none !important;
 }
 
 ::ng-deep .mat-tooltip {
@@ -45,56 +45,56 @@
 }
 
 .mat-raised-button{
-    border-radius: 0%;
+  border-radius: 0%;
 }
 
 .mat-raised-button:hover {
-    color:rgb(0, 162, 255);
-    background-color: rgb(250, 244, 235);
+  color:rgb(0, 162, 255);
+  background-color: rgb(250, 244, 235);
 }
 
 .title {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: larger;
-    flex: 1;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: larger;
+  flex: 1;
 }
 
 .spacer {
-    flex: 1;
+  flex: 1;
 }
 
 .custom-drawer {
-    background-color: #3f51b5;
+  background-color: #3f51b5;
 }
 
 button.mat-icon-button {
-    width: 48px;
-    height: 48px;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 8px auto;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 8px auto;
 }
 
 .defaultAvatar {
-    font-size: 38px !important;
-    width: 38px;
-    height: 38px;
-    color: white;
-    line-height: 38px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  font-size: 38px !important;
+  width: 38px;
+  height: 38px;
+  color: white;
+  line-height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .avatar-img {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    object-fit: cover;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .animales-container {
@@ -103,8 +103,8 @@ button.mat-icon-button {
 }
 
 .animal-card {
-  width: 250px !important; /* Reducido de 300px a 250px */
-  height: 500px; /* Reducido de 600px a 500px */
+  width: 250px !important;
+  height: 500px;
   border-radius: 16px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
   transition: transform 0.3s ease;
@@ -143,7 +143,7 @@ button.mat-icon-button {
 
 .animal-image-placeholder {
   width: 100%;
-  height: 250px; /* Ajustado para ser cuadrado en relación al ancho reducido de la tarjeta */
+  height: 250px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -155,46 +155,45 @@ button.mat-icon-button {
 
 .animal-placeholder-icon {
   font-size: 64px;
-  color: #9e9e9e; /* gris neutro */
+  color: #9e9e9e;
 }
 
 .mat-card img[mat-card-image] {
-    width: 250px; /* Ancho específico para hacer la imagen cuadrada */
-    height: 250px; /* Alto específico para hacer la imagen cuadrada */
-    object-fit: cover;
-    object-position: center;
-    border-radius: 12px;
-    margin: 0 auto; /* Centra la imagen */
-    display: block; /* Asegura que se apliquen los márgenes automáticos */
+  width: 250px;
+  height: 250px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 12px;
+  margin: 0 auto;
+  display: block;
 }
 
 .mat-card {
-    flex: 0 0 calc(33% - 24px); /* 3 columnas con espacio */
-    min-width: 250px; /* Reducido de 300px a 250px */
-    max-width: 100%;
-    box-sizing: border-box;
-    margin-bottom: 24px;
+  flex: 0 0 calc(33% - 24px);
+  min-width: 250px;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 20px;
 }
 
 .animal-card mat-card-content {
-  font-size: 16px; /* Reducido de 18px a 16px para ajustar al tamaño más pequeño de la tarjeta */
+  font-size: 16px;
   color: #333333;
   text-align: center;
 }
 
-/* Estilo de los párrafos dentro de mat-card-content */
+
 .animal-card mat-card-content p {
-  margin: 12px 0;  /* Reducido de 15px a 12px */
-  font-size: 16px;  /* Reducido de 18px a 16px */
+  margin: 12px 0;
+  font-size: 16px;
 }
 
-/* Estilo del fuerte (strong) dentro de los párrafos */
+
 .animal-card mat-card-content p strong {
-  font-weight: bolder;  /* Aumenta el peso de la fuente para los textos en negrita */
-  color: #5c6bc0;  /* El color indigo para los textos en negrita */
+  font-weight: bolder;
+  color: #5c6bc0;
 }
 
-/*ESTILOS DEL FOOTER*/
 .footer {
   margin-top: 200px;
   padding: 24px 16px;
@@ -211,7 +210,7 @@ button.mat-icon-button {
 }
 
 .footer-link:hover {
-  color: #3f51b5; /* Indigo 500 */
+  color: #3f51b5;
 }
 
 .footer-icon {
@@ -223,7 +222,7 @@ button.mat-icon-button {
 }
 
 .footer-icon:hover {
-  color: #3f51b5; /* Indigo 500 */
+  color: #3f51b5;
 }
 
 .footer-text {
@@ -231,4 +230,17 @@ button.mat-icon-button {
   font-size: 13px;
   text-align: center;
   color: gray;
+}
+
+.footer-link {
+  cursor: pointer;
+  color: #5C6BC0;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.footer-link:hover {
+  text-decoration: none;
+  color: #7986CB;
 }

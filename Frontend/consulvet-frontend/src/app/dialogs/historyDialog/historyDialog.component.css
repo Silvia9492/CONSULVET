@@ -11,18 +11,18 @@
   padding: 0;
 }
 
-.contenedor-select {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* centra horizontalmente */
-    justify-content: center; /* opcional, centra verticalmente si hace falta */
-    text-align: center;
+.container-select {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .noHistory {
-    font-size: 14px;
-    font-family: Roboto, 'Helvetica Neue', sans-serif;
-    color: #666;
-    text-align: center;
-    margin-top: 10px;
+  font-size: 14px;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  color: #666;
+  text-align: center;
+  margin-top: 10px;
 }

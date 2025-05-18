@@ -6,13 +6,11 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Cuidadores;
 
-class cuidadoresSeeder extends Seeder
-{
+class cuidadoresSeeder extends Seeder{
     /**
      * Run the database seeds.
      */
-    public function run(): void
-    {
+    public function run(): void{
         Cuidadores::firstOrCreate([
             'dni' => '55643311A',
             'nombre_completo' => 'Silvia González Fernández',

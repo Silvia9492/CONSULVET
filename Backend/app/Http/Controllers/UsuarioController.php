@@ -7,10 +7,10 @@ use App\Models\Usuarios;
 use App\Models\Cuidadores;
 use Illuminate\Support\Facades\Cookie;
 
-class UsuarioController extends Controller
-{
-    public function login(Request $request)
-    {
+class UsuarioController extends Controller{
+
+    public function login(Request $request){
+        //Validación de credenciales del usuario
         $credentials = $request->validate([
             'nombre_usuario' => 'required|string',
             'contraseña' => 'required|string',
@@ -20,13 +20,15 @@ class UsuarioController extends Controller
     
         if ($usuario && $usuario->contraseña === $credentials['contraseña']) {
     
+            //Establecemos una cookie que dura 60 minutos
             $minutes = 60;
             Cookie::queue('user_session', $usuario->nombre_usuario, $minutes);
 
+            //Relación cuidador-usuario definida en el modelo Usuarios
             $cuidador = $usuario->cuidadorRelacion;
     
             return response()->json([
-                'message' => 'Inicio de sesión correcto',
+                'message' => 'Se ha iniciado sesión correctamente',
                 'nombre_usuario' => $usuario->nombre_usuario,
                 'dni' => $usuario->cuidador,
                 'foto' => $cuidador?->foto_perfil
@@ -38,8 +40,7 @@ class UsuarioController extends Controller
         }
     }    
 
-    public function checkSession(Request $request)
-    {
+    /*public function checkSession(Request $request){
         $nombre_usuario = $request->cookie('user_session');
 
         if ($nombre_usuario) {
@@ -47,49 +48,44 @@ class UsuarioController extends Controller
             
             if ($usuario) {
                 return response()->json([
-                    'message' => 'Sesión encontrada',
+                    'message' => 'Sesión encontrada para este usuario',
                     'usuario' => $usuario
                 ]);
             }
         }
-
         return response()->json([
-            'message' => 'No hay sesión activa'
+            'message' => 'En este momento no hay ninguna sesión activa'
         ], 401);
     }
 
-    public function logout(Request $request)
-    {
+    public function logout(Request $request){
         Cookie::forget('user_session');
 
         return response()->json([
-            'message' => 'Sesión cerrada correctamente'
+            'message' => 'Su sesión se ha cerrado correctamente'
         ]);
-    }
+    }*/
+
 
     public function getAnimalesByUsername($username){
         $usuario = Usuarios::where('nombre_usuario', $username)->first();
 
-        // Verificar si el usuario existe
+        //Primero verificamos si ese usuario existe
         if (!$usuario) {
-            return response()->json(['error' => 'Usuario no encontrado'], 404);
+            return response()->json(['error' => 'No se ha encontrado el usuario'], 404);
         }
     
-        // Acceder al modelo relacionado 'cuidador' usando la relación definida en el modelo 'Usuario'
+        //Relación cuidador-usuario definida en el modelo Usuarios
         $cuidador = $usuario->cuidadorRelacion;
     
-        // Verificar si el cuidador existe
+        //Después verificamos si existe el cuidador
         if (!$cuidador) {
-            return response()->json(['error' => 'Cuidador no encontrado'], 404);
+            return response()->json(['error' => 'No se ha encontrado el cuidador'], 404);
         }
     
-        // Obtener los animales del cuidador
+        //Si existe, obtenemos sus animales (relación animal-cuidador definida en el modelo Cuidadores) y los devolvemos
         $animales = $cuidador->animales;
-    
-        // Devolver los animales en formato JSON
+
         return response()->json($animales);
     }
 }
-
-
-

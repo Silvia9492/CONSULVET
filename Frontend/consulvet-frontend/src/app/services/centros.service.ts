@@ -9,9 +9,10 @@ import { Centro } from '../models/centro.model';
 export class CentrosService {
 
   private apiUrl = 'http://localhost:8000/api';
+  
   constructor(private http: HttpClient) { }
 
-  getCentrosPorTipo(tipo: string): Observable<Centro[]> {
+  getCentersByType(tipo: string): Observable<Centro[]> {
     return this.http.get<Centro[]>(`${this.apiUrl}/centros/por-servicio/${tipo}`);
   }
 }

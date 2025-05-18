@@ -1,40 +1,33 @@
 <div fxLayout="column" fxLayoutAlign="start center" class="main-container" style="padding: 24px;">
-  <h1 class="mat-card-title-style" style="text-align: center;">Eliminar uno de tus animales</h1>
+  
+  <h1 class="mat-card-title-style" style="text-align: center;">Elimina uno de tus animales</h1>
 
-  <!-- mat-select para elegir el animal -->
   <mat-form-field appearance="fill" style="width: 100%; max-width: 600px;">
-    <mat-label>Selecciona un animal</mat-label>
-    <mat-select [(ngModel)]="animalSeleccionado">
-      <mat-option *ngFor="let animal of animales" [value]="animal.codigo_paciente">
+    <mat-label>Selecciona el animal</mat-label>
+    <mat-select [(ngModel)]="selectedAnimal">
+      <mat-option *ngFor="let animal of animals" [value]="animal.codigo_paciente">
         {{ animal.nombre }}
       </mat-option>
     </mat-select>
   </mat-form-field>
 
-  <!-- Motivo de eliminación -->
-  <mat-form-field appearance="fill" style="width: 100%; max-width: 600px;" *ngIf="animalSeleccionado">
-    <mat-label>Motivo de eliminación</mat-label>
-    <mat-select [(ngModel)]="motivo">
+  <mat-form-field appearance="fill" style="width: 100%; max-width: 600px;" *ngIf="selectedAnimal">
+    <mat-label>Indica por qué quieres eliminarlo</mat-label>
+    <mat-select [(ngModel)]="reason">
       <mat-option value="fallecimiento">Fallecimiento</mat-option>
       <mat-option value="dado_en_adopcion">Dado en adopción</mat-option>
-      <mat-option value="cambio_propietario">Cambio de propietario</mat-option>
+      <mat-option value="cambio_propietario">Cambio de cuidador</mat-option>
       <mat-option value="otro">Otro</mat-option>
     </mat-select>
   </mat-form-field>
 
-  <!-- Campo para otro motivo -->
-  <mat-form-field appearance="fill" style="width: 100%; max-width: 600px;" *ngIf="motivo === 'otro'" color="primary">
+  <mat-form-field appearance="fill" style="width: 100%; max-width: 600px;" *ngIf="reason === 'otro'" color="primary">
     <mat-label>Otro motivo</mat-label>
-    <textarea matInput [(ngModel)]="otroMotivo" rows="3" placeholder="Escribe aquí el motivo..."></textarea>
+    <textarea matInput [(ngModel)]="otherReason" rows="3" placeholder="Escribe aquí tu motivo"></textarea>
   </mat-form-field>
 
-  <!-- Botones -->
   <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px" style="margin-top: 24px;">
-    <button mat-raised-button color="primary" (click)="confirmar()" [disabled]="!animalSeleccionado || !motivo">
-      Eliminar
-    </button>
-    <button mat-raised-button color="accent" (click)="cancelar()">
-      Cancelar
-    </button>
+    <button mat-raised-button color="primary" (click)="confirm()" [disabled]="!selectedAnimal || !reason">Eliminar animal</button>
+    <button mat-raised-button color="accent" (click)="cancel()">Cancelar</button>
   </div>
 </div>

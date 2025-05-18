@@ -1,80 +1,41 @@
 <div class="login-container">
-  <mat-toolbar color="primary" style="display: flex; justify-content: space-between; align-items: center;">
-    <!-- Logo un poco más grande -->
-    <img src="assets/LogoConsulvet200x200_indigo.png" alt="Logo Consulvet" style="height: 48px; width: auto; margin-left: 12px;">
 
-    <!-- Texto centrado -->
-    <span class="title" style="position: absolute; left: 50%; transform: translateX(-50%); font-weight: 500;">
-      Consulvet
-    </span>
+  <mat-toolbar color="primary" style="display: flex; justify-content: space-between; align-items: center;">
+    <img src="assets/LogoConsulvet200x200_indigo.png" alt="Logo Consulvet" style="height: 48px; width: auto; margin-left: 12px;">
+    <span class="title" style="position: absolute; left: 50%; transform: translateX(-50%); font-weight: 500;">Consulvet</span>
   </mat-toolbar>
 
-  <!-- CONTENIDO PRINCIPAL AGRUPADO -->
-    <h1 class="mat-card-title-style-login" style="font-family: Roboto, 'Helvetica Neue', sans-serif; font-size: 50px; font-weight: 400; color: rgba(0, 0, 0, 0.87);
+  <h1 class="mat-card-title-style-login" style="font-family: Roboto, 'Helvetica Neue', sans-serif; font-size: 50px; font-weight: 400; color: rgba(0, 0, 0, 0.87);
     text-align: center; margin-top: 50px; margin-bottom: 16px; line-height: 24px; letter-spacing: 0.0125em; display: block; padding: 0;">
       Bienvenida/o a Consulvet
-    </h1>
+  </h1>
 
-    <div fxLayout="row" fxLayoutAlign="center center" class="main-container">
-      <mat-card style="width: 300px; margin-top: 100px;">
-        <mat-card-title style="color: #3f51b5;">Inicia sesión con tu cuenta:</mat-card-title>
+  <div fxLayout="row" fxLayoutAlign="center center" class="main-container">
+    <mat-card style="width: 300px; margin-top: 200px;">
+      <mat-card-title style="color: #3f51b5;">Inicia sesión con tu cuenta:</mat-card-title>
 
-        <form [formGroup]="loginData" fxLayout="column" fxLayoutGap="16px" (ngSubmit)="onSubmit()">
-          <mat-form-field appearance="fill">
-            <mat-label>Nombre de usuario</mat-label>
-            <input matInput formControlName="nombre_usuario">
-            <mat-error *ngIf="loginData.get('nombre_usuario')?.hasError('required')">
-              El nombre de usuario es obligatorio
-            </mat-error>
-          </mat-form-field>
+      <form [formGroup]="loginData" fxLayout="column" fxLayoutGap="16px" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="fill">
+          <mat-label>Nombre de usuario</mat-label>
+          <input matInput formControlName="nombre_usuario">
+          <mat-error *ngIf="loginData.get('nombre_usuario')?.hasError('required')">Indica tu nombre de usuario</mat-error>
+        </mat-form-field>
 
-          <mat-form-field appearance="fill">
-            <mat-label>Contraseña</mat-label>
-            <input matInput type="password" formControlName="contraseña">
-            <mat-error *ngIf="loginData.get('contraseña')?.hasError('required')">
-              La contraseña es obligatoria
-            </mat-error>
-          </mat-form-field>
-          <button mat-raised-button color="primary" class="loginButton" type="submit" [disabled]="isLoading" style="width: 300px; margin-top: 24px;">Iniciar sesión</button>
-        </form>
-      </mat-card>
-    </div>
+        <mat-form-field appearance="fill">
+          <mat-label>Contraseña</mat-label>
+          <input matInput type="password" formControlName="contraseña">
+          <mat-error *ngIf="loginData.get('contraseña')?.hasError('required')">Indica tu contraseña</mat-error>
+        </mat-form-field>
+        <button mat-raised-button color="primary" class="loginButton" type="submit" [disabled]="isLoading" style="width: 300px; margin-top: 24px;">Iniciar sesión</button>
+      </form>
+    </mat-card>
+  </div>
 
-    <div fxLayout="row" fxLayoutAlign="center center" style="margin-top: 10px;">
-      <span style="color: gray; cursor: pointer;" (click)="goToRegister()">
-        ¿Aún no tienes cuenta? ¡Regístrate ahora!
-      </span>
-    </div>
+  <div fxLayout="row" fxLayoutAlign="center center" style="margin-top: 10px;">
+    <span style="color: gray; cursor: pointer;" (click)="goToRegister()">¿Aún no tienes una cuenta? ¡Regístrate ahora!</span>
+  </div>
 
-    <div fxLayout="row" fxLayoutAlign="center center" *ngIf="isLoading" style="margin-top: 16px;">
-      <mat-spinner diameter="40" color="primary"></mat-spinner>
-    </div>
-
-  <!-- FOOTER -->
-  <mat-toolbar color="primary" class="footer" fxLayout="column" fxLayoutAlign="center center">
-    <div fxLayout="row" fxLayoutAlign="center center" class="footer-links" fxLayoutGap="32px">
-      <a href="#" class="footer-link">Sobre nosotros</a>
-      <a href="#" class="footer-link">Contacto</a>
-      <a href="#" class="footer-link">Política de privacidad</a>
-    </div>
-
-    <div fxLayout="row" fxLayoutAlign="center center" class="social-icons">
-      <a href="#" aria-label="Facebook">
-        <mat-icon fontSet="fa-brands" fontIcon="fa-facebook-f" class="footer-icon"></mat-icon>
-      </a>
-      <a href="#" aria-label="Twitter">
-        <mat-icon fontSet="fa-brands" fontIcon="fa-twitter" class="footer-icon"></mat-icon>
-      </a>
-      <a href="#" aria-label="Instagram">
-        <mat-icon fontSet="fa-brands" fontIcon="fa-instagram" class="footer-icon"></mat-icon>
-      </a>
-      <a href="#" aria-label="LinkedIn">
-        <mat-icon fontSet="fa-brands" fontIcon="fa-linkedin-in" class="footer-icon"></mat-icon>
-      </a>
-    </div>
-
-    <span class="footer-text">
-      © 2025 Consulvet. Todos los derechos reservados.
-    </span>
-  </mat-toolbar>
+  <div fxLayout="row" fxLayoutAlign="center center" *ngIf="isLoading" style="margin-top: 16px;">
+    <mat-spinner diameter="40" color="primary"></mat-spinner>
+  </div>
 </div>

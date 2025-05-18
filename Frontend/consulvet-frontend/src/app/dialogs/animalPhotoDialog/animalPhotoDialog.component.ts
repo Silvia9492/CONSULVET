@@ -10,27 +10,23 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class AnimalPhotoDialogComponent implements OnInit {
 
-  imageChangedEvent: any = '';
-  croppedImage: string = '';
-  croppedFile: File | null = null;
-  
-  // Configuración de límites (solo para información interna)
-  maxFileSizeMB = 10; // Umbral para aplicar compresión más agresiva
-  
-  // Control de estado
-  isLoading = false;
-  errorMessage = '';
-  
-  // Flags de procesamiento
-  private isProcessingImage = false; // Evitar múltiples procesamientos simultáneos
-
   constructor(
-    public dialogRef: MatDialogRef<AnimalPhotoDialogComponent>,
+    private dialogRef: MatDialogRef<AnimalPhotoDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {}
+
+  imageChangedEvent: any = '';
+  croppedImage: string = '';
+  croppedFile: File | null = null;
+  
+  //Umbral para aplicar compresión a la imagen subida por el usuario
+  maxFileSizeMB = 10;
+  
+  isLoading = false;
+  errorMessage = '';
 
   photoSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -38,90 +34,103 @@ export class AnimalPhotoDialogComponent implements OnInit {
     
     const file = input.files[0];
     
-    // Informar al usuario si el archivo es grande pero permitirlo de todos modos
+    //Feedback al usuario: si la foto es demasiado grande, se le informa de que ésta va a ser comprimida.
     const fileSizeMB = file.size / (1024 * 1024);
-    if (fileSizeMB > this.maxFileSizeMB) {
-      this.snackBar.open(`La imagen es grande (${fileSizeMB.toFixed(2)} MB). Se comprimirá automáticamente.`, 'Entendido', {
-        duration: 4000
-      });
-    }
+      if (fileSizeMB > this.maxFileSizeMB) {
+        this.snackBar.open(`La foto que has seleccionado pesa (${fileSizeMB.toFixed(2)} MB). Se comprimirá automáticamente.`, 'Entendido', {
+          duration: 4000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top'
+        });
+      }
     
-    this.errorMessage = '';
-    this.imageChangedEvent = event;
+      this.errorMessage = '';
+      this.imageChangedEvent = event;
   }
   
   imageLoaded(loadedImage: LoadedImage): void {
-    // Podemos usar este método para verificaciones adicionales
-    // cuando la imagen se carga en el cropper
     this.isLoading = false;
   }
   
   loadImageFailed(): void {
-    this.errorMessage = 'No se pudo cargar la imagen. Por favor, intenta con otro archivo.';
-    this.snackBar.open(this.errorMessage, 'Cerrar', {
-      duration: 5000
+    this.errorMessage = 'No se ha podido cargar tu foto. Por favor, inténtalo de nuevo o prueba con una diferente.';
+    this.snackBar.open(this.errorMessage, '', {
+      duration: 3000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top'
     });
     this.isLoading = false;
   }
 
+  /*Croppeado de la imagen.
+    -Si la seleccionada por el usuario es demasiado grande, ésta se redimensiona
+      y se configura a un tamaño más pequeño para que no dé problemas de tamaño en la subida
+    -Solución más flexible y amigable para el usuario, en lugar de limitar el tamaño de subida de imágenes
+      como se hace en otras webs
+  */
   imageCropped(event: ImageCroppedEvent) {
     if (!event.base64) return;
     
     this.isLoading = true;
-    
-    // Crear una imagen para obtener dimensiones y comprimir
-    const img = new Image();
-    img.onload = () => {
-      // Primer paso: Redimensionar si es demasiado grande
+
+    const image = new Image();
+
+    image.onload = () => {
       const canvas = document.createElement('canvas');
-      let width = img.width;
-      let height = img.height;
+      let width = image.width;
+      let height = image.height;
       
-      // Redimensionar imágenes grandes, sin importar qué tan grandes sean
-      const targetSize = 800; // Tamaño máximo objetivo
+      const targetSize = 800; //Objetivo de tamaño máximo
       if (width > targetSize || height > targetSize) {
         const ratio = Math.min(targetSize / width, targetSize / height);
         width = Math.floor(width * ratio);
         height = Math.floor(height * ratio);
       }
       
-      // Configurar canvas y dibujar imagen redimensionada
       canvas.width = width;
       canvas.height = height;
-      const ctx = canvas.getContext('2d');
-      if (!ctx) {
-        this.snackBar.open('Error al procesar la imagen', 'Cerrar', { duration: 3000 });
+      const context = canvas.getContext('2d');
+      if (!context) {
+        this.snackBar.open('Se ha producido un error durante el procesado de la imagen', '', {
+          duration: 2000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top'
+        });
         this.isLoading = false;
         return;
       }
       
-      ctx.drawImage(img, 0, 0, width, height);
-      
-      // Segundo paso: Comprimir iterativamente hasta lograr un tamaño adecuado
-      this.compressImageToTargetSize(canvas, width, height, 0.9, 1); // Comenzar con calidad alta
+      context.drawImage(image, 0, 0, width, height);
+
+      this.compressImageToTargetSize(canvas, width, height, 0.9, 1);
     };
     
-    img.onerror = () => {
-      this.snackBar.open('Error al procesar la imagen', 'Cerrar', { duration: 3000 });
+    image.onerror = () => {
+      this.snackBar.open('Se ha producido un error durante el procesado de la imagen', 'Cerrar', {
+        duration: 2000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top'
+      });
       this.isLoading = false;
     };
     
-    img.src = event.base64;
+    image.src = event.base64;
   }
   
-  // Método para comprimir iterativamente hasta lograr el tamaño deseado
+  //Compresión iterativa hasta lograr el tamaño de imagen deseado
   private compressImageToTargetSize(canvas: HTMLCanvasElement, width: number, height: number, initialQuality: number, attempt: number): void {
-    const targetSizeMB = 1; // Tamaño objetivo en MB
-    const minQuality = 0.3; // Calidad mínima aceptable
-    const maxAttempts = 5; // Máximo número de intentos de compresión
+    const targetSizeMB = 1; //Objetivo de tamaño a conseguir (en MB)
+    const minQuality = 0.3; //Calidad mínima aceptable
+    const maxAttempts = 5; //Máximo número de intentos de compresión permitidos
     
-    // Ajustar calidad según el intento
+    //Vamos ajustando la calidad
     let quality = Math.max(minQuality, initialQuality - ((attempt - 1) * 0.15));
     
-    // Comprimir con la calidad calculada
+    //Comprimimos la imagen con la calidad ya calculada
     const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
-    
-    // Convertir a blob para verificar tamaño
+
+    /*Usamos la función "base64ToFile()" para convertir ese base64 en un objeto de tipo blob (objeto binario) que se puede descargar, subir a un servidor
+    mostrar como imagen (si el archivo es una imagen) y adjuntar a un formulario FormData.*/
     const blob = base64ToFile(compressedBase64);
     const file = new File([blob], 'animal_foto.jpg', {
       type: 'image/jpeg',
@@ -130,40 +139,39 @@ export class AnimalPhotoDialogComponent implements OnInit {
     
     const fileSizeMB = file.size / (1024 * 1024);
     
-    // Verificar si hemos alcanzado el tamaño objetivo o el límite de intentos
+    /*Verificamos si se han agotado los intentos o si el tamaño estipulado se ha conseguido; si no se ha conseguido, aunque el número de intentos se haya agotado,
+    se vuelve a redimensionar el canvas y se vuelve a intentar*/
     if (fileSizeMB <= targetSizeMB || attempt >= maxAttempts || quality <= minQuality) {
-      // Si aún así es muy grande después de todos los intentos, redimensionar el canvas
       if (fileSizeMB > this.maxFileSizeMB && width > 400 && height > 400) {
-        // Reducir tamaño a la mitad y reintentar
         const newWidth = Math.floor(width * 0.7);
         const newHeight = Math.floor(height * 0.7);
         
         const newCanvas = document.createElement('canvas');
         newCanvas.width = newWidth;
         newCanvas.height = newHeight;
-        const newCtx = newCanvas.getContext('2d');
+        const newContext = newCanvas.getContext('2d');
         
-        if (newCtx) {
-          newCtx.drawImage(canvas, 0, 0, newWidth, newHeight);
+        if (newContext) {
+          newContext.drawImage(canvas, 0, 0, newWidth, newHeight);
           this.compressImageToTargetSize(newCanvas, newWidth, newHeight, 0.9, 1);
           return;
         }
       }
       
-      // Guardar resultado final después de compresión
+      //Después de comprimir, guardamos el resultado final y se le informa al usuario
       this.croppedImage = compressedBase64;
       this.croppedFile = file;
-      
-      // Informar al usuario del resultado
+
       if (attempt > 1 || quality < 0.9) {
-        this.snackBar.open(`Imagen comprimida correctamente (${fileSizeMB.toFixed(2)} MB)`, 'Entendido', { 
-          duration: 3000 
+        this.snackBar.open(`Imagen comprimida correctamente a (${fileSizeMB.toFixed(2)} MB)`, '', {
+          duration: 2000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top'
         });
       }
-      
       this.isLoading = false;
     } else {
-      // Si aún no alcanzamos el tamaño objetivo, intentar con menor calidad
+      //En caso de no haber logrado obtener el tamaño deseado, se vuelve a intentar pero bajando la calidad
       setTimeout(() => {
         this.compressImageToTargetSize(canvas, width, height, initialQuality, attempt + 1);
       }, 0);
@@ -172,28 +180,31 @@ export class AnimalPhotoDialogComponent implements OnInit {
 
   confirmPhoto(): void {
     if (this.isLoading) {
-      this.snackBar.open('Por favor espera mientras la imagen se está procesando', 'Entendido', {
-        duration: 3000
+      this.snackBar.open('Su foto se está procesando; por favor, espera', '', {
+        duration: 2000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top'
       });
       return;
     }
     
+    //Hacemos una verificación más del tamaño de la imagen, por si acaso; si sigue excediendo el tamaño, se vuelve a procesar
     if (this.croppedFile && this.croppedImage) {
-      // Verificar tamaño una vez más por seguridad
       const fileSizeMB = this.croppedFile.size / (1024 * 1024);
-      if (fileSizeMB > 2) { // Si de alguna manera sigue siendo muy grande
-        this.snackBar.open('La imagen aún es demasiado grande. Se procesará de nuevo', 'Entendido', {
-          duration: 3000
+      if (fileSizeMB > 2) {
+        this.snackBar.open('Su foto aún es demasiado grande. Vamos a procesarla de nuevo', '', {
+          duration: 2000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top'
         });
         
-        // Crear una imagen desde el base64 actual para reprocesar
-        const img = new Image();
-        img.onload = () => {
+        const image = new Image();
+        image.onload = () => {
           const canvas = document.createElement('canvas');
-          // Reducir a 600px como máximo en cualquier dimensión
+          //La reducimos a, máximo, 600 píxeles, tanto a lo ancho como a lo alto
           const maxDim = 600;
-          let width = img.width;
-          let height = img.height;
+          let width = image.width;
+          let height = image.height;
           
           if (width > maxDim || height > maxDim) {
             const ratio = Math.min(maxDim / width, maxDim / height);
@@ -203,10 +214,10 @@ export class AnimalPhotoDialogComponent implements OnInit {
           
           canvas.width = width;
           canvas.height = height;
-          const ctx = canvas.getContext('2d');
-          if (ctx) {
-            ctx.drawImage(img, 0, 0, width, height);
-            // Comprimir con calidad baja para asegurar tamaño pequeño
+          const context = canvas.getContext('2d');
+          if (context) {
+            context.drawImage(image, 0, 0, width, height);
+            //Compresión en baja calidad para asegurarnos de que el tamaño resultante sea pequeño, y válido
             const finalBase64 = canvas.toDataURL('image/jpeg', 0.5);
             this.croppedImage = finalBase64;
             
@@ -216,7 +227,7 @@ export class AnimalPhotoDialogComponent implements OnInit {
               lastModified: Date.now()
             });
             
-            // Ahora sí enviamos
+            //Por último, se envía la foto
             this.dialogRef.close({
               file: this.croppedFile,
               preview: this.croppedImage
@@ -224,18 +235,20 @@ export class AnimalPhotoDialogComponent implements OnInit {
           }
         };
         
-        img.src = this.croppedImage;
+        image.src = this.croppedImage;
         return;
       }
       
-      // Si el tamaño es adecuado, enviar directamente
+      //Si el tamaño de la foto es válido, ésta es enviada; en caso contrario, se le pide al usuario que seleccione otra foto
       this.dialogRef.close({
         file: this.croppedFile,
         preview: this.croppedImage
       });
     } else {
-      this.snackBar.open('Por favor, selecciona y recorta una imagen primero', 'Cerrar', {
-        duration: 3000
+      this.snackBar.open('Debes seleccionar una foto para continuar', '', {
+        duration: 2000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top'
       });
     }
   }

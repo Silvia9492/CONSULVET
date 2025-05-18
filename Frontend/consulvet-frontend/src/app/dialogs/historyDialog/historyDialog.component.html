@@ -1,57 +1,60 @@
-<div class="contenedor-select">
-<h2 mat-dialog-title class="mat-card-title-style">Consultar Historial</h2>
-<div mat-dialog-content>
-  <mat-form-field appearance="fill" style="width: 300px;">
-    <mat-label>Selecciona un animal</mat-label>
-    <mat-select [formControl]="nombreAnimal" (selectionChange)="obtenerHistorial()">
-      <mat-option *ngFor="let animal of animales" [value]="animal.nombre">
-        {{ animal.nombre }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-</div>
+<div class="container-select">
 
-  <mat-table *ngIf="historial.data.length > 0; else noHistorial" [dataSource]="historial">
+  <h2 mat-dialog-title class="mat-card-title-style">Consultar Historial</h2>
+
+  <div mat-dialog-content>
+    <mat-form-field appearance="fill" style="width: 300px;">
+      <mat-label>Selecciona uno de tus animales</mat-label>
+      <mat-select [formControl]="animalName" (selectionChange)="obtenerHistorial()">
+        <mat-option *ngFor="let animal of animals" [value]="animal.nombre">
+          {{ animal.nombre }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <mat-table *ngIf="history.data.length > 0; else noHistorial" [dataSource]="history">
     <ng-container matColumnDef="fecha">
-      <th mat-header-cell *matHeaderCellDef> Fecha de visita </th>
+      <th mat-header-cell *matHeaderCellDef>Fecha de visita</th>
       <td mat-cell *matCellDef="let row">{{ row.fecha }}</td>
     </ng-container>
 
     <ng-container matColumnDef="motivo">
-      <th mat-header-cell *matHeaderCellDef> Motivo de consulta </th>
+      <th mat-header-cell *matHeaderCellDef>Motivo de consulta</th>
       <td mat-cell *matCellDef="let row">{{ row.motivo }}</td>
     </ng-container>
 
     <ng-container matColumnDef="diagnóstico">
-      <th mat-header-cell *matHeaderCellDef> Diagnóstico </th>
+      <th mat-header-cell *matHeaderCellDef>Diagnóstico</th>
       <td mat-cell *matCellDef="let row">{{ row['diagnóstico'] }}</td>
     </ng-container>
 
     <ng-container matColumnDef="tratamiento">
-      <th mat-header-cell *matHeaderCellDef> Tratamiento </th>
+      <th mat-header-cell *matHeaderCellDef>Tratamiento</th>
       <td mat-cell *matCellDef="let row">{{ row.tratamiento }}</td>
     </ng-container>
 
     <ng-container matColumnDef="pruebas">
-      <th mat-header-cell *matHeaderCellDef> Pruebas realizadas </th>
+      <th mat-header-cell *matHeaderCellDef>Pruebas realizadas</th>
       <td mat-cell *matCellDef="let row">{{ row.pruebas }}</td>
     </ng-container>
 
     <ng-container matColumnDef="observaciones">
-      <th mat-header-cell *matHeaderCellDef> Observaciones </th>
+      <th mat-header-cell *matHeaderCellDef>Observaciones</th>
       <td mat-cell *matCellDef="let row">{{ row.observaciones }}</td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </mat-table>
+
   <ng-template #noHistorial>
-      <p class="noHistory" style="text-align: center; margin-top: 1rem;" *ngIf="nombreAnimal.value">
-        {{ nombreAnimal.value }} aún no tiene datos en su historial.
-      </p>
-    </ng-template>
+    <p class="noHistory" style="text-align: center; margin-top: 1rem;" *ngIf="animalName.value">
+      {{ animalName.value }} aún no tiene datos en su historial.
+    </p>
+  </ng-template>
 </div>
 
 <div mat-dialog-actions fxLayout="row" fxLayoutAlign="center center">
-  <button mat-raised-button color="primary" (click)="cerrarDialogo()">Cerrar Historial</button>
+  <button mat-raised-button color="primary" (click)="closeDialog()">Cerrar Historial</button>
 </div>

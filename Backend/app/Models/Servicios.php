@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Centros;
 
 
-class Servicios extends Model
-{
+class Servicios extends Model{
+
     protected $table = 'servicios';
     protected $primaryKey = 'codigo_servicio';
     public $incrementing = true;
@@ -18,8 +18,8 @@ class Servicios extends Model
         'tipo',
     ];
 
+
     public function centros(){
         return $this->belongsToMany(Centros::class, 'ofrecen', 'id_servicio', 'id_centro');
     }
-
 }

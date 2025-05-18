@@ -17,6 +17,7 @@ import { MatTooltipModule} from '@angular/material/tooltip';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
+import { ModalModule } from '../shared/modal/modal.module';
 
 @NgModule({
   imports: [
@@ -36,7 +37,8 @@ import { MatCardModule } from '@angular/material/card';
     MatTooltipModule,
     MatInputModule,
     MatDialogModule,
-    MatCardModule
+    MatCardModule,
+    ModalModule
   ],
   declarations: [ProfileComponent]
 })

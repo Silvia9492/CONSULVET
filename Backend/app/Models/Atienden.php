@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Animales;
 
-class Atienden extends Model
-{
+class Atienden extends Model{
+
     protected $table = 'atienden';
     protected $primaryKey = ['id_paciente', 'id_centro', 'id_veterinario', 'fecha', 'motivo'];
     public $incrementing = false;
@@ -24,17 +24,17 @@ class Atienden extends Model
         'id_centro'
     ];
 
-    public function setKeysForSaveQuery($query)
-    {
+
+    public function setKeysForSaveQuery($query){
         return $query->where('id_paciente', $this->getAttribute('id_paciente'))
                      ->where('id_centro', $this->getAttribute('id_centro'))
                      ->where('id_veterinario', $this->getAttribute('id_veterinario'))
                      ->where('fecha', $this->getAttribute('fecha'))
                      ->where('motivo', $this->getAttribute('motivo'));
     }
+    
 
-    public function animales()
-{
-    return $this->belongsTo(Animales::class, 'id_paciente', 'codigo_paciente');
-}
+    public function animales(){
+        return $this->belongsTo(Animales::class, 'id_paciente', 'codigo_paciente');
+    }
 }

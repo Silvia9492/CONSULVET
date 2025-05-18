@@ -6,13 +6,11 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Servicios;
 
-class serviciosSeeder extends Seeder
-{
+class serviciosSeeder extends Seeder{
     /**
      * Run the database seeds.
      */
-    public function run(): void
-    {
+    public function run(): void{
         $vacunacion = Servicios::firstOrCreate([
             'tipo' => 'Vacunación'
         ]);

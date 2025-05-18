@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { LoginService } from '../services/login.service';  // Importamos el servicio
+import { LoginService } from '../services/login.service';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';  // Importar MatSnackBar
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 
@@ -13,22 +13,21 @@ import { of } from 'rxjs';
 })
 export class LoginComponent {
 
+  constructor(
+    private loginService: LoginService,
+    private router: Router,
+    private snackBar: MatSnackBar
+  ) {}
+
   isLoading=false;
-  // Usamos FormGroup y FormControl para crear el formulario
+
   loginData = new FormGroup({
     nombre_usuario: new FormControl('', [Validators.required]),
     contraseña: new FormControl('', [Validators.required]),
   });
 
-  errorMessage: string = '';  // Variable para manejar los errores de forma global
+  errorMessage: string = '';
 
-  constructor(
-    private loginService: LoginService, // Inyectamos el servicio de login
-    private router: Router,
-    private snackBar: MatSnackBar  // Inyectamos MatSnackBar
-  ) {}
-
-  // Método para manejar el envío del formulario
   onSubmit(): void {
     if (this.loginData.valid) {
       this.isLoading = true;
@@ -40,14 +39,13 @@ export class LoginComponent {
         .pipe(
           catchError(error => {
             this.messageError(error);
-            this.isLoading = false; // En caso de error también desactiva el spinner
+            this.isLoading = false;
             return of(null);
           })
         )
         .subscribe({
           next: (response) => {
             if (response) {
-              console.log('Login exitoso', response);
               localStorage.setItem('username', response.nombre_usuario);
               localStorage.setItem('dni', response.dni);
               if (response.foto) {
@@ -59,30 +57,27 @@ export class LoginComponent {
             }
           },
           complete: () => {
-            this.isLoading = false; // Spinner se detiene después de todo
+            this.isLoading = false;
           }
         });
     } else {
-      this.loginSnackBar('Por favor, completa todos los campos.');
+      this.loginSnackBar('Introduce todos tus datos para poder iniciar sesión con tu cuenta');
     }
   }
-  
 
-  // Función para manejar los errores (usando messageError)
   messageError(error: any): void {
     if (error.status === 401) {
-      this.errorMessage = 'Nombre de usuario o contraseña incorrectos';
+      this.errorMessage = 'El nombre de usuario o la contraseña son incorrectos';
     } else {
-      this.errorMessage = 'Error de conexión. Inténtalo nuevamente.';
+      this.errorMessage = 'Se ha producido un error de conexión. Por favor, inténtalo de nuevo';
     }
   }
 
-  // Función simplificada para mostrar el snackbar
   loginSnackBar(message: string): void {
     this.snackBar.open(message, 'Cerrar', {
-      duration: 3000,  // Duración del snackbar en milisegundos
-      horizontalPosition: 'center',  // Posición horizontal
-      verticalPosition: 'top',  // Posición vertical
+      duration: 2000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top'
     });
   }
 

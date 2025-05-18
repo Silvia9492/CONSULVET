@@ -10,11 +10,9 @@ export class ConfirmAppointmentComponent implements OnInit {
 
   constructor(private dialogRef: MatDialogRef<ConfirmAppointmentComponent>) { }
 
-  confirmar() {
+  ngOnInit() {}
+
+  confirm() {
     this.dialogRef.close(true);
   }
-  
-  ngOnInit() {
-  }
-
 }

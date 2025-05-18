@@ -12,7 +12,7 @@ export class AnimalesService {
 
   constructor(private http: HttpClient) { }
 
-  getAnimalesByUsername(username: string): Observable<Animal[]> {
-    return this.http.get<Animal[]>(`http://localhost:8000/api/animales/usuario/${username}`);
+  getAnimalsByUsername(username: string): Observable<Animal[]> {
+    return this.http.get<Animal[]>(`${this.apiUrl}/${username}`);
   }
 }

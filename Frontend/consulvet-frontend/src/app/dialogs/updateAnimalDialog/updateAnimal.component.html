@@ -1,24 +1,21 @@
 <div fxLayout="column" fxLayoutAlign="start center" class="main-container">
+
   <h1 class="mat-card-title-style" style="text-align: center;">Edita la información de tu animal:</h1>
 
-  <!-- mat-select para elegir el animal -->
   <mat-form-field appearance="fill" style="width: 100%;">
-    <mat-label>Selecciona un animal</mat-label>
+    <mat-label>Selecciona uno de tus animales</mat-label>
     <mat-select [(value)]="selectedAnimal" (selectionChange)="onAnimalSelected($event.value)">
-      <mat-option *ngFor="let animal of animales" [value]="animal">
+      <mat-option *ngFor="let animal of animals" [value]="animal">
         {{ animal.nombre }}
       </mat-option>
     </mat-select>
   </mat-form-field>
 
   <form *ngIf="selectedAnimal" [formGroup]="updateAnimalData" (ngSubmit)="updateAnimal()" fxLayout="column" fxLayoutGap="16px" class="form-container" style="width: 100%;">
-    
     <mat-form-field appearance="fill" color="primary">
       <mat-label>Nombre:</mat-label>
       <input matInput formControlName="nombre">
-      <mat-error *ngIf="updateAnimalData.get('nombre')?.hasError('required')">
-        El campo nombre es obligatorio
-      </mat-error>
+      <mat-error *ngIf="updateAnimalData.get('nombre')?.hasError('required')">Indica su nombre</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill" color="primary">
@@ -27,47 +24,38 @@
       <mat-hint>MM/DD/YYYY</mat-hint>
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
-      <mat-error *ngIf="updateAnimalData.get('fecha_nacimiento')?.hasError('required')">
-        La fecha de nacimiento es obligatoria
-      </mat-error>
+      <mat-error *ngIf="updateAnimalData.get('fecha_nacimiento')?.hasError('required')">Indica su fecha de nacimiento</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill" color="primary">
       <mat-label>Especie:</mat-label>
       <input matInput formControlName="especie">
-      <mat-error *ngIf="updateAnimalData.get('especie')?.hasError('required')">
-        El campo especie es obligatorio
-      </mat-error>
+      <mat-error *ngIf="updateAnimalData.get('especie')?.hasError('required')">Indica su especie</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill" color="primary">
       <mat-label>Raza:</mat-label>
       <input matInput formControlName="raza">
-      <mat-error *ngIf="updateAnimalData.get('raza')?.hasError('required')">
-        El campo raza es obligatorio
-      </mat-error>
+      <mat-error *ngIf="updateAnimalData.get('raza')?.hasError('required')">Indica su raza</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill" color="primary">
       <mat-label>Color de la capa:</mat-label>
       <input matInput formControlName="color_capa">
-      <mat-error *ngIf="updateAnimalData.get('color_capa')?.hasError('required')">
-        El color de la capa es obligatorio
-      </mat-error>
+      <mat-error *ngIf="updateAnimalData.get('color_capa')?.hasError('required')">Indica el color de su capa</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill" color="primary">
       <mat-label>Sexo:</mat-label>
       <input matInput formControlName="sexo">
-      <mat-error *ngIf="updateAnimalData.get('sexo')?.hasError('required')">
-        El campo sexo es obligatorio
-      </mat-error>
+      <mat-error *ngIf="updateAnimalData.get('sexo')?.hasError('required')">Indica su sexo</mat-error>
     </mat-form-field>
+
     <div fxLayout="column" fxLayoutAlign="center center" class="full-button-section">
       <button mat-raised-button color="accent" type="button" (click)="updateAnimalPhoto()" class="updatePhoto">Subir una foto</button>
       <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px" class="button-container"  style="margin-top: 16px;">
         <button mat-raised-button color="primary" type="submit">Actualizar animal</button>
-        <button mat-raised-button color="accent" type="button" (click)="cancelar()">Cancelar</button>
+        <button mat-raised-button color="accent" type="button" (click)="cancel()">Cancelar</button>
       </div>
     </div>
   </form>

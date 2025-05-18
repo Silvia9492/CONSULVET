@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Servicios;
 
-class Centros extends Model
-{
+class Centros extends Model{
+
     protected $table = 'centros';
     protected $primaryKey = 'codigo_centro';
 
@@ -19,8 +19,8 @@ class Centros extends Model
         'categoria'
     ];
 
+
     public function servicios(){
         return $this->belongsToMany(Servicios::class, 'ofrecen', 'id_centro', 'id_servicio');
     }
-
 }

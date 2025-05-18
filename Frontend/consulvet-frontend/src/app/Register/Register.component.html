@@ -1,83 +1,63 @@
 <div class="register-container" fxLayout="column" fxLayoutAlign="start stretch" style="min-height: 100vh;">
-  <mat-toolbar color="primary" style="display: flex; justify-content: space-between; align-items: center;">
-  <!-- Logo un poco más grande -->
-  <img src="assets/LogoConsulvet200x200_indigo.png" alt="Logo Consulvet" style="height: 48px; width: auto; margin-left: 12px;">
 
-  <!-- Texto centrado -->
-  <span class="title" style="position: absolute; left: 50%; transform: translateX(-50%); font-weight: 500;">
-    Consulvet
-  </span>
-</mat-toolbar>
-<div fxLayout="row" fxLayoutAlign="center center" class="main-container">
+  <mat-toolbar color="primary" style="display: flex; justify-content: space-between; align-items: center;">
+    <img src="assets/LogoConsulvet200x200_indigo.png" alt="Logo Consulvet" style="height: 48px; width: auto; margin-left: 12px;">
+    <span class="title" style="position: absolute; left: 50%; transform: translateX(-50%); font-weight: 500;">Consulvet</span>
+  </mat-toolbar>
+
+  <div fxLayout="row" fxLayoutAlign="center center" class="main-container">
     <mat-card class="registerCard">
       <mat-card-title style="text-align: center;">Bienvenida/o a Consulvet:</mat-card-title>
-      
       <form [formGroup]="userData" (ngSubmit)="registerUser()" fxLayout="column" fxLayoutGap="16px" class="form-container">
         <mat-form-field appearance="fill">
-            <mat-label>DNI:</mat-label>
-            <input matInput formControlName="dni">
-            <mat-error *ngIf="userData.get('dni')?.hasError('required')">
-              El campo dni es obligatorio
-            </mat-error>
-          </mat-form-field>
+          <mat-label>DNI</mat-label>
+          <input matInput formControlName="dni">
+          <mat-error *ngIf="userData.get('dni')?.hasError('required')">Indica tu dni</mat-error>
+        </mat-form-field>
 
-          <mat-form-field appearance="fill">
-            <mat-label>Nombre completo:</mat-label>
-            <input matInput formControlName="completeName">
-            <mat-error *ngIf="userData.get('completeName')?.hasError('required')">
-              El campo nombre es obligatorio
-            </mat-error>
-          </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Nombre completo</mat-label>
+          <input matInput formControlName="completeName">
+          <mat-error *ngIf="userData.get('completeName')?.hasError('required')">Indica tu nombre completo</mat-error>
+        </mat-form-field>
 
-          <mat-form-field appearance="fill" color="primary">
-            <mat-label>Fecha de nacimiento:</mat-label>
-            <input matInput formControlName="birthday" [matDatepicker]="picker">
-            <mat-hint>MM/DD/YYYY</mat-hint>
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-            <mat-error *ngIf="userData.get('birthday')?.hasError('required')">
-              El campo fecha de nacimiento es obligatorio
-            </mat-error>
-          </mat-form-field>
+        <mat-form-field appearance="fill" color="primary">
+          <mat-label>Fecha de nacimiento</mat-label>
+          <input matInput formControlName="birthday" [matDatepicker]="picker">
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="userData.get('birthday')?.hasError('required')">Indica tu fecha de nacimiento</mat-error>
+        </mat-form-field>
 
-          <mat-form-field appearance="fill">
-            <mat-label>Dirección</mat-label>
-            <input matInput formControlName="address">
-            <mat-error *ngIf="userData.get('address')?.hasError('required')">
-              El campo dirección es obligatorio
-            </mat-error>
-          </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Dirección</mat-label>
+          <input matInput formControlName="address">
+          <mat-error *ngIf="userData.get('address')?.hasError('required')">Indica tu dirección</mat-error>
+        </mat-form-field>
 
-          <mat-form-field appearance="fill">
-            <mat-label>Número de teléfono</mat-label>
-            <input matInput formControlName="phoneNumber">
-            <mat-error *ngIf="userData.get('phoneNumber')?.hasError('required')">
-              El campo número de teléfono es obligatorio
-            </mat-error>
-          </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Número de teléfono</mat-label>
+          <input matInput formControlName="phoneNumber">
+          <mat-error *ngIf="userData.get('phoneNumber')?.hasError('required')">Indica tu número de teléfono</mat-error>
+        </mat-form-field>
 
-          <mat-form-field appearance="fill">
-            <mat-label>Email</mat-label>
-            <input matInput formControlName="email">
-            <mat-error *ngIf="userData.get('email')?.hasError('required')">
-              El campo email es obligatorio
-            </mat-error>
-          </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email">
+          <mat-error *ngIf="userData.get('email')?.hasError('required')">Indica tu correo electrónico</mat-error>
+        </mat-form-field>
 
         <mat-form-field appearance="fill">
           <mat-label>Nombre de usuario</mat-label>
           <input matInput formControlName="userName">
-          <mat-error *ngIf="userData.get('userName')?.hasError('required')">
-            El nombre de usuario es obligatorio
-          </mat-error>
+          <mat-error *ngIf="userData.get('userName')?.hasError('required')">Indica tu nombre de usuario</mat-error>
         </mat-form-field>
         
         <mat-form-field appearance="fill">
           <mat-label>Contraseña</mat-label>
           <input matInput type="password" formControlName="password">
-          <mat-error *ngIf="passwordControl?.hasError('required')">
-            La contraseña es obligatoria
-          </mat-error>
+          <mat-error *ngIf="passwordControl?.hasError('required')">Indica tu contraseña</mat-error>
           <mat-error *ngIf="passwordControl?.hasError('passwordRequirements')">
             La contraseña debe tener al menos 8 caracteres, incluir mayúsculas, 
             minúsculas, números y un carácter especial
@@ -87,54 +67,23 @@
         <mat-form-field appearance="fill">
           <mat-label>Verificar contraseña</mat-label>
           <input matInput type="password" formControlName="verifyPassword">
-          <mat-error *ngIf="verifyPasswordControl?.hasError('required')">
-            Debe confirmar su contraseña
-          </mat-error>
+          <mat-error *ngIf="verifyPasswordControl?.hasError('required')">Confirma tu contraseña</mat-error>
         </mat-form-field>
-        <div *ngIf="passwordMissmatch" class="password-missmatch-error" 
-             style="color: #f44336; font-size: 12px; margin-top: -10px;">
+
+        <div *ngIf="passwordMissmatch" class="password-missmatch-error" style="color: #f44336; font-size: 12px; margin-top: -10px;">
           Las contraseñas no coinciden
         </div>
+
         <div fxLayout="row" fxLayoutAlign="center center">
-            <button mat-raised-button color="primary" class="registerButton" type="submit" [disabled]="isLoading">Registrar</button>
+            <button mat-raised-button color="primary" class="registerButton" type="submit" [disabled]="isLoading">Registrarme</button>
         </div>
       </form>
     </mat-card>
   </div>
 
   <div fxLayout="row" fxLayoutAlign="center center" style="margin-top: 10px;">
-    <span style="color: gray; cursor: pointer;" (click)="goToLogin()">
-      ¿Ya tienes una cuenta? ¡Inicia Sesión!
-    </span>
+    <span style="color: gray; cursor: pointer;" (click)="goToLogin()">¿Ya tienes una cuenta? ¡Inicia Sesión!</span>
   </div>
-
-    <!-- FOOTER -->
-  <mat-toolbar color="primary" class="footer" fxLayout="column" fxLayoutAlign="center center">
-    <div fxLayout="row" fxLayoutAlign="center center" class="footer-links" fxLayoutGap="32px">
-      <a href="#" class="footer-link">Sobre nosotros</a>
-      <a href="#" class="footer-link">Contacto</a>
-      <a href="#" class="footer-link">Política de privacidad</a>
-    </div>
-
-    <div fxLayout="row" fxLayoutAlign="center center" class="social-icons">
-      <a href="#" aria-label="Facebook">
-        <mat-icon fontSet="fa-brands" fontIcon="fa-facebook-f" class="footer-icon"></mat-icon>
-      </a>
-      <a href="#" aria-label="Twitter">
-        <mat-icon fontSet="fa-brands" fontIcon="fa-twitter" class="footer-icon"></mat-icon>
-      </a>
-      <a href="#" aria-label="Instagram">
-        <mat-icon fontSet="fa-brands" fontIcon="fa-instagram" class="footer-icon"></mat-icon>
-      </a>
-      <a href="#" aria-label="LinkedIn">
-        <mat-icon fontSet="fa-brands" fontIcon="fa-linkedin-in" class="footer-icon"></mat-icon>
-      </a>
-    </div>
-
-    <span class="footer-text">
-      © 2025 Consulvet. Todos los derechos reservados.
-    </span>
-  </mat-toolbar>
 
   <div fxLayout="row" fxLayoutAlign="center center" *ngIf="isLoading" style="margin-top: 16px;">
     <mat-spinner diameter="40" color="primary"></mat-spinner>

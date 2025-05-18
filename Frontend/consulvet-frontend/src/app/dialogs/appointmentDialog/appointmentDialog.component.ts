@@ -9,9 +9,8 @@ import { Veterinario } from 'src/app/models/veterinario.model';
 import { Centro } from 'src/app/models/centro.model';
 import { CentrosService } from 'src/app/services/centros.service';
 import { ConfirmAppointmentComponent } from '../confirmAppointment/confirmAppointment.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { jsPDF } from 'jspdf';
-import { autoTable } from 'jspdf-autotable';
 
 @Component({
   selector: 'app-appointmentDialog',
@@ -19,25 +18,39 @@ import { autoTable } from 'jspdf-autotable';
   styleUrls: ['./appointmentDialog.component.css']
 })
 export class AppointmentDialogComponent implements OnInit {
+  //VARIABLES:
+  //Grupos del formulario para presentar en el stepper
   reasonFormGroup: FormGroup;
   dateFormGroup: FormGroup;
   centerFormGroup: FormGroup;
   confirmFormGroup: FormGroup;
 
+  //Motivo de consulta (= servicios en la base de datos)
   services: Servicio[] = [];
   selectedService: number | null = null;
 
-  animales: Animal[] = [];
+  //Paciente
+  animals: Animal[] = [];
 
-  centrosFiltrados: Centro[] = [];
+  //Centro al que acude (filtrado por el motivo de consulta)
+  filteredCenters: Centro[] = [];
 
-  veterinariosFiltrados: Veterinario[] = [];
-  veterinarioSeleccionadoNombre: string = '';
+  //Veterinario que le va a atender (filtrado por el motivo de consulta y el centro al que acude)
+  filteredVeterinaries: Veterinario[] = [];
+  selectedVeterinaryName: string = '';
 
+  //Confirmación de cita
   appointmentConfirmed: Boolean = false;
 
-  constructor(private formbuilder: FormBuilder, private servicioService: ServiciosService, private animalService: AnimalesService,
-    private veterinariosService: VeterinariosService, private centrosService: CentrosService, private confirmDialog: MatDialog) {
+  constructor(
+    private formbuilder: FormBuilder,
+    private servicioService: ServiciosService,
+    private animalService: AnimalesService,
+    private veterinariosService: VeterinariosService,
+    private centrosService: CentrosService,
+    private confirmDialog: MatDialog,
+    private dialogRef: MatDialogRef<AppointmentDialogComponent>
+  ) {
     this.reasonFormGroup = this.formbuilder.group({
       reason: ['', Validators.required],
       patient: ['', Validators.required],
@@ -54,35 +67,26 @@ export class AppointmentDialogComponent implements OnInit {
     });
   }
 
-  confirm(): void {
-    // Aquí puedes enviar la solicitud o cerrar el diálogo
-    console.log(this.reasonFormGroup.value, this.dateFormGroup.value, this.centerFormGroup.value);
-  }
-
-  myFilter = (d: Date | null): boolean => {
-    const day = (d || new Date()).getDay();
-    return day !== 0;
-  };
-
-
+  /*El motivo de consulta, horario y centro asociado se tienen que cargar en ngOnInit e ir guardándose para que al llegar a la selección
+  del veterinario, los filtros para mostrar los que cumplan con todo lo seleccionado por el usuario se apliquen correctamente
+  Si no, la información para filtrar no estaría disponible.*/
   ngOnInit() {
-    this.servicioService.getServicios().subscribe((services: Servicio[]) => {
-      this.services = services;  // Guardamos los servicios en la variable
+    this.servicioService.getServices().subscribe((services: Servicio[]) => {
+      this.services = services;
     });
 
     const username = localStorage.getItem('username');
     if(username){
-    this.animalService.getAnimalesByUsername(username).subscribe({
-      next: (data) => this.animales = data,
-      error: (err) => console.error('Error al obtener animales', err)
+    this.animalService.getAnimalsByUsername(username).subscribe({
+      next: (data) => this.animals = data,
+      error: (error) => console.error('Lo sentimos, no hemos podido cargar tus animales', error)
       });
     }
 
     this.reasonFormGroup.get('reason')?.valueChanges.subscribe((codigoServicioSeleccionado) => {
-      // Encontramos el tipo del servicio basado en el codigo_servicio seleccionado
       const servicioSeleccionado = this.services.find(s => s.codigo_servicio === codigoServicioSeleccionado);
       if (servicioSeleccionado) {
-        this.cargarCentros(servicioSeleccionado.tipo);  // Le pasamos el tipo del servicio
+        this.loadCenters(servicioSeleccionado.tipo);
       }
     });
 
@@ -93,67 +97,68 @@ export class AppointmentDialogComponent implements OnInit {
       if (selectedServiceCode && selectedCentroId && selectedHora) {
         const servicioSeleccionado = this.services.find(s => s.codigo_servicio === selectedServiceCode);
         if (servicioSeleccionado) {
-          this.filtrarVeterinarios(servicioSeleccionado.tipo, selectedCentroId, selectedHora);
+          this.filterVeterinaries(servicioSeleccionado.tipo, selectedCentroId, selectedHora);
         }
       }
     });
-  
-    // Cuando cambia el centro seleccionado, también filtramos los veterinarios
+
     this.centerFormGroup.get('center')?.valueChanges.subscribe((selectedCentroId) => {
       const selectedServiceCode = this.reasonFormGroup.value.reason;
       const selectedHora = this.dateFormGroup.value.hourSelected;
       if (selectedServiceCode && selectedCentroId && selectedHora) {
         const servicioSeleccionado = this.services.find(s => s.codigo_servicio === selectedServiceCode);
         if (servicioSeleccionado) {
-          console.log('Llamando a filtrarVeterinarios');
-          this.filtrarVeterinarios(servicioSeleccionado.tipo, selectedCentroId, selectedHora);
+          this.filterVeterinaries(servicioSeleccionado.tipo, selectedCentroId, selectedHora);
         }
       }
     });  
   }
 
-  filtrarVeterinarios(servicio: string, centroId: number, horario: string): void {
+  /*Función propia del Datepicker de Material para manejar los días hábiles que queremos que se muestren
+    - He excluido el domingo por ser día festivo (es día de urgencias, pero mi app solo contempla consultas ordinarias)*/
+  myFilter = (d: Date | null): boolean => {
+    const day = (d || new Date()).getDay();
+    return day !== 0;
+  };
+
+  filterVeterinaries(servicio: string, centroId: number, horario: string): void {
     if (servicio && centroId && horario) {
-      this.veterinariosService.getVeterinariosFiltrados(servicio, centroId, horario)
+      this.veterinariosService.getFilteredVeterinaries(servicio, centroId, horario)
         .subscribe({
           next: (vets) => {
-            this.veterinariosFiltrados = vets;
-            console.log('Veterinarios filtrados:', vets);
+            this.filteredVeterinaries = vets;
           },
-          error: (err) => console.error('Error al filtrar veterinarios:', err)
+          error: (error) => console.error('Lo sentimos, no hemos podido cargar los veterinarios:', error)
         });
     }
   }
   
-  cargarCentros(tipoSeleccionado: string): void {
+  loadCenters(tipoSeleccionado: string): void {
     if (!tipoSeleccionado) return;
-
-  this.centrosService.getCentrosPorTipo(tipoSeleccionado).subscribe({
-    next: (centros) => {
-      this.centrosFiltrados = centros;
-      console.log('Centros filtrados por servicio:', centros);
-    },
-    error: (err) => console.error('Error al cargar centros:', err)
+      this.centrosService.getCentersByType(tipoSeleccionado).subscribe({
+      next: (centros) => {
+        this.filteredCenters = centros;
+      },
+      error: (error) => console.error('Lo sentimos, no hemos podido cargar los centros:', error)
     });
   }
 
-  get resumenCita() {
+  get summaryAppointment() {
     const { reason } = this.reasonFormGroup.value;
     const { patient } = this.reasonFormGroup.value;
     const { date, hourSelected } = this.dateFormGroup.value;
     const { center, veterinary } = this.centerFormGroup.value;
   
-    // Si alguno no está presente, aún no mostramos el resumen
+    //El resumen de cita no se muestra hasta que todos los campos estén rellenos
     if (!reason || !patient || !date || !hourSelected || !center || !veterinary) {
       return null;
     }
   
-    const paciente = this.animales.find(a => a.codigo_paciente === patient);
+    const paciente = this.animals.find(a => a.codigo_paciente === patient);
     const motivo = this.services.find(s => s.codigo_servicio === reason);
-    const centro = this.centrosFiltrados.find(c => c.codigo_centro === center);
-    const veterinario = this.veterinariosFiltrados.find(v => v.codigo_veterinario === veterinary);
+    const centro = this.filteredCenters.find(c => c.codigo_centro === center);
+    const veterinario = this.filteredVeterinaries.find(v => v.codigo_veterinario === veterinary);
   
-    // Aseguramos que se han encontrado los objetos
     if (!paciente || !motivo || !centro || !veterinario) {
       return null;
     }
@@ -168,6 +173,7 @@ export class AppointmentDialogComponent implements OnInit {
     };
   }  
   
+  //Llamamos al componente que maneja la lógica para la confirmación de una cita
   openConfirmDialog() {
     const dialogRef = this.confirmDialog.open(ConfirmAppointmentComponent);
 
@@ -178,66 +184,64 @@ export class AppointmentDialogComponent implements OnInit {
     });
   }
 
+  //Generamos un pdf con los datos resumen de la cita, para que el cuidador lo descargue si quiere y lo tenga a modo de volante de cita
   generatePDF() {
-  const doc = new jsPDF();
+    const doc = new jsPDF();
 
-  const logo = new Image();
-  logo.src = 'assets/LogoConsulvet200x200.png';
-  logo.onload = () => {
-    // Logo
-    doc.addImage(logo, 'PNG', 10, 10, 30, 30);
-
-    // Título
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(18);
-    doc.setTextColor(63, 81, 181);
-    doc.text('Comprobante de Cita', 105, 25, { align: 'center' });
-
-    // Línea separadora
-    doc.setDrawColor(200, 200, 200);
-    doc.line(10, 40, 200, 40);
-
-    // Contenido: etiquetas en negrita (negro), valores normales (negro)
-    const datos = [
-      { label: 'Paciente:', value: this.resumenCita?.paciente },
-      { label: 'Motivo de consulta:', value: this.resumenCita?.motivo },
-      { label: 'Fecha:', value: this.resumenCita?.fecha },
-      { label: 'Horario:', value: this.resumenCita?.horario },
-      { label: 'Centro:', value: this.resumenCita?.centro },
-      { label: 'Veterinario:', value: this.resumenCita?.veterinario },
-    ];
-
-    let y = 55;
-    for (const item of datos) {
-      doc.setFontSize(12);
-      doc.setTextColor(0, 0, 0); // negro
+    const logo = new Image();
+    logo.src = 'assets/LogoConsulvet200x200.png';
+    logo.onload = () => {
+      doc.addImage(logo, 'PNG', 10, 10, 30, 30);
 
       doc.setFont('helvetica', 'bold');
-      const labelWidth = doc.getTextWidth(item.label);
-      doc.text(item.label, 20, y);
+      doc.setFontSize(18);
+      doc.setTextColor(63, 81, 181);
+      doc.text('Volante de Cita', 105, 25, { align: 'center' });
 
-      doc.setFont('helvetica', 'normal');
-      doc.text(item.value || '', 20 + labelWidth + 1, y); // +1 para separación
+      doc.setDrawColor(200, 200, 200);
+      doc.line(10, 40, 200, 40);
 
-      y += 10;
-    }
+      const datos = [
+        { label: 'Paciente:', value: this.summaryAppointment?.paciente },
+        { label: 'Motivo de consulta:', value: this.summaryAppointment?.motivo },
+        { label: 'Fecha:', value: this.summaryAppointment?.fecha },
+        { label: 'Horario:', value: this.summaryAppointment?.horario },
+        { label: 'Centro:', value: this.summaryAppointment?.centro },
+        { label: 'Veterinario:', value: this.summaryAppointment?.veterinario },
+      ];
 
-    // Marco decorativo
-    doc.setDrawColor(63, 81, 181);
-    doc.rect(5, 5, 200, 287);
+      let y = 55;
+      for (const item of datos) {
+        doc.setFontSize(12);
+        doc.setTextColor(0, 0, 0);
 
-    // Pie de página
-    doc.setFontSize(10);
-    doc.setTextColor(100);
-    doc.text(
-      'Gracias por confiar en Consulvet - www.consulvet.com - Tel: 123-456-789',
-      105,
-      285,
-      { align: 'center' }
-    );
+        doc.setFont('helvetica', 'bold');
+        const labelWidth = doc.getTextWidth(item.label);
+        doc.text(item.label, 20, y);
 
-    doc.save('comprobante-cita.pdf');
-  };
-}
-  
+        doc.setFont('helvetica', 'normal');
+        doc.text(item.value || '', 20 + labelWidth + 1, y);
+
+        y += 10;
+      }
+
+      doc.setDrawColor(63, 81, 181);
+      doc.rect(5, 5, 200, 287);
+
+      doc.setFontSize(10);
+      doc.setTextColor(100);
+      doc.text(
+        'Gracias por confiar en Consulvet - www.consulvet.com - Tel: (+34) 123-456-789',
+        105,
+        285,
+        { align: 'center' }
+      );
+
+      doc.save('volante-cita.pdf');
+    };
+  }
+
+  closeStepper(){
+    this.dialogRef.close();
+  }
 }

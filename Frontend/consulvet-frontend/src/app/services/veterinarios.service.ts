@@ -12,7 +12,7 @@ export class VeterinariosService {
 
   constructor(private http: HttpClient) { }
 
-  getVeterinariosFiltrados(servicio: string, centroId: number, horario: string): Observable<Veterinario[]> {
+  getFilteredVeterinaries(servicio: string, centroId: number, horario: string): Observable<Veterinario[]> {
     const params = new HttpParams()
       .set('servicio', servicio)
       .set('centroId', centroId.toString())
@@ -20,5 +20,4 @@ export class VeterinariosService {
   
     return this.http.get<Veterinario[]>(`${this.apiUrl}/filtrar`, { params });
   }  
-  
 }

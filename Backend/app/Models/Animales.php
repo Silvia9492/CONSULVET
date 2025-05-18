@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Veterinarios;
 use App\Models\Atienden;
 
-class Animales extends Model
-{
+class Animales extends Model{
+
     protected $table = 'animales';
     protected $primaryKey = 'codigo_paciente';
 
@@ -23,14 +23,16 @@ class Animales extends Model
         'foto'
     ];
 
+
     public function veterinarios(){
         return $this->belongsToMany(Veterinarios::class, 'atienden', 'id_paciente', 'id_veterinario')
                     ->withPivot('id_centro', 'fecha', 'motivo', 'diagnóstico', 'tratamiento', 'pruebas', 'observaciones')
                     ->withTimestamps();
     }
 
-    public function historiales()
-    {
-    return $this->hasMany(Atienden::class, 'id_paciente', 'codigo_paciente');
+
+    //Relación animal-historial para usar en el controlador Atienden
+    public function historiales(){
+        return $this->hasMany(Atienden::class, 'id_paciente', 'codigo_paciente');
     }
 }

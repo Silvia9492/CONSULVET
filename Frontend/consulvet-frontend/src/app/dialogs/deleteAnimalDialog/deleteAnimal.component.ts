@@ -11,37 +11,51 @@ import { Animal } from 'src/app/models/animal.model';
 })
 export class DeleteAnimalComponent implements OnInit {
 
-  animales: Animal[] = [];
-  animalSeleccionado: string | null = null;
-  motivo: string = '';
-  otroMotivo: string = '';
+  constructor(
+    private dialogRef: MatDialogRef<DeleteAnimalComponent>,
+    private snackBar: MatSnackBar,
+    private eliminarAnimalService: EliminarAnimalService
+  ) { }
 
-  constructor(private dialogRef: MatDialogRef<DeleteAnimalComponent>, private snackBar: MatSnackBar, private eliminarAnimalService: EliminarAnimalService) { }
+  animals: Animal[] = [];
+  selectedAnimal: string | null = null;
+  reason: string = '';
+  otherReason: string = '';
 
   ngOnInit() {
     const dni = localStorage.getItem('dni');
     if (dni) {
-      this.eliminarAnimalService.getAnimalesPorCuidador(dni).subscribe(animales => {
-        this.animales = animales;
+      this.eliminarAnimalService.getAnimalsByCarer(dni).subscribe(animales => {
+        this.animals = animales;
       });
     }
   }
 
-  confirmar(): void {
-    if (!this.animalSeleccionado) return;
+  confirm(): void {
+    if (!this.selectedAnimal) return;
 
-    this.eliminarAnimalService.eliminarAnimal(this.animalSeleccionado).subscribe({
+    this.eliminarAnimalService.deleteAnimal(this.selectedAnimal).subscribe({
       next: () => {
-        this.snackBar.open('Animal eliminado correctamente', 'Cerrar', { duration: 3000 });
-        this.dialogRef.close(true); // opcional, puedes devolver un flag si necesitas refrescar fuera
+        this.snackBar.open('Tu animal ha sido eliminado correctamente', '', {
+          duration: 2000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top'
+        });
+        setTimeout(() => {
+          this.dialogRef.close(true);
+        }, 2000);
       },
       error: () => {
-        this.snackBar.open('Error al eliminar el animal', 'Cerrar', { duration: 3000 });
+        this.snackBar.open('Se ha producido un error al eliminar tu animal', '', {
+          duration: 2000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top'
+        });
       }
     });
   }
 
-  cancelar(): void {
+  cancel(): void {
     this.dialogRef.close();
   }
 }

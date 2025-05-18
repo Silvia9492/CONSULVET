@@ -8,12 +8,11 @@ import { Observable } from 'rxjs';
 })
 export class MostrarAnimalesService {
 
-   private apiUrl = 'http://localhost:8000/api';
+  private apiUrl = 'http://localhost:8000/api';
 
   constructor(private http: HttpClient) {}
 
-  getAnimalesPorCuidador(dniCuidador: string): Observable<Animal[]> {
-  // Se pasan los datos como parámetros de la URL
-  return this.http.get<Animal[]>(`${this.apiUrl}/animales/cuidador?cuidador_dni=${dniCuidador}`);
+  getAnimalsByCarer(dniCuidador: string): Observable<Animal[]> {
+    return this.http.get<Animal[]>(`${this.apiUrl}/animales/cuidador?cuidador_dni=${dniCuidador}`);
   }
 }

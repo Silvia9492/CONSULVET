@@ -12,14 +12,11 @@ export class UpdateAnimalsService {
 
   constructor(private http: HttpClient) { }
 
-  // GET para obtener animales del cuidador
-getAnimalesPorCuidador(dniCuidador: string): Observable<Animal[]> {
-  // Se pasan los datos como parámetros de la URL
-  return this.http.get<Animal[]>(`${this.apiUrl}/animales/cuidador?cuidador_dni=${dniCuidador}`);
-}
+  getAnimalsByCarer(dniCuidador: string): Observable<Animal[]> {
+    return this.http.get<Animal[]>(`${this.apiUrl}/animales/cuidador?cuidador_dni=${dniCuidador}`);
+  }
 
-
-updateAnimal(codigo_paciente: number, formData: FormData): Observable<Animal> {
-  return this.http.post<Animal>(`${this.apiUrl}/animal/${codigo_paciente}`, formData);
+  updateAnimal(codigo_paciente: number, formData: FormData): Observable<Animal> {
+    return this.http.post<Animal>(`${this.apiUrl}/animal/${codigo_paciente}`, formData); //put simulado con post
   }
 }

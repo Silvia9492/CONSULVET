@@ -12,12 +12,11 @@ export class EliminarAnimalService {
 
   constructor(private http: HttpClient) {}
 
-   getAnimalesPorCuidador(dniCuidador: string): Observable<Animal[]> {
-  // Se pasan los datos como parámetros de la URL
-  return this.http.get<Animal[]>(`${this.apiUrl}/animales/cuidador?cuidador_dni=${dniCuidador}`);
-}
+  getAnimalsByCarer(dniCuidador: string): Observable<Animal[]> {
+    return this.http.get<Animal[]>(`${this.apiUrl}/animales/cuidador?cuidador_dni=${dniCuidador}`);
+  }
 
-  eliminarAnimal(codigo_paciente: string): Observable<any> {
+  deleteAnimal(codigo_paciente: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/animal/${codigo_paciente}`);
   }
 }

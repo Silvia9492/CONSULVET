@@ -12,11 +12,11 @@ export class CuidadoresService {
 
   constructor(private http: HttpClient) { }
 
-  getCuidador(dni: string): Observable<Cuidador> {
+  getCarer(dni: string): Observable<Cuidador> {
     return this.http.get<Cuidador>(`${this.apiUrl}/${dni}`);
   }
 
-  updateCuidador(dni: string, datos: any): Observable<Cuidador> {
+  updateCarer(dni: string, datos: any): Observable<Cuidador> {
     return this.http.put<Cuidador>(`${this.apiUrl}/${dni}`, datos);
   }
 }

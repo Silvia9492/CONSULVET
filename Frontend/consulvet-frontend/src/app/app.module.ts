@@ -35,7 +35,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,

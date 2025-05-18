@@ -3,86 +3,71 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cuidadores;
-use App\Models\Usuarios;
 use Illuminate\Http\Request;
 
-class CuidadorController extends Controller
-{
+class CuidadorController extends Controller{
 
     public function show($dni){
         $cuidador = Cuidadores::find($dni);
 
         if (!$cuidador) {
-            return response()->json(['message' => 'Cuidador no encontrado'], 404);
+            return response()->json(['message' => 'No se ha podido encontrar el cuidador'], 404);
         }
 
         return response()->json($cuidador);
     }
 
-    public function update(Request $request, $dni)
-{
-    $cuidador = Cuidadores::find($dni);
 
-    if (!$cuidador) {
-        return response()->json(['message' => 'Cuidador no encontrado'], 404);
-    }
-
-    // Validar los campos permitidos para actualizar
-    $request->validate([
-        'nombre_completo' => 'nullable|string|max:255',
-        'fecha_nacimiento' => 'nullable|date',
-        'direccion' => 'nullable|string|max:255',
-        'telefono' => 'nullable|string|max:20',
-        'email' => 'nullable|email|max:255'
-    ]);
-
-    // Actualizar los campos del cuidador
-    $cuidador->update($request->only([
-        'nombre_completo',
-        'fecha_nacimiento',
-        'direccion',
-        'telefono',
-        'email'
-    ]));
-
-    return response()->json([
-        'message' => 'Perfil actualizado correctamente',
-        'cuidador' => $cuidador
-    ]);
-}
-    public function destroy($dni){
+    public function update(Request $request, $dni){
         $cuidador = Cuidadores::find($dni);
 
         if (!$cuidador) {
-            return response()->json(['message' => 'Cuidador no encontrado'], 404);
+            return response()->json(['message' => 'No se ha podido encontrar al cuidador'], 404);
         }
 
-        $cuidador->delete();
+        //Validación de campos editables; el dni no se puede editar
+        $request->validate([
+            'nombre_completo' => 'nullable|string|max:255',
+            'fecha_nacimiento' => 'nullable|date',
+            'direccion' => 'nullable|string|max:255',
+            'telefono' => 'nullable|string|max:20',
+            'email' => 'nullable|email|max:255'
+        ]);
 
-        return response()->json(['message' => 'Cuenta eliminada correctamente']);
+        //Actualizamos los datos del cuidador
+        $cuidador->update($request->only([
+            'nombre_completo',
+            'fecha_nacimiento',
+            'direccion',
+            'telefono',
+            'email'
+        ]));
+
+        return response()->json([
+            'message' => 'Tus datos se han actualizado correctamente',
+            'cuidador' => $cuidador
+        ]);
     }
+    
 
-    public function actualizarFoto(Request $request, $dni)
-{
-    $request->validate([
-        'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
-    ]);
+    public function actualizarFoto(Request $request, $dni){
+        $request->validate([
+            'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
+        ]);
 
-    $cuidador = Cuidadores::findOrFail($dni);
+        $cuidador = Cuidadores::findOrFail($dni);
 
-    if ($request->hasFile('foto')) {
-        $file = $request->file('foto');
-        $filename = uniqid() . '.' . $file->getClientOriginalExtension();
-        $file->move(public_path('uploads/perfiles'), $filename);
+        if ($request->hasFile('foto')) {
+            $file = $request->file('foto');
+            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads/perfiles'), $filename);
 
-        $cuidador->foto_perfil = $filename;
-        $cuidador->save();
+            $cuidador->foto_perfil = $filename;
+            $cuidador->save();
 
-        return response()->json(['success' => true, 'foto' => $filename]);
+            return response()->json(['success' => true, 'foto' => $filename]);
+        }
+
+        return response()->json(['success' => false], 400);
     }
-
-    return response()->json(['success' => false], 400);
 }
-
-}
-

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
-import { base64ToFile, ImageCroppedEvent } from 'ngx-image-cropper';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 @Component({
   selector: 'app-profilePhotoDialog',
@@ -10,44 +10,42 @@ import { base64ToFile, ImageCroppedEvent } from 'ngx-image-cropper';
 })
 export class ProfilePhotoDialogComponent implements OnInit {
 
+  constructor(
+    private dialogRef: MatDialogRef<ProfilePhotoDialogComponent>,
+    private http: HttpClient
+  ) {}
+
+  ngOnInit(): void {}
+
   imageChangedEvent: any = '';
   croppedImage: string | null = null;
   file: File | null = null;
-
-  constructor(
-    public dialogRef: MatDialogRef<ProfilePhotoDialogComponent>,
-    private http: HttpClient
-  ) {}
 
   photoSelected(event: Event): void {
     this.imageChangedEvent = event;
   }
 
   private dataURItoBlob(dataURI: string): Blob {
-  const byteString = atob(dataURI.split(',')[1]);
-  const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    const byteString = atob(dataURI.split(',')[1]);
+    const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
 
-  const ab = new ArrayBuffer(byteString.length);
-  const ia = new Uint8Array(ab);
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
 
-  for (let i = 0; i < byteString.length; i++) {
-    ia[i] = byteString.charCodeAt(i);
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+
+    return new Blob([ab], { type: mimeString });
   }
-
-  return new Blob([ab], { type: mimeString });
-}
-
 
   imageCropped(event: ImageCroppedEvent) {
-  this.croppedImage = event.base64 || null;
-
-  // Convertir el Base64 en Blob y luego en File
-  if (this.croppedImage) {
-    const blob = this.dataURItoBlob(this.croppedImage);
-    this.file = new File([blob], 'perfil.jpg', { type: blob.type, lastModified: Date.now() });
+    this.croppedImage = event.base64 || null;
+    if (this.croppedImage) {
+      const blob = this.dataURItoBlob(this.croppedImage);
+      this.file = new File([blob], 'perfil.jpg', { type: blob.type, lastModified: Date.now() });
+    }
   }
-}
-
 
   confirmPhoto(): void {
     if (!this.file) return;
@@ -63,13 +61,11 @@ export class ProfilePhotoDialogComponent implements OnInit {
           localStorage.setItem('foto_perfil', response.foto);
           this.dialogRef.close(response.foto);
         },
-        error: err => console.error(err)
+        error: error => console.error(error)
       });
   }
 
   cancelPhoto(): void {
     this.dialogRef.close();
   }
-
-  ngOnInit(): void {}
 }

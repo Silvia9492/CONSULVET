@@ -12,7 +12,7 @@ export class ServiciosService {
 
   constructor(private http: HttpClient) { }
 
-  getServicios(): Observable<Servicio[]> {
+  getServices(): Observable<Servicio[]> {
     return this.http.get<Servicio[]>(this.apiUrl);
   }
 }

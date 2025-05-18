@@ -6,13 +6,11 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Centros;
 
-class centrosSeeder extends Seeder
-{
+class centrosSeeder extends Seeder{
     /**
      * Run the database seeds.
      */
-    public function run(): void
-    {
+    public function run(): void{
         $clinica1 = Centros::firstOrCreate([
             'nombre' => 'Clínica Veterinaria Coruña Centro',
             'direccion' => 'Calle Coruña Centro, nº 5, bajo, Coruña',

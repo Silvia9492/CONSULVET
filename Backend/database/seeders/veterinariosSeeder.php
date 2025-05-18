@@ -7,13 +7,11 @@ use Illuminate\Database\Seeder;
 use App\Models\Veterinarios;
 use App\Models\Centros;
 
-class veterinariosSeeder extends Seeder
-{
+class veterinariosSeeder extends Seeder{
     /**
      * Run the database seeds.
      */
-    public function run(): void
-    {
+    public function run(): void{
         $clinica1 = Centros::where('nombre', 'Clínica Veterinaria Coruña Centro')->first();
         $hospital1 = Centros::where('nombre', 'Hospital Veterinario Asturias')->first();
         $hospital2 = Centros::where('nombre', 'Hospital Veterinario Coruvet')->first();

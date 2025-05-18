@@ -13,65 +13,59 @@ import { FormControl } from '@angular/forms';
 })
 export class HistoryDialogComponent implements OnInit {
   
-  historial: MatTableDataSource<Atienden> = new MatTableDataSource<Atienden>();
-  nombreAnimal: FormControl = new FormControl('');
-  animales: Animal[] = [];  // 🆕 Lista de animales del cuidador
+  constructor(
+    private historialService: HistorialService,
+    private dialogRef: MatDialogRef<HistoryDialogComponent>
+  ) {}
 
-  cuidadorDni: string = '';
+  history: MatTableDataSource<Atienden> = new MatTableDataSource<Atienden>();
+  animalName: FormControl = new FormControl('');
+  animals: Animal[] = [];
+
+  carerDni: string = '';
   displayedColumns: string[] = ['fecha', 'motivo', 'diagnóstico', 'tratamiento', 'pruebas', 'observaciones'];
   isLoading: boolean = false;
   errorMessage: string = '';
-  
-  constructor(
-    private historialService: HistorialService,
-    public dialogRef: MatDialogRef<HistoryDialogComponent>
-  ) {}
 
   ngOnInit() {
     const storedDni = localStorage.getItem('dni');
     if (storedDni) {
-      this.cuidadorDni = storedDni;
-      console.log('DNI del cuidador recuperado:', this.cuidadorDni);
+      this.carerDni = storedDni;
 
-      // 🆕 Obtener animales del cuidador
-      this.historialService.getAnimalesPorCuidador(this.cuidadorDni).subscribe({
+      this.historialService.getAnimalsByCarer(this.carerDni).subscribe({
         next: (animales) => {
-          this.animales = animales;
+          this.animals = animales;
         },
-        error: (err) => {
-          console.error('Error al cargar animales:', err);
+        error: (error) => {
+          console.error('Error al cargar los animales:', error);
         }
       });
 
     } else {
-      console.error('No se encontró el DNI del cuidador en localStorage');
-      this.errorMessage = 'No se encontró información del cuidador. Por favor, inicie sesión nuevamente.';
+      this.errorMessage = 'No hemos encontrado tus datos. Por favor, inicia sesión nuevamente';
     }
   }
 
   obtenerHistorial(): void {
-    const nombre = this.nombreAnimal.value?.trim();
+    const name = this.animalName.value?.trim();
     
-    if (!nombre) {
-      this.errorMessage = 'Por favor, seleccione un animal';
+    if (!name) {
+      this.errorMessage = 'Debes seleccionar un animal para continuar';
       return;
     }
     
-    if (!this.cuidadorDni) {
-      this.errorMessage = 'No se encontró el DNI del cuidador';
+    if (!this.carerDni) {
+      this.errorMessage = 'No hemos podido cotejar tu dni';
       return;
     }
     
     this.isLoading = true;
     this.errorMessage = '';
-    console.log('Consultando historial - Nombre:', nombre, 'DNI:', this.cuidadorDni);
-    
-    // 🛠️ Aseguramos orden correcto: (dni, nombre)
-    this.historialService.obtenerHistorial(this.cuidadorDni, nombre)
+
+    this.historialService.getHistory(this.carerDni, name)
       .subscribe({
         next: (data) => {
-          console.log('Datos recibidos:', data);
-          this.historial.data = data;
+          this.history.data = data;
           this.isLoading = false;
           
           if (data.length === 0) {
@@ -85,13 +79,13 @@ export class HistoryDialogComponent implements OnInit {
           if (error.status === 404) {
             this.errorMessage = 'No se encontró ningún historial para ese animal';
           } else {
-            this.errorMessage = 'Error al obtener los datos. Por favor, inténtelo de nuevo.';
+            this.errorMessage = 'Error al obtener los datos de historial para este animal. Por favor, inténtalo de nuevo.';
           }
         }
       });
   }
 
-  cerrarDialogo(): void {
+  closeDialog(): void {
     this.dialogRef.close();
   }
 }

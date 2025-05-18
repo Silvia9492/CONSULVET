@@ -6,11 +6,9 @@ use Closure;
 use Illuminate\Http\Request;
 
 
-class CorsMiddleware
-{
-    public function handle(Request $request, Closure $next)
-    {
-        // Permitir todos los orígenes (puedes personalizar esto)
+class CorsMiddleware{
+
+    public function handle(Request $request, Closure $next){
         \Log::info('Middleware CORS ejecutado');
         return $next($request)
             ->header('Access-Control-Allow-Origin', '*')
@@ -18,4 +16,3 @@ class CorsMiddleware
             ->header('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With, Authorization');
     }
 }
-

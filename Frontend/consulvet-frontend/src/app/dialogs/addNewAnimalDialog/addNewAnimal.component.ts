@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AnimalPhotoDialogComponent } from '../animalPhotoDialog/animalPhotoDialog.component';
 import { AddAnimalService } from 'src/app/services/add-animal.service';
@@ -12,6 +11,15 @@ import { AddAnimalService } from 'src/app/services/add-animal.service';
   styleUrls: ['./addNewAnimal.component.css']
 })
 export class AddNewAnimalComponent implements OnInit {
+
+  constructor(
+    private dialog: MatDialog,
+    private dialogRef: MatDialogRef<AddNewAnimalComponent>,
+    private addAnimalService: AddAnimalService,
+    private snackBar: MatSnackBar
+  ) {}
+
+  ngOnInit() {}
 
   newAnimalData = new FormGroup({
     nombre: new FormControl('', Validators.required),
@@ -25,16 +33,6 @@ export class AddNewAnimalComponent implements OnInit {
   selectedPhotoFile: File | null = null;
   selectedPhotoPreview: string | null = null;
 
-  constructor(
-    public dialog: MatDialog,
-    public dialogRef: MatDialogRef<AddNewAnimalComponent>,
-    private http: HttpClient,
-    public addAnimalService: AddAnimalService,
-    public snackBar: MatSnackBar
-  ) {}
-
-  ngOnInit() {}
-
   formatDate(date: any): string {
     const d = new Date(date);
     const month = ('' + (d.getMonth() + 1)).padStart(2, '0');
@@ -46,26 +44,29 @@ export class AddNewAnimalComponent implements OnInit {
   addAnimalPhoto() {
     const dialogRef = this.dialog.open(AnimalPhotoDialogComponent, {
       width: '500px',
-      data: {}  // No se pasa código de paciente en este momento
+      data: {}
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result?.file) {
         this.selectedPhotoFile = result.file;
         this.selectedPhotoPreview = result.preview;
-        console.log('Foto seleccionada:', this.selectedPhotoFile);
       }
     });
   }
 
   registerNewAnimal() {
-  if (this.newAnimalData.valid) {
+    if (this.newAnimalData.valid) {
       const dniCuidador = localStorage.getItem('dni');
 
-      if (!dniCuidador) {
-        this.snackBar.open('No se ha encontrado el DNI del cuidador', 'Cerrar', { duration: 3000 });
-        return;
-      }
+        if (!dniCuidador) {
+          this.snackBar.open('No hemos podido cotejar tus datos', '', {
+            duration: 2000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top'
+          });
+          return;
+        }
 
       const formData = new FormData();
         formData.append('nombre', this.newAnimalData.get('nombre')?.value || '');
@@ -75,27 +76,39 @@ export class AddNewAnimalComponent implements OnInit {
         formData.append('color_capa', this.newAnimalData.get('color_capa')?.value || '');
         formData.append('sexo', this.newAnimalData.get('sexo')?.value || '');
         formData.append('cuidador_dni', dniCuidador);
-        if (this.selectedPhotoFile) {
-          formData.append('foto', this.selectedPhotoFile);
-        }
+          if (this.selectedPhotoFile) {
+            formData.append('foto', this.selectedPhotoFile);
+          }
 
-      this.addAnimalService.registerAnimal(formData).subscribe({
-        next: response => {
-          console.log('Animal registrado con éxito', response);
-          this.snackBar.open('Animal registrado con éxito', 'Cerrar', { duration: 3000 });
-          this.dialogRef.close('animalAñadido');
-        },
-        error: error => {
-          console.error('Error al registrar el animal', error);
-          this.snackBar.open('Hubo un error al registrar el animal', 'Cerrar', { duration: 3000 });
-        }
+        this.addAnimalService.registerAnimal(formData).subscribe({
+          next: response => {
+            this.snackBar.open('¡Tu nuevo animal se ha registrado con éxito!', '', {
+              duration: 2000,
+              horizontalPosition: 'center',
+              verticalPosition: 'top'
+            });
+            setTimeout(() => {
+              this.dialogRef.close('animalAñadido');
+            }, 2000);
+          },
+          error: error => {
+            this.snackBar.open('Se ha producido un error durante el registro', '', {
+              duration: 2000,
+              horizontalPosition: 'center',
+              verticalPosition: 'top'
+            });
+          }
+        });
+    } else {
+      this.snackBar.open('Por favor, completa todos los campos antes de continuar', '', {
+        duration: 2000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top'
       });
-  } else {
-    this.snackBar.open('Por favor, completa todos los campos requeridos', 'Cerrar', { duration: 3000 });
+    }
   }
-}
 
-cancelar(): void {
+  cancel(): void {
     this.dialogRef.close();
   }
 }

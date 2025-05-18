@@ -1,32 +1,23 @@
 <div class="sidenav-container">
+
   <mat-toolbar color="primary" style="display: flex; justify-content: space-between; align-items: center;">
-  <!-- Logo un poco más grande -->
-  <img src="assets/LogoConsulvet200x200_indigo.png" alt="Logo Consulvet" style="height: 48px; width: auto;">
-
-  <!-- Texto centrado -->
-  <span class="title" style="position: absolute; left: 50%; transform: translateX(-50%); font-weight: 500;">
-    Consulvet
-  </span>
-
-  <!-- Botones y avatar un poco más juntos -->
-  <div style="display: flex; align-items: center; gap: 10px;">
-    <button mat-icon-button aria-label="Solicitar consulta" (click)="openAppointment()" matTooltip="Solicitar consulta">
-      <span class="material-symbols-outlined">heart_plus</span>
-    </button>
-
-    <button mat-icon-button aria-label="Consultar historial" (click)="openHistoryDialog()" matTooltip="Consultar historial">
-      <span class="material-symbols-outlined">quick_reference_all</span>
-    </button>
-
-    <button mat-icon-button (click)="drawer.toggle()" aria-label="Abrir drawer" matTooltip="Ajustes">
-      <img *ngIf="userPhotoUrl; else defaultIcon" [src]="userPhotoUrl" class="avatar-img" style="height: 32px; width: 32px; border-radius: 50%;">
-      <ng-template #defaultIcon>
-        <mat-icon class="defaultAvatar">account_circle</mat-icon>
-      </ng-template>
-    </button>
-  </div>
-</mat-toolbar>
-
+    <img src="assets/LogoConsulvet200x200_indigo.png" alt="Logo Consulvet" style="height: 48px; width: auto;">
+    <span class="title" style="position: absolute; left: 50%; transform: translateX(-50%); font-weight: 500;">Consulvet</span>
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <button mat-icon-button aria-label="Solicitar consulta" (click)="openAppointment()" matTooltip="Solicitar consulta">
+        <span class="material-symbols-outlined">heart_plus</span>
+      </button>
+      <button mat-icon-button aria-label="Consultar historial" (click)="openHistoryDialog()" matTooltip="Consultar historial">
+        <span class="material-symbols-outlined">quick_reference_all</span>
+      </button>
+      <button mat-icon-button (click)="drawer.toggle()" aria-label="Abrir drawer" matTooltip="Ajustes">
+        <img *ngIf="userPhotoUrl; else defaultIcon" [src]="userPhotoUrl" class="avatar-img" style="height: 32px; width: 32px; border-radius: 50%;">
+        <ng-template #defaultIcon>
+          <mat-icon class="defaultAvatar">account_circle</mat-icon>
+        </ng-template>
+      </button>
+    </div>
+  </mat-toolbar>
 
   <mat-drawer-container class="example-container">
     <mat-drawer #drawer mode="side" class="custom-drawer" position="end">
@@ -36,20 +27,21 @@
         <button mat-raised-button color="primary" (click)="openAddAnimalDialog()">Añadir nuevo animal</button>
         <button mat-raised-button color="primary" (click)="openUpdateAnimalDialog()">Editar animal</button>
         <button mat-raised-button color="primary" (click)="openDeleteAnimalDialog()">Eliminar animal</button>
-        <button mat-raised-button color="primary">Eliminar mi cuenta</button>
         <button mat-raised-button color="primary" (click)="goToLogin()">Cerrar Sesión</button>
       </div>
     </mat-drawer>
+
     <mat-drawer-content>
       <router-outlet></router-outlet>
+      
       <div style="padding: 1rem;"></div>
+
       <div class="animales-container" fxLayout="row wrap" fxLayoutGap="24px" fxLayoutAlign="center start">
-        <mat-card *ngFor="let animal of animales" class="animal-card">
+        <mat-card *ngFor="let animal of animals" class="animal-card">
           <mat-card-header class="custom-header">
             <mat-card-title>{{ animal.nombre }}</mat-card-title>
             <mat-card-subtitle>{{ animal.especie }} - {{ animal.raza }}</mat-card-subtitle>
           </mat-card-header>
-
           <img
             *ngIf="animal.foto; else defaultAnimalImage"
             mat-card-image
@@ -69,36 +61,36 @@
           </mat-card-content>
         </mat-card>
       </div>
+
       <mat-toolbar color="primary" class="footer" fxLayout="column" fxLayoutAlign="center center">
-  <div fxLayout="row" fxLayoutAlign="center center" class="footer-links" fxLayoutGap="32px">
-    <a href="#" class="footer-link">Sobre nosotros</a>
-    <a href="#" class="footer-link">Contacto</a>
-    <a href="#" class="footer-link">Política de privacidad</a>
-  </div>
+        <div fxLayout="row" fxLayoutAlign="center center" class="footer-links" fxLayoutGap="32px">
+          <a class="footer-link" (click)="openModal('Sobre nosotros', aboutUs)">Sobre nosotros</a>
+          <a class="footer-link" (click)="openModal('Contacto', contact)">Contacto</a>
+          <a class="footer-link" (click)="openModal('Política de privacidad', privacyPolicy)">Política de privacidad</a>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center" class="social-icons">
+          <a mat-icon-button href="https://www.facebook.com" target="_blank" rel="noopener" aria-label="Facebook">
+            <mat-icon fontSet="fa-brands" fontIcon="fa-facebook-f" class="footer-icon"></mat-icon>
+          </a>
+          <a mat-icon-button href="https://www.twitter.com" target="_blank" rel="noopener" aria-label="Twitter">
+            <mat-icon fontSet="fa-brands" fontIcon="fa-x-twitter" class="footer-icon"></mat-icon>
+          </a>
+          <a mat-icon-button href="https://www.instagram.com" target="_blank" rel="noopener" aria-label="Instagram">
+            <mat-icon fontSet="fa-brands" fontIcon="fa-instagram" class="footer-icon"></mat-icon>
+          </a>
+          <a mat-icon-button href="https://www.linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <mat-icon fontSet="fa-brands" fontIcon="fa-linkedin-in" class="footer-icon"></mat-icon>
+          </a>
+        </div>
+        <span class="footer-text">© 2025 Consulvet. Todos los derechos reservados.</span>
+      </mat-toolbar>
 
-  <div fxLayout="row" fxLayoutAlign="center center" class="social-icons">
-    <a href="#" aria-label="Facebook">
-      <mat-icon fontSet="fa-brands" fontIcon="fa-facebook-f" class="footer-icon"></mat-icon>
-    </a>
-    <a href="#" aria-label="Twitter">
-      <mat-icon fontSet="fa-brands" fontIcon="fa-twitter" class="footer-icon"></mat-icon>
-    </a>
-    <a href="#" aria-label="Instagram">
-      <mat-icon fontSet="fa-brands" fontIcon="fa-instagram" class="footer-icon"></mat-icon>
-    </a>
-    <a href="#" aria-label="LinkedIn">
-      <mat-icon fontSet="fa-brands" fontIcon="fa-linkedin-in" class="footer-icon"></mat-icon>
-    </a>
-  </div>
-
-  <span class="footer-text">
-    © 2025 Consulvet. Todos los derechos reservados.
-  </span>
-</mat-toolbar>
+      <app-modal 
+        *ngIf="isModalVisible" 
+        [title]="modalTitle" 
+        [content]="modalContent" 
+        (close)="closeModal()">
+      </app-modal>
     </mat-drawer-content>
   </mat-drawer-container>
 </div>
-
-
-
-

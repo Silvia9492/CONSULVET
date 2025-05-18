@@ -9,13 +9,11 @@ use App\Models\Animales;
 use App\Models\Centros;
 use App\Models\Veterinarios;
 
-class atiendenSeeder extends Seeder
-{
+class atiendenSeeder extends Seeder{
     /**
      * Run the database seeds.
      */
-    public function run(): void
-    {
+    public function run(): void{
         //ANIMALES
         $smokey = Animales::where('nombre', 'Smokey')->first();
         $niobe = Animales::where('nombre', 'Níobe')->first();

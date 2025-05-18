@@ -8,13 +8,11 @@ use App\Models\Ofrecen;
 use App\Models\Centros;
 use App\Models\Servicios;
 
-class ofrecenSeeder extends Seeder
-{
+class ofrecenSeeder extends Seeder{
     /**
      * Run the database seeds.
      */
-    public function run(): void
-    {
+    public function run(): void{
         //CENTROS
         $clinica1 = Centros::where('nombre', 'Clínica Veterinaria Coruña Centro')->first();
         $hospital1 = Centros::where('nombre', 'Hospital Veterinario Asturias')->first();

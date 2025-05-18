@@ -14,6 +14,15 @@ import { of } from 'rxjs';
 })
 export class RegisterComponent implements OnInit {
 
+  constructor(
+    private snackBar: MatSnackBar,
+    private router: Router,
+    private http: HttpClient,
+    private loginService: LoginService
+  ) { }
+
+  ngOnInit() {}
+
   isLoading = false;
 
   static passwordValidator(control: AbstractControl): ValidationErrors | null {
@@ -74,14 +83,13 @@ export class RegisterComponent implements OnInit {
   }
 
   get passwordMissmatch() {
-    return this.userData.hasError('passwordMissmatch') && 
-           this.verifyPasswordControl?.touched;
+    return this.userData.hasError('passwordMissmatch') && this.verifyPasswordControl?.touched;
   }
 
   registerUser() {
     if (!this.userData.valid) {
-      this.snackBar.open('Por favor, corrija los errores en el formulario', 'Cerrar', {
-        duration: 3000,
+      this.snackBar.open('El formulario contiene errores. Por favor, revisa tus datos', '', {
+        duration: 2000,
         horizontalPosition: 'center',
         verticalPosition: 'top',
       });
@@ -113,8 +121,8 @@ export class RegisterComponent implements OnInit {
         this.loginService.login(requestBody.username ?? '', requestBody.password ?? '')
           .pipe(
             catchError(error => {
-              this.snackBar.open('Registro ok, pero fallo al iniciar sesión automáticamente', 'Cerrar', {
-                duration: 3000,
+              this.snackBar.open('Tus datos se han registrado correctamente pero no hemos podido iniciar sesión automáticamente con tu cuenta', '', {
+                duration: 2000,
                 horizontalPosition: 'center',
                 verticalPosition: 'top',
               });
@@ -126,19 +134,19 @@ export class RegisterComponent implements OnInit {
               localStorage.setItem('username', response.nombre_usuario);
               localStorage.setItem('dni', response.dni);
 
-              this.snackBar.open('¡Bienvenida/o! Tu cuenta ha sido creada.', 'Cerrar', {
-                duration: 3000,
+              this.snackBar.open('¡Bienvenida/o a Consulvet! Tu cuenta ha sido creada con éxito', '', {
+                duration: 2000,
                 horizontalPosition: 'center',
                 verticalPosition: 'top',
               });
   
-        this.router.navigate(['/Profile']);
-      }
+          this.router.navigate(['/Profile']);
+        }
        });
       },
       error: (error) => {
-        this.snackBar.open('Error al registrar usuario. Intenta nuevamente.', 'Cerrar', {
-          duration: 3000,
+        this.snackBar.open('Se ha producido un error durante el registro. Por favor, inténtalo de nuevo', '', {
+          duration: 2000,
           horizontalPosition: 'center',
           verticalPosition: 'top',
         });
@@ -161,10 +169,4 @@ export class RegisterComponent implements OnInit {
   goToLogin() {
     this.router.navigate(['/Login']);
   }
-
-  constructor(private snackBar: MatSnackBar, private router: Router, private http: HttpClient, private loginService: LoginService) { }
-
-  ngOnInit() {
-  }
-
 }

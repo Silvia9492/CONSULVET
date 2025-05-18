@@ -13,6 +13,13 @@ import { AnimalPhotoDialogComponent } from '../animalPhotoDialog/animalPhotoDial
 })
 export class UpdateAnimalComponent implements OnInit {
 
+  constructor(
+    private dialog: MatDialog,
+    private dialogRef: MatDialogRef<UpdateAnimalComponent>,
+    private snackBar: MatSnackBar,
+    private updateAnimalsService: UpdateAnimalsService
+  ) {}
+
   updateAnimalData = new FormGroup({
     nombre: new FormControl('', Validators.required),
     fecha_nacimiento: new FormControl('', Validators.required),
@@ -22,45 +29,35 @@ export class UpdateAnimalComponent implements OnInit {
     sexo: new FormControl('', Validators.required),
   });
 
-  animales: Animal[] = [];
+  animals: Animal[] = [];
   selectedAnimal: Animal | null = null;
-  selectedPhoto: File | null = null; // ✅ Añadido para guardar la foto seleccionada
+  selectedPhoto: File | null = null;
 
-  constructor(
-    public dialog: MatDialog,
-    public dialogRef: MatDialogRef<UpdateAnimalComponent>,
-    private snackBar: MatSnackBar,
-    private updateAnimalsService: UpdateAnimalsService
-  ) {}
-
+  //Se carga el dni del cuidador desde localStorage al iniciar el componente para que éste esté disponible y se puedan recoger sus animales de la base de datos
   ngOnInit() {
-    const dniCuidador = localStorage.getItem('dni');
+    const carerDNI = localStorage.getItem('dni');
 
-    if (!dniCuidador) {
-      this.snackBar.open('No se encontró el DNI del cuidador', 'Cerrar', { duration: 3000 });
+    if (!carerDNI) {
+      this.snackBar.open('No hemos podido cotejar tus datos', '', {
+        duration: 2000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top'
+      });
       return;
     }
 
-    this.updateAnimalsService.getAnimalesPorCuidador(dniCuidador).subscribe({
+    this.updateAnimalsService.getAnimalsByCarer(carerDNI).subscribe({
       next: (data: Animal[]) => {
-        this.animales = data;
+        this.animals = data;
       },
-      error: (err) => {
-        console.error('Error al obtener los animales', err);
-        this.snackBar.open('Hubo un error al obtener los animales', 'Cerrar', { duration: 3000 });
+      error: (error) => {
+        console.error('Error al obtener los animales', error);
+        this.snackBar.open('Se ha producido un error al cargar tus animales', '', {
+          duration: 2000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top'
+        });
       }
-    });
-  }
-
-  cargarDatosAnimal(animal: Animal) {
-    this.selectedAnimal = animal;
-    this.updateAnimalData.patchValue({
-      nombre: animal.nombre,
-      fecha_nacimiento: this.formatDate(animal.fecha_nacimiento),
-      especie: animal.especie,
-      raza: animal.raza,
-      color_capa: animal.color_capa,
-      sexo: animal.sexo,
     });
   }
 
@@ -75,85 +72,84 @@ export class UpdateAnimalComponent implements OnInit {
   updateAnimal() {
   if (this.updateAnimalData.valid && this.selectedAnimal) {
     const rawForm = this.updateAnimalData.value;
-
-    // Verificar que todos los campos requeridos tengan valor
     if (!rawForm.nombre || !rawForm.fecha_nacimiento || !rawForm.especie || 
         !rawForm.raza || !rawForm.color_capa || !rawForm.sexo) {
-      this.snackBar.open('Todos los campos son obligatorios', 'Cerrar', { duration: 3000 });
+      this.snackBar.open('Debes rellenar todos los campos para continuar', '', {
+        duration: 2000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top'
+      });
       return;
     }
 
     const formData = new FormData();
 
-    // 👉 Simular método PUT para Laravel
+    //Laravel no puede gestionar directamente el método put junto con el uso de formData. Por ello, se declara la ruta como post y se simula el put con un formData.append
     formData.append('_method', 'PUT');
-
     formData.append('nombre', rawForm.nombre.trim());
 
-    // Asegúrate de que la fecha esté en el formato correcto
-    let fechaFormateada: string;
+    let formatDate: string;
     if (rawForm.fecha_nacimiento) {
       const dateObj = new Date(rawForm.fecha_nacimiento);
-      fechaFormateada = !isNaN(dateObj.getTime())
+      formatDate = !isNaN(dateObj.getTime())
         ? this.formatDate(dateObj)
         : String(rawForm.fecha_nacimiento);
     } else {
-      fechaFormateada = '';
+      formatDate = '';
     }
-    formData.append('fecha_nacimiento', fechaFormateada);
-
+    formData.append('fecha_nacimiento', formatDate);
+    
     formData.append('especie', rawForm.especie);
     formData.append('raza', rawForm.raza);
     formData.append('color_capa', rawForm.color_capa);
     formData.append('sexo', rawForm.sexo);
 
-    // Solo incluye la foto si hay una seleccionada
     if (this.selectedPhoto) {
       formData.append('foto', this.selectedPhoto);
     }
 
-    // Logs para depuración
-    console.log('Enviando datos de animal (POST + _method PUT):', {
-      nombre: rawForm.nombre,
-      fecha_nacimiento: fechaFormateada,
-      especie: rawForm.especie,
-      raza: rawForm.raza,
-      color_capa: rawForm.color_capa,
-      sexo: rawForm.sexo,
-      foto: this.selectedPhoto ? this.selectedPhoto.name : 'No hay foto seleccionada'
-    });
-
-    // ⚠️ IMPORTANTE: usar POST aquí para que Laravel acepte archivos + _method
     this.updateAnimalsService.updateAnimal(this.selectedAnimal.codigo_paciente, formData).subscribe({
       next: () => {
-        this.snackBar.open('Animal actualizado exitosamente', 'Cerrar', { duration: 3000 });
-        this.dialogRef.close('animalActualizado');
-        this.selectedPhoto = null;
+        this.snackBar.open('¡Tu animal se ha actualizado con éxito!', '', {
+          duration: 2000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top'
+        });
+        setTimeout(() => {
+          this.dialogRef.close('animalActualizado');
+          this.selectedPhoto = null;
+        }, 2000);
 
-        // Refrescar lista de animales
-        const dniCuidador = localStorage.getItem('dni');
-        if (dniCuidador) {
-          this.updateAnimalsService.getAnimalesPorCuidador(dniCuidador).subscribe({
+        const carerDni = localStorage.getItem('dni');
+        if (carerDni) {
+          this.updateAnimalsService.getAnimalsByCarer(carerDni).subscribe({
             next: (data: Animal[]) => {
-              this.animales = data;
+              this.animals = data;
             }
           });
         }
       },
-      error: (err) => {
-        console.error('Error al actualizar el animal', err);
-        let errorMsg = 'Hubo un error al actualizar el animal';
-        if (err.error && err.error.message) {
-          errorMsg += ': ' + err.error.message;
+      error: (error) => {
+        console.error('Error al actualizar el animal', error);
+        let errorMessage = 'Se ha producido un error al tratar de actualizar tu animal';
+        if (error.error && error.error.message) {
+          errorMessage += ': ' + error.error.message;
         }
-        this.snackBar.open(errorMsg, 'Cerrar', { duration: 5000 });
+        this.snackBar.open(errorMessage, '', {
+          duration: 3000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top'
+        });
       }
     });
-  } else {
-    this.snackBar.open('Por favor, completa todos los campos correctamente', 'Cerrar', { duration: 3000 });
+    }else {
+      this.snackBar.open('Por favor, completa todos los campos antes de continuar', '', {
+        duration: 2000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top'
+      });
+    }
   }
-}
-
 
   updateAnimalPhoto() {
     const dialogRef = this.dialog.open(AnimalPhotoDialogComponent, {
@@ -162,10 +158,8 @@ export class UpdateAnimalComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result && result.file) { // Corregido para usar result.file
+      if (result && result.file) {
         this.selectedPhoto = result.file;
-        console.log('Foto seleccionada:', result.file);
-        // No mostrar snackbar aquí, solo indicar que se ha seleccionado la foto
       }
     });
   }
@@ -182,7 +176,7 @@ export class UpdateAnimalComponent implements OnInit {
     });
   }
 
-  cancelar(): void {
+  cancel(): void {
     this.dialogRef.close();
   }
 }

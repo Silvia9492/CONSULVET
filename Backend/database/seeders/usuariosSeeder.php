@@ -6,13 +6,11 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Usuarios;
 
-class usuariosSeeder extends Seeder
-{
+class usuariosSeeder extends Seeder{
     /**
      * Run the database seeds.
      */
-    public function run(): void
-    {
+    public function run(): void{
         Usuarios::firstOrCreate([
             'nombre_usuario' => 'Silvia123',
             'contraseña' => 'Smokey21',

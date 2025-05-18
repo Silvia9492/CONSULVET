@@ -5,8 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Veterinarios extends Model
-{
+class Veterinarios extends Model{
+
     protected $primaryKey = null;
     public $incrementing = false;
     protected $table = 'veterinarios';
@@ -21,10 +21,12 @@ class Veterinarios extends Model
         'centro_id'
     ];
 
+
     public function setKeysForSaveQuery($query){
         return $query->where('codigo_veterinario', $this->getAttribute('codigo_veterinario'))
                     ->where('centro_id', $this->getAttribute('centro_id'));
     }
+
 
     public function animales(){
         return $this->belongsToMany(Animales::class, 'atienden', 'id_paciente', 'id_veterinario')
