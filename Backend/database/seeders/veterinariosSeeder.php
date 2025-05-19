@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Veterinarios;
 use App\Models\Centros;
 
-class veterinariosSeeder extends Seeder{
+class VeterinariosSeeder extends Seeder{
     /**
      * Run the database seeds.
      */

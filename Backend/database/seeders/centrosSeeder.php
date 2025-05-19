@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Centros;
 
-class centrosSeeder extends Seeder{
+class CentrosSeeder extends Seeder{
     /**
      * Run the database seeds.
      */

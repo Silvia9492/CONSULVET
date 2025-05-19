@@ -8,7 +8,7 @@ import { Animal } from '../models/animal.model';
 })
 export class AnimalesService {
 
-  private apiUrl = 'http://localhost:8000/api/animales/usuario/';
+  private apiUrl = 'http://localhost:8000/api/animales/usuario';
 
   constructor(private http: HttpClient) { }
 

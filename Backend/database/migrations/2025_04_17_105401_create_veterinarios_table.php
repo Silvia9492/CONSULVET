@@ -14,7 +14,7 @@ return new class extends Migration{
             $table->string('nombre_completo', 100);
             $table->string('nº_colegiado', 10);
             $table->enum('especialidad', ['Medicina Preventiva', 'Etología', 'Oncología', 'Fisioterapia y Rehabilitación',
-                        'Medicina Interna', 'Neurología', 'Etología', 'Traumatología', 'Dermatología']);
+                        'Medicina Interna', 'Neurología', 'Traumatología', 'Dermatología']);
             $table->string('email')->unique();
             $table->unsignedBigInteger('centro_id');
             $table->timestamps();

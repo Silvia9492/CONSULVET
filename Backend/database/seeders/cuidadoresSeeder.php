@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Cuidadores;
 
-class cuidadoresSeeder extends Seeder{
+class CuidadoresSeeder extends Seeder{
     /**
      * Run the database seeds.
      */

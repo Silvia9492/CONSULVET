@@ -8,7 +8,7 @@ use App\Models\Ofrecen;
 use App\Models\Centros;
 use App\Models\Servicios;
 
-class ofrecenSeeder extends Seeder{
+class OfrecenSeeder extends Seeder{
     /**
      * Run the database seeds.
      */

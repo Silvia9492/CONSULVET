@@ -9,7 +9,7 @@ use App\Models\Animales;
 use App\Models\Centros;
 use App\Models\Veterinarios;
 
-class atiendenSeeder extends Seeder{
+class AtiendenSeeder extends Seeder{
     /**
      * Run the database seeds.
      */

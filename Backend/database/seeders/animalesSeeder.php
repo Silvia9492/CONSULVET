@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Animales;
 
-class animalesSeeder extends Seeder{
+class AnimalesSeeder extends Seeder{
     /**
      * Run the database seeds.
      */
