@@ -40,9 +40,8 @@ class UsuarioController extends Controller{
         }
     }    
 
-    /*public function checkSession(Request $request){
+    public function checkSession(Request $request){
         $nombre_usuario = $request->cookie('user_session');
-
         if ($nombre_usuario) {
             $usuario = Usuarios::where('nombre_usuario', $nombre_usuario)->first();
             
@@ -64,7 +63,7 @@ class UsuarioController extends Controller{
         return response()->json([
             'message' => 'Su sesión se ha cerrado correctamente'
         ]);
-    }*/
+    }
 
 
     public function getAnimalesByUsername($username){
