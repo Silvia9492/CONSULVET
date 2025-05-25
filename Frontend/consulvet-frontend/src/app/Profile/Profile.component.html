@@ -32,6 +32,7 @@
     </mat-drawer>
 
     <mat-drawer-content>
+      <div class="main-content" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; max-height: calc(100vh - 164px);">
       <router-outlet></router-outlet>
       
       <div style="padding: 1rem;"></div>
@@ -60,6 +61,7 @@
             <p><strong>Sexo:</strong> {{ animal.sexo }}</p>
           </mat-card-content>
         </mat-card>
+      </div>
       </div>
 
       <mat-toolbar color="primary" class="footer" fxLayout="column" fxLayoutAlign="center center">
